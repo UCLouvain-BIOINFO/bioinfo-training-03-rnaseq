@@ -237,7 +237,7 @@ pve <- var/sum(var)
 
 In this example the variance along the PCs are
 `r round(var[1], 2)` and `r round(var[2], 2)` respectively. The first one explains
-`r round(pve[1] * 100, 1)`% or that variance, and the second one merely
+`r round(pve[1] * 100, 1)`% of that variance, and the second one merely
 `r round(pve[2] * 100, 1)`%.
 
 To account for these differences in variation along the different PCs,
@@ -285,7 +285,7 @@ tiny_dataset
 
 This table is not too big, so by quickly inspecting it by eye, we can see that
 the treatment seems to have a strong impact on the expression of GeneB, GeneC,
-and GeneE but had little or no effect on genes GeneA and GeneD.
+and GeneE but has little or no effect on genes GeneA and GeneD.
 
 #### Question {-}
 
@@ -440,10 +440,6 @@ se <- readRDS("data/se.rds")
 pca <- prcomp(t(log1p(assay(se))))
 ```
 
-```{r include=FALSE}
-summary(pca)
-```
-
 
 ```{r}
 as_tibble(pca$x, rownames = "sample") %>%
@@ -453,6 +449,10 @@ as_tibble(pca$x, rownames = "sample") %>%
   theme(aspect.ratio = .4)
 ```
 
+
+```{r}
+summary(pca)
+```
 
 
 #### Question {-}
