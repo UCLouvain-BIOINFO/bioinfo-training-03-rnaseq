@@ -1,0 +1,79 @@
+---
+title: "RNA-Seq analysis with R and Bioconductor"
+author: "Laurent Gatto and Axelle Loriot"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+knit: bookdown::preview_chapter
+# output:
+#   msmbstyle::msmb_html_book:
+#     toc: TRUE
+#     toc_depth: 1
+#     split_by: chapter
+#     split_bib: no
+#   css: style.css
+link-citations: yes
+bibliography: [refs.bib, packages.bib]
+---
+
+# Preamble {-}
+
+The main objective of this course is to demonstrate how to proceed
+with a complete analysis of RNA-seq data, including principal
+component analysis, identification of differentially expressed genes
+and gene set enrichment and over-representation analysis.
+
+The background for these analyses inludes introductions to hypthesis
+testing, linear modelling and adjustment for multiple comparisons,
+principal component analysis and high throughtput sequencing.
+
+This course is based on material from the
+[WSBIM1322](http://bit.ly/WSBIM1322) and
+[WSBIM2122](http://bit.ly/WSBIM2122) chapters taught at the [Faculty
+of Pharmacy and Biomedical
+Sciences](https://uclouvain.be/en/faculties/fasb) at the UCLouvain.
+
+## Installation instructions {-}
+
+```{r install, eval=FALSE}
+pks <- c("tidyverse", "patchwork", "remotes",
+         "SummarizedExperiment", "DESeq2",
+         "AnnotationDbi", "factoextra", "pRolocdata",
+         "org.Hs.eg.db", "GO.db", "msigdbr",
+         "clusterProfiler", "airway",
+         "UCLouvain-CBIO/rWSBIM2122",
+         "UCLouvain-CBIO/rWSBIM1322")
+
+if (!require("BiocManager"))
+    install.packages("BiocManager")
+
+BiocManager::install(pks)
+```
+
+## Data preparation  {-}
+
+To prepare soem of the data needed in this course, run
+`rWSBIM2122::prepare_shell()` as shown below:
+
+
+```{r unlink_wsbim2122_data, echo = FALSE}
+unlink("wsbim2122_data", recursive = TRUE)
+```
+
+```{r prepare_shell}
+rWSBIM2122::prepare_shell()
+```
+
+The function creates a new directory called `wsbim2122_data`
+containing the following sub-directories:
+
+```{r show_prepare_shell}
+dir("wsbim2122_data")
+```
+
+## References {-}
+
+- References are provided throughout the workshop material.
+
+- **Modern Statistics for Modern Biology**, by Susan Holmes and
+  Wolfgang Huber [@MSMB]. A free online version of the book is
+  available [here](https://www-huber.embl.de/msmb/).

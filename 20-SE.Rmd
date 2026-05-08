@@ -99,6 +99,8 @@ rowdata <- tibble(gene = counts$gene,
   mutate(chr = sub("p.*", "", x = chr)) %>% 
   mutate(chr = sub("q.*", "", x = chr))
 
+
+dir.create("data", showWarnings = F)
 write_csv(counts, file = "data/count_matrix.csv")
 write_csv(coldata, file = "data/sample_metadata.csv")
 write_csv(rowdata, file = "data/gene_metadata.csv")
@@ -109,7 +111,7 @@ write_csv(rowdata, file = "data/gene_metadata.csv")
 - **An expression matrix**: we load the count matrix, specifying that
   the first columns contains row/gene names, and convert the
   `data.frame` to a `matrix`. You can download it
-  [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseqdata/count_matrix.csv).
+  [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseqdata/data/count_matrix.csv).
   
   
 
