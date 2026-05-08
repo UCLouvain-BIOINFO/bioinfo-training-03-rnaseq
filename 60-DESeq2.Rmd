@@ -812,6 +812,8 @@ a down-regulation.
 **padj**: pvalue adjusted for multiple testing
 
 
+
+
 #### Exercices 
 
 `r msmbstyle::question_begin()`
@@ -1128,9 +1130,6 @@ res_tbl %>%
 
 2. Using the `dispersions()` function, inspect the dispersion values of these genes.
 
-
-
-
 `r msmbstyle::question_end()`
 
 `r msmbstyle::solution_begin()`
@@ -1207,6 +1206,18 @@ fig2 <- ggplot(res_shr_tbl, aes(x = baseMean, y = log2FoldChange)) +
 
 fig1 | fig2
 ```
+
+
+
+### Saving the result table
+
+```{r}
+# Saving result table for next chapter
+write_csv(res_tbl, file = "data/deseq_result_table.csv")
+```
+
+
+
 
 ## A more complex design
 
