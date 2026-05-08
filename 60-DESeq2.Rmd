@@ -1186,11 +1186,13 @@ write_csv(res_tbl, file = "data/deseq_result_table.csv")
 
 #### Question {-}
 
-Restart the analysis from the beginning to analyze the data in a way
-that addresses the following question:
+Which genes are affected differently by the siRNA in epithelial and
+fibroblast cells?
 
-*Which genes are affected differently by the siRNA in epithelial and
-fibroblast cells?*
+Restart the analysis from the beginning to analyze the data in a way
+that addresses the previous question...
+
+
 
 ### Further links
 
