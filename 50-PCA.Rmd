@@ -331,8 +331,8 @@ pca$x
 These values can be used to draw the PCA plot
 
 ```{r}
-as_tibble(pca$x, rownames = "sample") %>%
-  mutate(group = sub(pattern = "_.*", x = sample, replacement = '')) %>%
+as_tibble(pca$x, rownames = "sample") |>
+  mutate(group = sub(pattern = "_.*", x = sample, replacement = '')) |>
   ggplot(aes(x = PC1, y = PC2, color = group)) +
   geom_point(size = 3) +
   theme(aspect.ratio = .4)
@@ -384,8 +384,8 @@ loadings <- sweep(pca$rotation, 2, pca$sdev, FUN = "*")
 loadings <- pca$rotation
 
 
-as_tibble(pca$x, rownames = "sample") %>%
-  mutate(group = sub(pattern = "_.*", x = sample, replacement = '')) %>%
+as_tibble(pca$x, rownames = "sample") |>
+  mutate(group = sub(pattern = "_.*", x = sample, replacement = '')) |>
   ggplot(aes(x = PC1, y = PC2, color = group)) +
   geom_point(size = 2) +
   xlab(paste0("PC1 (", round(pve[1], 2)*100, "% var)")) +
@@ -442,8 +442,8 @@ pca <- prcomp(t(log1p(assay(se))))
 
 
 ```{r}
-as_tibble(pca$x, rownames = "sample") %>%
-  left_join(as_tibble(colData(se))) %>%
+as_tibble(pca$x, rownames = "sample") |>
+  left_join(as_tibble(colData(se))) |>
   ggplot(aes(x = PC1, y = PC2, shape = Type, color = Condition)) +
   geom_point(size = 3) +
   theme(aspect.ratio = .4)
@@ -488,7 +488,7 @@ pca <- tibble(experience = c(rep(paste0("exp", 1:3), 2)),
                group = c(rep("CTL", 3), rep("KD", 3)),
                PC1 = c(-5, -1, 4, -4.6, -0.5, 5),
                PC2 = c(4, -3, 2, 4.8, -2.5, 2.6))
-pca %>%
+pca |>
   ggplot(aes(x = PC1, y = PC2, color = group, shape = experience)) +
   geom_point(size = 3) +
   theme(axis.text = element_blank(),
@@ -508,7 +508,7 @@ pca <- tibble(batch = c(rep("batch1", 6), rep("batch2", 6), rep("batch3", 6)),
                        rnorm(3, -2, .3), rnorm(3, -4, .3),
                        rnorm(3, 5, .1), rnorm(3, 3.5, .2)))
 
-pca %>%
+pca |>
   ggplot(aes(x = PC1, y = PC2, color = group, shape = batch)) +
   geom_point(size = 3)+
   theme(axis.text = element_blank(),
@@ -526,7 +526,7 @@ pca <- tibble(Group = c(rep("Control", 6), rep("Treated", 6)),
 
 pca$PC1[1] <- -pca$PC1[1]
 
-pca %>%
+pca |>
   ggplot(aes(x = PC1, y = PC2, color = Group)) +
   geom_point(size = 3)+
   theme(axis.text = element_blank(),
@@ -542,7 +542,7 @@ pca <- tibble(Group = c(rep("Control", 6), rep("Treated", 6)),
                PC2 = c(rnorm(12, -1, 1)))
 
 
-pca %>%
+pca |>
   ggplot(aes(x = PC1, y = PC2, color = Group)) +
   geom_point(size = 3)+
   theme(axis.text = element_blank(),

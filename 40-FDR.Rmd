@@ -50,10 +50,10 @@ exp
 Let's apply a t.test on all these genes:
 
 ```{r}
-res <- exp %>%
-  rowwise() %>%
-  mutate(pval = t.test(c(A1, A2, A3), c(B1,B2,B3))$p.value) %>%
-  ungroup() # to revert the rowwise()
+res <- exp |>
+  rowwise() |>
+  mutate(pval = t.test(c(A1, A2, A3), c(B1,B2,B3))$p.value) |>
+  ungroup() ## to revert the rowwise()
 res
 ```
 
@@ -67,7 +67,7 @@ biological interest?
 
 ```{r}
 table(res$pval < 0.05)
-res %>% filter(pval < 0.05) %>%
+res |> filter(pval < 0.05) |>
   arrange(pval)
 ```
 
@@ -102,24 +102,24 @@ In other words, choosing a cut off of 0.05 means there is 5% chance that the
 wrong decision is made (resulting in a false positive).
 
 ```{r echo=FALSE}
-sign_genes <- res %>% filter(pval < 0.05)
-unsign_genes <- res %>% filter(pval > 0.05)
+sign_genes <- res |> filter(pval < 0.05)
+unsign_genes <- res |> filter(pval > 0.05)
 
-res_long <- res %>%
-  pivot_longer(names_to = "sample", values_to = "expression", -c(Gene, pval)) %>%
+res_long <- res |>
+  pivot_longer(names_to = "sample", values_to = "expression", -c(Gene, pval)) |>
   mutate(group = substr(sample, 1, 1))
 
-fig1 <- res_long %>%
+fig1 <- res_long |>
   ggplot(aes(x = expression, fill = group, color = group)) +
   geom_density(alpha = .3) +
-  geom_point(data = res_long %>% filter(Gene == unsign_genes$Gene[1]),
+  geom_point(data = res_long |> filter(Gene == unsign_genes$Gene[1]),
              aes(x = expression, y = 0, color = group), size = 3) +
   ggtitle(paste0(unsign_genes$Gene[1], " (pvalue = ", round(unsign_genes$pval[1], 5), ")"))
 
-fig2 <- res_long %>%
+fig2 <- res_long |>
   ggplot(aes(x = expression, fill = group, color = group)) +
   geom_density(alpha = .3) +
-  geom_point(data = res_long %>% filter(Gene == sign_genes$Gene[1]),
+  geom_point(data = res_long |> filter(Gene == sign_genes$Gene[1]),
              aes(x = expression, y = 0, color = group), size = 3) +
   ggtitle(paste0(sign_genes$Gene[1], " (pvalue = ", round(sign_genes$pval[1], 5), ")"))
 
@@ -137,7 +137,7 @@ how would you expect it to look like?
 <summary>Solution</summary>
 
 ```{r, fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
-res %>%
+res |>
   ggplot(aes(x = pval)) +
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray")
 ```
@@ -168,7 +168,7 @@ exp_modified <- exp
 
 exp_modified[1:1000, c("B1", "B2", "B3")] <- log(matrix(rnorm(1000*3, mean = 300, sd = 20), ncol = 3))
 
-exp_modified <- exp_modified %>%
+exp_modified <- exp_modified |>
   mutate(DE = c(rep(TRUE, 1000), rep(FALSE, 19000)))
 
 exp_modified
@@ -177,9 +177,9 @@ exp_modified
 Let's run a t-test on this new dataset:
 
 ```{r}
-res_modified <- exp_modified %>%
-  rowwise() %>%
-  mutate(pval = t.test(c(A1, A2, A3), c(B1, B2, B3), var = TRUE)$p.value) %>%
+res_modified <- exp_modified |>
+  rowwise() |>
+  mutate(pval = t.test(c(A1, A2, A3), c(B1, B2, B3), var = TRUE)$p.value) |>
   ungroup()
 table(res_modified$pval < 0.05)
 ```
@@ -190,7 +190,7 @@ which Ho is FALSE), and of the remaining genes.
 
 
 ```{r echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
-h1 <- res_modified %>% filter(DE) %>%
+h1 <- res_modified |> filter(DE) |>
   ggplot(aes(x = pval)) +
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray") +
   xlim(0, 1) +
@@ -200,7 +200,7 @@ h1 <- res_modified %>% filter(DE) %>%
   theme(aspect.ratio = 1,
         panel.grid = element_blank())
 
-h2 <- res_modified %>% filter(!DE) %>%
+h2 <- res_modified |> filter(!DE) |>
   ggplot(aes(x = pval)) +
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray") +
   xlim(0, 1) +
@@ -210,7 +210,7 @@ h2 <- res_modified %>% filter(!DE) %>%
   theme(aspect.ratio = 1,
         panel.grid = element_blank())
 
-h3 <- res_modified %>%
+h3 <- res_modified |>
   ggplot(aes(x = pval)) +
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray") +
   geom_hline(yintercept = 950, color = "red", lwd = 1) +
@@ -238,7 +238,7 @@ Widely used examples are Benjamini-Hochberg or q-values.
 let's use the `p.adjust()` function to adjust the pvalues.
 
 ```{r}
-res_modified <- res_modified %>%
+res_modified <- res_modified |>
   mutate(padj = p.adjust(pval, method = "BH"))
 
 table(sign_padj = res_modified$padj < 0.05, sign_pval = res_modified$pval < 0.05)
@@ -256,7 +256,7 @@ Only `r table(res_modified$padj < 0.05)["TRUE"]` were found to be significant af
 <summary>Solution</summary>
 
 ```{r}
-res <- res %>%
+res <- res |>
   mutate(padj = p.adjust(pval, method = "BH"))
 table(res$pval < 0.05)
 table(res$padj < 0.05)

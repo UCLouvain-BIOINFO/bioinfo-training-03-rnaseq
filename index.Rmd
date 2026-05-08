@@ -27,9 +27,9 @@ testing, linear modelling and adjustment for multiple comparisons,
 principal component analysis and high throughtput sequencing.
 
 This course is based on material from the
-[WSBIM1322](http://bit.ly/WSBIM1322) and
-[WSBIM2122](http://bit.ly/WSBIM2122) chapters taught at the [Faculty
-of Pharmacy and Biomedical
+[WSBIM1322](https://uclouvain-cbio.github.io/WSBIM1322/) and
+[WSBIM2122](https://uclouvain-cbio.github.io/WSBIM2122) chapters
+taught at the [Faculty of Pharmacy and Biomedical
 Sciences](https://uclouvain.be/en/faculties/fasb) at the UCLouvain.
 
 ## Installation instructions {-}
@@ -61,11 +61,10 @@ unlink("wsbim2122_data", recursive = TRUE)
 rWSBIM2122::prepare_shell()
 ```
 
-<!-- The function creates a new directory called `wsbim2122_data` -->
-<!-- containing the following sub-directories: -->
-
-```{r show_prepare_shell, echo = FALSE}
-dir("wsbim2122_data")
+```{r move_files, echo = FALSE}
+from <- list.files("wsbim2122_data/count_data", full.names = TRUE)
+to <- sub("wsbim2122_data/count_", "", from)
+file.rename(from, to)
 ```
 
 ## References {-}

@@ -155,18 +155,19 @@ are integer values, always positive, and we observe a large number of
 genes with low counts (or counts about zero), and a few number of
 genes with a very high count level.
 
-As seen in the [WSBIM1322 course](http://bit.ly/WSBIM1322) with the
-example of the coin toss, count data are often modelised by a binomial 
+As seen in the [WSBIM1322
+course](https://uclouvain-cbio.github.io/WSBIM1322) with the example
+of the coin toss, count data are often modelised by a binomial
 distribution with parameters $n$ and $p$ where $p$ is the discrete
-probability distribution of the number of successes in a sequence of $n$
-independent experiments. In an RNA-seq experiment, $p$ would be the
-probability of getting a read associated to a particular gene given
-that $n$ total number of reads were sequenced in the
+probability distribution of the number of successes in a sequence of
+$n$ independent experiments. In an RNA-seq experiment, $p$ would be
+the probability of getting a read associated to a particular gene
+given that $n$ total number of reads were sequenced in the
 experiment. However, when $n$ is large and $p$ is low, Poisson
 distribution is used instead of binomial. It describes typically the
 distribution of a rare event in a large population, which fits better
-to RNA-seq. Indeed, for each sample, the total number of reads tends to
-be in millions, while the counts per gene can vary considerably but
+to RNA-seq. Indeed, for each sample, the total number of reads tends
+to be in millions, while the counts per gene can vary considerably but
 tend to be in tens, hundreds or thousands. Therefore, the chance of a
 given read to be mapped to any specific gene is extremely small.
 
@@ -344,7 +345,8 @@ getting this data if no real difference existed (if $H_0$ was really
 true). In other words, choosing a cut off of 0.05 means there is 5%
 chance that the wrong decision is made (resulting in a false
 positive). But remember the problematic of multiple testing seen in
-chapter 7 from [WSBIM1322 course](http://bit.ly/WSBIM1322).
+chapter 7 from [WSBIM1322
+course](https://uclouvain-cbio.github.io/WSBIM1322/).
 
 In a typical RNA-seq differential expression analysis, we might have
 about 20,000 genes to test and usually only a fraction of genes is
@@ -483,8 +485,8 @@ of each sample.
 <summary>Solution</summary>
 
 ```{r}
-as_tibble(assay(dds), rownames = "gene") %>%
-  pivot_longer(names_to = "sample", values_to = "counts", -gene) %>%
+as_tibble(assay(dds), rownames = "gene") |>
+  pivot_longer(names_to = "sample", values_to = "counts", -gene) |>
   ggplot(aes(x = log2(counts + 1), fill = sample)) +
   geom_histogram(bins = 20) +
   facet_wrap(~ sample)
@@ -570,7 +572,7 @@ vst_dds_group1 <- vst(dds_group1)
 
 
 fig1 <- tibble(meanCounts = rowMeans(counts(dds_group1, normalize = TRUE)),
-         Variance = rowVars(counts(dds_group1, normalize = TRUE))) %>%
+         Variance = rowVars(counts(dds_group1, normalize = TRUE))) |>
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.2, size = .2) +
     scale_x_log10() +
@@ -582,7 +584,7 @@ fig1 <- tibble(meanCounts = rowMeans(counts(dds_group1, normalize = TRUE)),
     ggtitle("Normalized counts")
 
 fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
-         Variance = rowVars(assay(log_dds_group1))) %>%
+         Variance = rowVars(assay(log_dds_group1))) |>
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.4, size = .2) +
     theme_bw() +
@@ -594,7 +596,7 @@ fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
     ylim(0, 6)
 
  fig3 <- tibble(meanCounts = rowMeans(assay(vst_dds_group1)),
-         Variance = rowVars(assay(vst_dds_group1))) %>%
+         Variance = rowVars(assay(vst_dds_group1))) |>
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.4, size = .2) +
     theme_bw() +
@@ -657,11 +659,11 @@ Compare Size Factors to sequencing depth.
 <summary>Solution</summary>
 
 ```{r size_factor}
-SF <- tibble(sample = colnames(dds), SF = sizeFactors(dds)) %>%
+SF <- tibble(sample = colnames(dds), SF = sizeFactors(dds)) |>
   ggplot(aes(x = sample, y = SF)) +
   geom_col()
 
-SD <- tibble(sample = colnames(dds), SeqDepth = colSums(assay(dds))) %>%
+SD <- tibble(sample = colnames(dds), SeqDepth = colSums(assay(dds))) |>
   ggplot(aes(x = sample, y = SeqDepth)) +
   geom_col()
 
@@ -698,7 +700,7 @@ Hints:
 x <- as_tibble(rowData(dds)[, c("baseMean", "dispGeneEst", "dispFit", "dispersion",
                                 "dispOutlier", "dispMAP")], rownames = "gene")
 
-x %>%
+x |>
   ggplot(aes(x = baseMean, y = (dispGeneEst))) +
   geom_point(size = .5)  +
   geom_point(data = x, aes(x = (baseMean), y = (dispMAP)),
@@ -815,7 +817,7 @@ the lowest padjusted value).
 <summary>Solution</summary>
 
 ```{r}
-res_tbl %>%
+res_tbl |>
   arrange(padj)
 ```
 
@@ -831,9 +833,9 @@ the function `counts()`. Compare with `baseMean` values.
 
 
 ```{r}
-best_gene <- res_tbl %>%
-  arrange(padj) %>%
-  head(1) %>% pull(gene)
+best_gene <- res_tbl |>
+  arrange(padj) |>
+  head(1) |> pull(gene)
 
 rowMeans(counts(dds[best_gene], normalize = TRUE))
 ```
@@ -902,7 +904,7 @@ summary(res$padj)
 Let's inspect genes with no padjusted values
 
 ```{r}
-res_tbl %>%
+res_tbl |>
   filter(is.na(padj))
 ```
 
@@ -931,7 +933,7 @@ The threshold chosen (red vertical line) is the lowest quantile for which the nu
 rejections is within 1 residual standard deviation to the peak of the curve.
 
 ```{r}
-as_tibble(metadata(res)$filterNumRej) %>%
+as_tibble(metadata(res)$filterNumRej) |>
   ggplot(aes(x = theta, y = numRej)) +
   geom_point() +
   geom_vline(xintercept = .3877,
@@ -963,8 +965,8 @@ res_no_IF <- results(dds,
 
 res_no_IF_tbl <- as_tibble(res_no_IF, rownames = "gene")
 
-res_no_IF_tbl %>%
-  filter(is.na(padj)) %>% nrow()
+res_no_IF_tbl |>
+  filter(is.na(padj)) |> nrow()
 ```
 
 
@@ -972,9 +974,9 @@ res_no_IF_tbl %>%
    independent filtering
 
 ```{r}
-res_tbl %>% filter(padj < .05) %>% nrow()
+res_tbl |> filter(padj < .05) |> nrow()
 
-res_no_IF_tbl %>% filter(padj < .05) %>% nrow()
+res_no_IF_tbl |> filter(padj < .05) |> nrow()
 ```
 
 3. Imagine another way of filtering genes with very low counts
@@ -994,8 +996,8 @@ res_bis_tbl <- as_tibble(res_bis, rownames = "gene")
 
 # Compare with previous analysis
 # (Independant filtering threshold fixed automatically by DESeq2)
-res_tbl %>% filter(padj < 0.05) %>% nrow()
-res_bis_tbl %>% filter(padj < 0.05) %>% nrow()
+res_tbl |> filter(padj < 0.05) |> nrow()
+res_bis_tbl |> filter(padj < 0.05) |> nrow()
 ```
 
 </details>
@@ -1009,8 +1011,8 @@ significant). Furthermore, it gives an idea of how the test behaved across all y
 hypotheses, and immediately diagnoses some potential problems.
 
 ```{r}
-res_tbl %>%
-  filter(!is.na(padj)) %>% # remove genes that were filtered out by IF
+res_tbl |>
+  filter(!is.na(padj)) |> # remove genes that were filtered out by IF
   ggplot(aes(x = pvalue)) +
   geom_histogram()
 ```
@@ -1038,11 +1040,11 @@ Recall that the most interesting features are those towards the top corners give
 that they have small pvalues and large fold-changes.
 
 ```{r warning=FALSE}
-res_tbl %>%
+res_tbl |>
   ggplot(aes(x = log2FoldChange, y = -log10(padj), color = padj < 0.05)) +
   scale_colour_manual(values = c("gray40", "red")) +
   geom_point(size = 0.5) +
-  ggrepel::geom_text_repel(data = res_tbl %>% filter(-log10(padj) > 30),
+  ggrepel::geom_text_repel(data = res_tbl |> filter(-log10(padj) > 30),
                            aes(label = gene),
                            color = "black")+
   geom_hline(yintercept = -log10(0.05)) +
@@ -1057,14 +1059,14 @@ It may be also useful to check the validity of the analysis by simply assessing 
 levels of the most highly differentially expressed genes.
 
 ```{r}
-best_genes <- res_tbl %>%
-  arrange(padj)  %>%
-  pull(gene) %>%
+best_genes <- res_tbl |>
+  arrange(padj)  |>
+  pull(gene) |>
   head(4)
 
-as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') %>%
-  pivot_longer(names_to = "sample", values_to = "counts", -gene) %>%
-  left_join(as_tibble(colData(dds))) %>%
+as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') |>
+  pivot_longer(names_to = "sample", values_to = "counts", -gene) |>
+  left_join(as_tibble(colData(dds))) |>
   ggplot(aes(x = sample, y = counts, fill = group)) +
   geom_col( color = "gray30") +
   facet_wrap( ~ gene, scales = "free", ncol = 2) +
@@ -1082,16 +1084,16 @@ as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') %>%
    (These genes have a very large log2FC). What is the most striking?
 
 ```{r echo=FALSE, warning=FALSE}
-selected_genes <- res_tbl %>%
-  filter(padj < 0.05 & abs(log2FoldChange) > 5) %>%
+selected_genes <- res_tbl |>
+  filter(padj < 0.05 & abs(log2FoldChange) > 5) |>
   pull(gene)
 
-res_tbl %>%
+res_tbl |>
   ggplot(aes(x = log2FoldChange, y = -log10(padj),
              color = c(gene %in% selected_genes))) +
   scale_colour_manual(values = c("gray40", "red")) +
   geom_point(size = 0.5) +
-  ggrepel::geom_text_repel(data = res_tbl %>% filter(gene %in% selected_genes),
+  ggrepel::geom_text_repel(data = res_tbl |> filter(gene %in% selected_genes),
                            aes(label = gene),
                            color = "red")+
   geom_hline(yintercept = -log10(0.05)) +
@@ -1111,9 +1113,9 @@ QUESTION 1 :
 selected_genes <- c("ZBED2", "GASK1B", "HS6ST2", "CASC18", "CKAP2LP1", "LOC124905065")
 
 as_tibble(counts(dds[selected_genes, ], normalize = TRUE),
-          rownames = 'gene') %>%
-  gather(sample, counts, -gene) %>%
-  left_join(as_tibble(colData(dds))) %>%
+          rownames = 'gene') |>
+  gather(sample, counts, -gene) |>
+  left_join(as_tibble(colData(dds))) |>
   ggplot(aes(x = sample, y = counts, fill = group)) +
   geom_bar(stat = 'identity', color = "gray30") +
   facet_wrap( ~ gene, scales = "free") +
