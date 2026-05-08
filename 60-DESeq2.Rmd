@@ -4,26 +4,31 @@
 
 The goal of this chapter is
 
-- to understand the different theorical concepts behind a differential expression analysis
-- to provide a real-life example of DE analysis analysis running DESeq2 step-by-step
+- to understand the different theorical concepts behind a differential
+  expression analysis
+- to provide a real-life example of DE analysis analysis running
+  DESeq2 step-by-step
 
 
 ## Theory behind DESeq2
 
-A large number of computational methods have been developed for differential expression analysis
-[@Seyednasrollah:2015], differing slightly in their methodology. Here we will present DESeq2,
-a widely used bioconductor package dedicated to this type of analysis. For more information read
-the original paper [@Huber:2014] and the
-[DESeq2 vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
+A large number of computational methods have been developed for
+differential expression analysis [@Seyednasrollah:2015], differing
+slightly in their methodology. Here we will present DESeq2, a widely
+used bioconductor package dedicated to this type of analysis. For more
+information read the original paper [@Huber:2014] and the [DESeq2
+vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
 
-The starting point of the analysis is a count matrix, and the goal is to identify
-genes that are differentially expressed between samples.
+The starting point of the analysis is a count matrix, and the goal is
+to identify genes that are differentially expressed between samples.
 
-The different steps of the analysis are illustrated in the figure below. Briefly,
-DESeq2 starts by estimating scaling factors. Then, it estimates the gene-wise
-dispersions and shrinks these estimates to generate more accurate estimates of dispersion
-to model the counts. Finally, DESeq2 fits a generalized linear model, performs hypothesis
-testing and generates a list of differentially expressed genes.
+The different steps of the analysis are illustrated in the figure
+below. Briefly, DESeq2 starts by estimating scaling factors. Then, it
+estimates the gene-wise dispersions and shrinks these estimates to
+generate more accurate estimates of dispersion to model the
+counts. Finally, DESeq2 fits a generalized linear model, performs
+hypothesis testing and generates a list of differentially expressed
+genes.
 
 
 ```{r, echo=FALSE, fig.align='center', out.width='60%', purl=TRUE}
@@ -430,8 +435,8 @@ library(tidyverse)
 
 ### Construct DESeqDataSet object
 
-We will run a DESeq2 analysis using the real dataset that we stored previously 
-as a SummarizedExperiment in our `se` object. 
+We will run a DESeq2 analysis using the real dataset that we stored previously
+as a SummarizedExperiment in our `se` object.
 Remember this dataset corresponds to RNA-seq data from two different cell types
 treated or not by a siRNA.
 
@@ -443,14 +448,14 @@ dim(se)
 colData(se)
 ```
 
-We now switch our previous `SummarizedExperiment` object over to a `DESeqDataSet` 
-which is a subclass of `RangedSummarizedExperiment` used by the DESeq2 package 
-to store the read counts and the intermediate estimated quantities during 
-statistical analysis. 
+We now switch our previous `SummarizedExperiment` object over to a `DESeqDataSet`
+which is a subclass of `RangedSummarizedExperiment` used by the DESeq2 package
+to store the read counts and the intermediate estimated quantities during
+statistical analysis.
 
 The `DESeqDataSet` class enforces non-negative integer values in the count
-matrix. In addition, a formula which specifies the design of the experiment 
-(the variables that will be used in modeling) must be provided. 
+matrix. In addition, a formula which specifies the design of the experiment
+(the variables that will be used in modeling) must be provided.
 
 ```{r}
 dds <- DESeqDataSet(se = se,
@@ -469,15 +474,13 @@ As for SummarizedExperiments:
   accessed with `metadata()`.
 
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Access the count data from the dds object and plot the count distributions
 of each sample.
 
-`r msmbstyle::question_end()`
-
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 as_tibble(assay(dds), rownames = "gene") %>%
@@ -487,7 +490,7 @@ as_tibble(assay(dds), rownames = "gene") %>%
   facet_wrap(~ sample)
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
 The count matrix contains many rows with only zeros. We can start by removing
 these rows of the dds object as anyway no statistical test can be done on
@@ -502,9 +505,6 @@ Additional filtering to improve power will be applied later.
 dds <- dds[rowSums(assay(dds)) > 0, ]
 dim(dds)
 ```
-
-
-
 
 ### Run DESeq2
 
@@ -548,19 +548,19 @@ To perform PCA, we first need to transform the data.
 
 This is important because RNA-seq data are intrinsically heteroscedastic.
 In other words, the variance is not constant across the range of expression values.
-Genes with higher expression levels generally exhibit greater variance 
-(left panel in the figure below). Therefore, if raw counts are used as input for PCA, 
-the result will be dominated by highly expressed genes, as these genes contribute 
+Genes with higher expression levels generally exhibit greater variance
+(left panel in the figure below). Therefore, if raw counts are used as input for PCA,
+the result will be dominated by highly expressed genes, as these genes contribute
 most to the overall variance.
 
 A simple strategy to address this issue would be to take the logarithm of the
 normalised counts. However, log-transformed counts still exhibit heteroscedasticity
 (middle panel).
 
-As a solution, DESeq2 offers the varianceStabilizingTransformation , `vst()`, 
+As a solution, DESeq2 offers the varianceStabilizingTransformation , `vst()`,
 which stabilizes the variance across the range of mean expression values (right panel).
-For genes with high counts, the transformation does not differ much from an 
-ordinary log2 transformation. For genes with low expression, it applies stronger variance stabilization, which reduces the high variability associated with small counts and Poisson noise. 
+For genes with high counts, the transformation does not differ much from an
+ordinary log2 transformation. For genes with low expression, it applies stronger variance stabilization, which reduces the high variability associated with small counts and Poisson noise.
 See `?vst` for more details about the function.
 
 ```{r echo=FALSE}
@@ -570,7 +570,7 @@ vst_dds_group1 <- vst(dds_group1)
 
 
 fig1 <- tibble(meanCounts = rowMeans(counts(dds_group1, normalize = TRUE)),
-         Variance = rowVars(counts(dds_group1, normalize = TRUE))) %>% 
+         Variance = rowVars(counts(dds_group1, normalize = TRUE))) %>%
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.2, size = .2) +
     scale_x_log10() +
@@ -580,9 +580,9 @@ fig1 <- tibble(meanCounts = rowMeans(counts(dds_group1, normalize = TRUE)),
           axis.title = element_text(size = 8),
           title = element_text(size = 8))+
     ggtitle("Normalized counts")
-  
+
 fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
-         Variance = rowVars(assay(log_dds_group1))) %>% 
+         Variance = rowVars(assay(log_dds_group1))) %>%
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.4, size = .2) +
     theme_bw() +
@@ -592,9 +592,9 @@ fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
           title = element_text(size = 8))+
     ggtitle("logNormalized counts") +
     ylim(0, 6)
-  
+
  fig3 <- tibble(meanCounts = rowMeans(assay(vst_dds_group1)),
-         Variance = rowVars(assay(vst_dds_group1))) %>% 
+         Variance = rowVars(assay(vst_dds_group1))) %>%
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.4, size = .2) +
     theme_bw() +
@@ -603,8 +603,8 @@ fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
           axis.text.y = element_text(size = 6),
           title = element_text(size = 8))+
     ggtitle("Variance-stabilized counts") +
-    ylim(0, 6) 
- 
+    ylim(0, 6)
+
 library("patchwork")
 fig1 | fig2 | fig3
 ```
@@ -625,7 +625,7 @@ plotPCA(vsd, intgroup = "group")
 ```
 
 
-Note that the argument `returnData = TRUE` can be used to obtain a dataframe of 
+Note that the argument `returnData = TRUE` can be used to obtain a dataframe of
 PC1 and PC2 for custom plotting.
 
 ```{r}
@@ -648,15 +648,12 @@ Usually these size factors should vary around 1, indicating comparable sequencin
 sizeFactors(dds)
 ```
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Compare Size Factors to sequencing depth.
 
-`r msmbstyle::question_end()`
-
-
-`r msmbstyle::solution_begin()`
-
+<details>
+<summary>Solution</summary>
 
 ```{r size_factor}
 SF <- tibble(sample = colnames(dds), SF = sizeFactors(dds)) %>%
@@ -670,7 +667,7 @@ SD <- tibble(sample = colnames(dds), SeqDepth = colSums(assay(dds))) %>%
 SF / SD
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
 #### Dispersion plot
 
@@ -682,62 +679,59 @@ gene-wise estimates towards the fitted estimates.
 plotDispEsts(dds)
 ```
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Try to reproduce the previous dispersion plot using values from the rowData of dds.
 
 Hints:
 
-  - the means of normalized counts are stored in the `baseMean` column 
-  
-  - Gene initial dispersion values are stored in the `dispGeneEst` column 
-  
-  - Gene final dispersion values are stored in the `dispersion` column 
-  
-  - the dispersion-mean dependence are stored in the `dispFit` column 
+- the means of normalized counts are stored in the `baseMean` column
+- Gene initial dispersion values are stored in the `dispGeneEst` column
+- Gene final dispersion values are stored in the `dispersion` column
+- the dispersion-mean dependence are stored in the `dispFit` column
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
-
+<details>
+<summary>Solution</summary>
 
 ```{r}
-x <- as_tibble(rowData(dds)[, c("baseMean", "dispGeneEst", "dispFit", "dispersion", 
+x <- as_tibble(rowData(dds)[, c("baseMean", "dispGeneEst", "dispFit", "dispersion",
                                 "dispOutlier", "dispMAP")], rownames = "gene")
 
-x %>% 
+x %>%
   ggplot(aes(x = baseMean, y = (dispGeneEst))) +
   geom_point(size = .5)  +
-  geom_point(data = x, aes(x = (baseMean), y = (dispMAP)), 
+  geom_point(data = x, aes(x = (baseMean), y = (dispMAP)),
              size = .5, color = "dodgerblue")+
-  geom_point(data = x, aes(x = (baseMean), y = (dispFit)), 
+  geom_point(data = x, aes(x = (baseMean), y = (dispFit)),
              size = .5, color = "red") +
   scale_x_log10() +
   scale_y_log10()
 ```
 
-
-`r msmbstyle::solution_end()`
+</details>
 
 ### DESeq2 results
 
-The `resultsNames()` function gives the names of results that can be extracted.
+The `resultsNames()` function gives the names of results that can be
+extracted.
 
 
 ```{r}
 resultsNames(dds)
 ```
 
-Note that by default, R will choose a reference level for factors based on alphabetical
-order. Here `Epithelial_KD` was hence set arbitrarily as the reference level of the group factor. 
+Note that by default, R will choose a reference level for factors
+based on alphabetical order. Here `Epithelial_KD` was hence set
+arbitrarily as the reference level of the group factor.
 
 ```{r}
 dds$group
 ```
 
 In this case, it seems more logical to use `mock` cells as reference.
-Reference levels can be changed using the `relevel()` function. But in this
-case don't forget to re-run `DESeq()` function after the re-leveling operation.
+Reference levels can be changed using the `relevel()` function. But in
+this case don't forget to re-run `DESeq()` function after the
+re-leveling operation.
 
 ```{r, message = FALSE}
 dds$group <- relevel(dds$group, ref = "Epithelial_mock")
@@ -747,8 +741,8 @@ resultsNames(dds)
 
 Results can then be extracted using the `results()` function.
 
-The `name` parameter must be an element of resultsNames(object) specifying the
-samples to compare.
+The `name` parameter must be an element of resultsNames(object)
+specifying the samples to compare.
 
 
 ```{r}
@@ -758,11 +752,11 @@ res <- results(dds,
 
 
 Note that the `contrast` argument of `results()` can also be used to
-extract results of interest. In this case, the two following commands will give
-the same results[^contrast].
+extract results of interest. In this case, the two following commands
+will give the same results[^contrast].
 
-[^contrast]: Using the `name` argument is however necessary to extract specific
-coefficients from more complex designs.
+[^contrast]: Using the `name` argument is however necessary to extract
+specific coefficients from more complex designs.
 
 ```{r}
 res <- results(dds,
@@ -770,22 +764,22 @@ res <- results(dds,
 ```
 
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 
 How would you run the results() function to identify genes affected by the KD in
 fibroblast cells?
 
-`r msmbstyle::question_end()`
+<details>
+<summary>Solution</summary>
 
-`r msmbstyle::solution_begin()`
 
 ```{r}
 results(dds,
         contrast = c("group", "Fibroblast_KD", "Fibroblast_mock"))
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
 
 Let's inspect the results and their signification.
@@ -811,35 +805,29 @@ a down-regulation.
 
 **padj**: pvalue adjusted for multiple testing
 
-
-
-
-#### Exercices 
-
-`r msmbstyle::question_begin()`
+#### Question
 
 Inspect the results table and identify the "best gene" (showing
 the lowest padjusted value).
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 res_tbl %>%
-  arrange(padj) 
+  arrange(padj)
 ```
 
-`r msmbstyle::solution_end()`
+<details>
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Calculate the mean expression level of the "best gene" using
 the function `counts()`. Compare with `baseMean` values.
 
-`r msmbstyle::question_end()`
+<details>
+<summary>Solution</summary>
 
-`r msmbstyle::solution_begin()`
 
 ```{r}
 best_gene <- res_tbl %>%
@@ -849,48 +837,43 @@ best_gene <- res_tbl %>%
 rowMeans(counts(dds[best_gene], normalize = TRUE))
 ```
 
-`r msmbstyle::solution_end()`
-
-`r msmbstyle::question_begin()`
-
+#### Question {-}
 
 Extract the ß coefficient of these "best gene" from the GLM
 using the function `coefficients()`. Compare with `log2FoldChange` values.
 
-`r msmbstyle::question_end()`
 
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 coefficients(dds[best_gene])
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Using the function `counts()`, evaluate the mean expression level
 of the "best gene" in mock cells. Compare with ß coefficients.
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 # log2 expression level in mock cells
 log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_mock"], normalize = TRUE)))
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
-Evaluate the mean expression level of the "best gene"in KD cells. 
+Evaluate the mean expression level of the "best gene"in KD cells.
 Compare with ß coefficients.
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 # log2 expression level in KD cells
@@ -902,17 +885,14 @@ log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_KD"], normalize = T
 coefficients(dds[best_gene])[,1] + coefficients(dds[best_gene])[,2]
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 How many genes have no padjusted value? Why?
 
-`r msmbstyle::question_end()`
-
-
-`r msmbstyle::solution_begin()`
-
+<details>
+<summary>Solution</summary>
 
 ```{r}
 summary(res$padj)
@@ -928,11 +908,7 @@ res_tbl %>%
 These genes all have a very low basemean and are the one that have been filtered
 out by the independent filtering procedure.
 
-`r msmbstyle::solution_end()`
-
-
-
-
+</details>
 
 #### Independent filtering exploration
 
@@ -962,24 +938,22 @@ as_tibble(metadata(res)$filterNumRej) %>%
 ```
 
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
-1. Re-run the results() function on the same dds object,
-but set the independent filtering parameter to FALSE.
-Check how many genes have no padj?
-
+1. Re-run the results() function on the same dds object, but set the
+  independent filtering parameter to FALSE.  Check how many genes have
+  no padj?
 2. Compare the number of significant genes obtained with and without
-independent filtering
+  independent filtering
 
 3. Imagine another way of filtering genes with very low counts
 
-`r msmbstyle::question_end()`
+<details>
+<summary>Solution</summary>
 
-`r msmbstyle::solution_begin()`
-
-1. Re-run the results() function on the same dds object,
-but set the independent filtering parameter to FALSE.
-Check how many genes have no padj?
+1. Re-run the results() function on the same dds object, but set the
+  independent filtering parameter to FALSE.  Check how many genes have
+  no padj?
 
 ```{r}
 res_no_IF <- results(dds,
@@ -994,7 +968,7 @@ res_no_IF_tbl %>%
 
 
 2. Compare the number of significant genes obtained with and without
-independent filtering
+   independent filtering
 
 ```{r}
 res_tbl %>% filter(padj < .05) %>% nrow()
@@ -1023,10 +997,7 @@ res_tbl %>% filter(padj < 0.05) %>% nrow()
 res_bis_tbl %>% filter(padj < 0.05) %>% nrow()
 ```
 
-
-`r msmbstyle::solution_end()`
-
-
+</details>
 
 #### p-values distribution
 
@@ -1037,7 +1008,7 @@ significant). Furthermore, it gives an idea of how the test behaved across all y
 hypotheses, and immediately diagnoses some potential problems.
 
 ```{r}
-res_tbl %>% 
+res_tbl %>%
   filter(!is.na(padj)) %>% # remove genes that were filtered out by IF
   ggplot(aes(x = pvalue)) +
   geom_histogram()
@@ -1070,9 +1041,9 @@ res_tbl %>%
   ggplot(aes(x = log2FoldChange, y = -log10(padj), color = padj < 0.05)) +
   scale_colour_manual(values = c("gray40", "red")) +
   geom_point(size = 0.5) +
-  ggrepel::geom_text_repel(data = res_tbl %>% 
-                             filter(-log10(padj) > 30), 
-                           aes(label = gene), 
+  ggrepel::geom_text_repel(data = res_tbl %>%
+                             filter(-log10(padj) > 30),
+                           aes(label = gene),
                            color = "black")+
   geom_hline(yintercept = -log10(0.05)) +
   geom_vline(xintercept = 0) +
@@ -1088,7 +1059,7 @@ levels of the most highly differentially expressed genes.
 ```{r}
 best_genes <- res_tbl %>%
   arrange(padj)  %>%
-  pull(gene) %>% 
+  pull(gene) %>%
   head(4)
 
 as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') %>%
@@ -1104,15 +1075,15 @@ as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') %>%
         legend.title = element_text(size = 7))
 ```
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
-1. Inspect counts of genes  "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
-and "LOC124905065", plotted in red in the following volcano-plot. 
-(These genes have a very large log2FC). What is the most striking?
+1. Inspect counts of genes "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
+   and "LOC124905065", plotted in red in the following volcano-plot.
+   (These genes have a very large log2FC). What is the most striking?
 
 ```{r echo=FALSE}
 selected_genes <- res_tbl %>%
-  filter(padj < 0.05 & abs(log2FoldChange) > 5) %>% 
+  filter(padj < 0.05 & abs(log2FoldChange) > 5) %>%
   pull(gene)
 
 res_tbl %>%
@@ -1120,8 +1091,8 @@ res_tbl %>%
              color = c(gene %in% selected_genes))) +
   scale_colour_manual(values = c("gray40", "red")) +
   geom_point(size = 0.5) +
-  ggrepel::geom_text_repel(data = res_tbl %>% filter(gene %in% selected_genes), 
-                           aes(label = gene), 
+  ggrepel::geom_text_repel(data = res_tbl %>% filter(gene %in% selected_genes),
+                           aes(label = gene),
                            color = "red")+
   geom_hline(yintercept = -log10(0.05)) +
   geom_vline(xintercept = 0) +
@@ -1130,13 +1101,13 @@ res_tbl %>%
 
 2. Using the `dispersions()` function, inspect the dispersion values of these genes.
 
-`r msmbstyle::question_end()`
 
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
-1. Inspect counts of genes  "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
-and "LOC124905065", plotted in red in the following volcano-plot. 
-(These genes have a very large log2FC). What is the most striking?
+1. Inspect counts of genes "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
+   and "LOC124905065", plotted in red in the following volcano-plot.
+   (These genes have a very large log2FC). What is the most striking?
 
 ```{r}
 selected_genes <- c("ZBED2", "GASK1B", "HS6ST2", "CASC18", "CKAP2LP1", "LOC124905065")
@@ -1156,17 +1127,14 @@ as_tibble(counts(dds[selected_genes, ], normalize = TRUE),
 ```
 
 
-2. Using the `dispersions()` function, inspect the dispersion values of these genes.
+2. Using the `dispersions()` function, inspect the dispersion values
+   of these genes.
 
 ```{r}
 dispersions(dds[selected_genes,])
 ```
 
-
-
-`r msmbstyle::solution_end()`
-
-
+</details>
 
 #### Logfoldchange shrinkage
 
@@ -1207,8 +1175,6 @@ fig2 <- ggplot(res_shr_tbl, aes(x = baseMean, y = log2FoldChange)) +
 fig1 | fig2
 ```
 
-
-
 ### Saving the result table
 
 ```{r}
@@ -1217,28 +1183,25 @@ write_csv(res_tbl, file = "data/deseq_result_table.csv")
 ```
 
 
-
-
 ## A more complex design
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
-Restart the analysis from the beginning to analyze the data in a way that addresses 
-the following question:
+Restart the analysis from the beginning to analyze the data in a way
+that addresses the following question:
 
-*Which genes are affected differently by the siRNA in epithelial and fibroblast cells?*
-
-`r msmbstyle::question_end()`
-
+*Which genes are affected differently by the siRNA in epithelial and
+fibroblast cells?*
 
 ### Further links
 
-- [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html) is a
-Bioconductor package that provides an interactive Shiny-based graphical user
-interface for exploring data stored in SummarizedExperiment objects.
-
+- [iSEE](https://bioconductor.org/packages/release/bioc/html/iSEE.html)
+  is a Bioconductor package that provides an interactive Shiny-based
+  graphical user interface for exploring data stored in
+  SummarizedExperiment objects.
 - [Glimma](https://www.bioconductor.org/packages/release/bioc/html/Glimma.html)
-is a Bioconductor package that generates interactive visualisations for analysis
-of RNA-sequencing data using output from limma, edgeR or DESeq2 packages in an
-HTML page. The interactions are built on top of the popular static representations
-of analysis results in order to provide additional information.
+  is a Bioconductor package that generates interactive visualisations
+  for analysis of RNA-sequencing data using output from limma, edgeR
+  or DESeq2 packages in an HTML page. The interactions are built on
+  top of the popular static representations of analysis results in
+  order to provide additional information.

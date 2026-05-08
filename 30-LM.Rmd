@@ -275,15 +275,12 @@ summary(mod2)
 The  *Condition Effect* is not significant.
 
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Try to figure our what is wrong with this model
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
-
-
+<details>
+<summary>Solution</summary>
 
 The model only accounts for the *Condition* effect. It ignores the *cell type* effect.
 
@@ -298,21 +295,18 @@ gene_count %>%
   theme(legend.position = "bottom")
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
+#### Question {-}
 
-
-
-`r msmbstyle::question_begin()`
 
 Use the `lm()` function to fit a linear model that would now account for
 Condition and cell type.
 
 Interprete the results.
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 mod3 <- lm(count ~ Condition + Type, data = gene_count)
@@ -336,11 +330,7 @@ The model now adjusts for the baseline difference between epithelial and fibrobl
 
 It prevents cell type differences from biasing the condition effect.
 
-`r msmbstyle::solution_end()`
-
-
-
-
+</details>
 
 ## Design with interaction
 
@@ -412,7 +402,7 @@ in the different samples:
 
 ### Examples
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Let's subset the original dataset to keep only on the gene *ZBED2*.
 
@@ -429,9 +419,8 @@ Fit a linear model with an interaction between condition and type
 
 Interprete the results.
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 mod4 <- lm(count ~ Condition * Type, data = gene_count)
@@ -453,10 +442,9 @@ gene_count %>%
   theme(legend.position = "bottom")
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
-
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 As before, subset the original dataset to keep this time only on the gene *GOLGA4*.
 
@@ -473,17 +461,13 @@ Fit a linear model with an interaction between condition and type
 
 Interprete the results.
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
-
+<details>
+<summary>Solution</summary>
 
 ```{r}
 mod5 <- lm(count ~ Condition * Type, data = gene_count)
 summary(mod5)
 ```
-
-
 
 The coefficients `ConditionKD` (representing the *KD Effect*) is significant,
 but the interaction term is not. This indicates that the *KD Effect* is not
@@ -499,3 +483,5 @@ gene_count %>%
   facet_wrap(~ Type)+
   theme(legend.position = "bottom")
 ```
+
+</details>

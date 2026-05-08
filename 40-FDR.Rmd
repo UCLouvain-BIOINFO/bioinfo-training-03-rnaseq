@@ -4,7 +4,6 @@
 
 - Address the multiple testing issue
 
-
 ```{r load-pkg-fdr, include=FALSE}
 suppressPackageStartupMessages({
   library(tidyverse)
@@ -16,9 +15,10 @@ suppressPackageStartupMessages({
 
 ## Multiple testing
 
-In the few examples of linear model that we have seen in the previous section,
-the `lm()` function was always applied to a single gene. In a real RNA-seq experiment,
-we will have a few thousand tests to perform, as each gene is going to be tested.
+In the few examples of linear model that we have seen in the previous
+section, the `lm()` function was always applied to a single gene. In a
+real RNA-seq experiment, we will have a few thousand tests to perform,
+as each gene is going to be tested.
 
 
 ```{r include=FALSE}
@@ -57,15 +57,13 @@ res <- exp %>%
 res
 ```
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 How many significant genes did we obtained ? Which genes are of possible
 biological interest?
 
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
-
+<details>
+<summary>Solution</summary>
 
 ```{r}
 table(res$pval < 0.05)
@@ -73,7 +71,7 @@ res %>% filter(pval < 0.05) %>%
   arrange(pval)
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
 The data above have been generated with the `rnorm()` function for all samples.
 
@@ -88,19 +86,14 @@ exp <- log(exp)
 exp <- as_tibble(exp, rownames = "Gene")
 ```
 
-
-
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 - Do you still think any of the features show significant differences?
 
 - Why do we obtain genes with a p-value < 0.05?
 
-
-
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 A pvalue of 0.05 means that there is only 5% chance of getting this data if no
 real difference existed (if the null hypothesis was really true).
@@ -133,17 +126,15 @@ fig2 <- res_long %>%
 fig1 / fig2
 ```
 
-`r msmbstyle::solution_end()`
+</details>
 
+#### Question {-}
 
+If you were to visualize the p-value distribution using a histogram,
+how would you expect it to look like?
 
-`r msmbstyle::question_begin()`
-
-If you were to visualize the p-value distribution using a histogram, how would you expect it to look like?
-
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r, fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
 res %>%
@@ -151,12 +142,7 @@ res %>%
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray")
 ```
 
-
-
-
-
-
-`r msmbstyle::solution_end()`
+</details>
 
 
 ```{r eval=FALSE, fig.align='center', fig.cap="Do jelly beans cause acne? Scientists investigate. From [xkcd](https://xkcd.com/882/).", include=FALSE, purl=FALSE, results='markup'}
@@ -166,18 +152,16 @@ res %>%
 knitr::include_graphics("./fig/jellybeans.png")
 ```
 
-
-
-
 Now, let's slightly modify our simulated expression data.
 
-In a typical RNA-seq experiment, we may test around 20,000 genes, but only a
-fraction of them are expected to be truly differentially expressed. We could imagine
-a drug treatment that would modify the expression of about 1000 genes, but that
-would have no impact on the other ones.
+In a typical RNA-seq experiment, we may test around 20,000 genes, but
+only a fraction of them are expected to be truly differentially
+expressed. We could imagine a drug treatment that would modify the
+expression of about 1000 genes, but that would have no impact on the
+other ones.
 
-To mimic this, we are going to simulate a strong up-regulation for the first 1,000 genes
-by increasing their expression values in group B.
+To mimic this, we are going to simulate a strong up-regulation for the
+first 1000 genes by increasing their expression values in group B.
 
 ```{r, fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
 exp_modified <- exp
@@ -201,8 +185,8 @@ table(res_modified$pval < 0.05)
 ```
 
 
-Now let's look at p-values histogram of the first 1000 genes (for which Ho is FALSE), and of the remaining genes.
-
+Now let's look at p-values histogram of the first 1000 genes (for
+which Ho is FALSE), and of the remaining genes.
 
 
 ```{r echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
@@ -263,14 +247,13 @@ table(sign_padj = res_modified$padj < 0.05, sign_pval = res_modified$pval < 0.05
 Only `r table(res_modified$padj < 0.05)["TRUE"]` were found to be significant after FDR correction.
 
 
+#### Question {-}
 
-`r msmbstyle::question_begin()`
+- How many genes would you expect to remain significant after FDR
+  correction in the first dataset (`res` table) ?
 
-- How many genes would you expect to remain significant after FDR correction in the first dataset (`res` table) ?
-
-`r msmbstyle::question_end()`
-
-`r msmbstyle::solution_begin()`
+<details>
+<summary>Solution</summary>
 
 ```{r}
 res <- res %>%
@@ -279,5 +262,4 @@ table(res$pval < 0.05)
 table(res$padj < 0.05)
 ```
 
-
-`r msmbstyle::solution_end()`
+</details>

@@ -8,8 +8,6 @@
 
 - What can PCA reveal from RNA-seq data?
 
-
-
 ```{r load-pkg-pca, include=FALSE}
 suppressPackageStartupMessages({
     library(tidyverse)
@@ -106,10 +104,16 @@ all the measurements of gene *x*.
 
 **The goal of dimensionality reduction is to limit this loss.**
 
-Instead of projecting the points on the x or the y axis, we could think about a linear regression. We could use the lm() to predict the value of gene_y, based on the expression on gene_x, or to predict the value of gene_x, based on the expression on gene_y.
+Instead of projecting the points on the x or the y axis, we could
+think about a linear regression. We could use the lm() to predict the
+value of gene_y, based on the expression on gene_x, or to predict the
+value of gene_x, based on the expression on gene_y.
 
 But the relationship differs depending on the gene we choose to be the
-predictor or the response. Regression of y onto x (left) minimisises the sums of squares of vertical residuals (red). Regression of x onto y (right) minimisises the sums of squares of horizontal residuals (green).
+predictor or the response. Regression of y onto x (left) minimisises
+the sums of squares of vertical residuals (red). Regression of x onto
+y (right) minimisises the sums of squares of horizontal residuals
+(green).
 
 
 ```{r linreg, echo = FALSE,  fig.width = 5, fig.width = 11}
@@ -140,12 +144,18 @@ pline2 <- p +
 pline1 + pline2
 ```
 
-Another option would be to put both genes on equal footing and find the axis that best fits the cloud of points in all directions. This line would be the axis that minimises distances in both directions, minimising the sum of squares of the orthogonal projections.
+Another option would be to put both genes on equal footing and find
+the axis that best fits the cloud of points in all directions. This
+line would be the axis that minimises distances in both directions,
+minimising the sum of squares of the orthogonal projections.
 
-By definition, this line is also the one that maximises the variance of the projections, and hence the one that captures the maximum of variability.
-This line is called **first principal component (PC1)**.
+By definition, this line is also the one that maximises the variance
+of the projections, and hence the one that captures the maximum of
+variability.  This line is called **first principal component (PC1)**.
 
-The **second principal component (PC2)** is then chosen to be orthogonal to the first one. In this case, there is only one possibility.
+The **second principal component (PC2)** is then chosen to be
+orthogonal to the first one. In this case, there is only one
+possibility.
 
 ```{r pxaex, echo = FALSE, fig.height = 5.6, fig.width = 11.5}
 svda <- svd(xy)
@@ -273,20 +283,13 @@ tiny_dataset <- structure(list(
 tiny_dataset
 ```
 
-
-
 This table is not too big, so by quickly inspecting it by eye, we can see that
 the treatment seems to have a strong impact on the expression of GeneB, GeneC,
 and GeneE but had little or no effect on genes GeneA and GeneD.
 
-
-
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 What do you think a PCA based on this small dataset should look like?
-
-`r msmbstyle::question_end()`
-
 
 
 Now let's use the `prcomp()` function to do a PCA on this dataset.
@@ -303,8 +306,6 @@ var <- pca$sdev^2
 pve <- var/sum(var)
 pve
 ```
-
-
 
 ### Variance explained by each component
 
@@ -405,29 +406,21 @@ as_tibble(pca$x, rownames = "sample") %>%
 This biplot shows that:
 
 - PC1 is mostly driven by GeneB, GeneC and GeneE.
+- GeneB and GeneC are pointing in the same direction, which means that
+  they are highly correlated. They are in contrast pointing in the
+  opposite direction to GeneE indicating an inverse correlation.
+- The GeneA arrow is almost perpendicular to GeneB, GeneC and GeneE
+  arrows, indicating that GeneA is not correlated to the 3 other
+  genes.
+- PC2 is mainly driven by GeneA and GeneD (GeneB, GeneC and GeneE only
+  have a low contibution).
 
-- GeneB and GeneC are pointing in the same direction, which means that they
-are highly correlated. They are in contrast pointing in the opposite direction
-to GeneE indicating an inverse correlation.
-
-- The GeneA arrow is almost perpendicular to GeneB, GeneC and GeneE arrows,
-indicating that GeneA is not correlated to the 3 other genes.
-
-- PC2 is mainly driven by GeneA and GeneD (GeneB, GeneC and
-GeneE only have a low contibution).
-
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Compare the PCA with the original dataset.
 
 Are principal components effectively representing the main patterns and structure
 of the dataset?
-
-`r msmbstyle::question_end()`
-
-
-
-
 
 
 ## Starting from a real dataset
@@ -462,13 +455,9 @@ as_tibble(pca$x, rownames = "sample") %>%
 
 
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Try to interpret this PCA
-
-`r msmbstyle::question_end()`
-
-
 
 ## What can PCA reveal from RNA-seq data?
 
@@ -480,17 +469,13 @@ dimensions, making it easier to explore.
 What insights can PCA provide for RNA-seq data?
 
 - Which samples are similar or distinct to each other?
-
 - What are the main sources of variability in the data?
-
 - Does the PCA fit to the expectation from the experimental design?
-
-- Are there any batch effects or other technical confounders that should be
-included in linear model?
-
+- Are there any batch effects or other technical confounders that
+  should be included in linear model?
 - Are they any outliers which may need to be explored further?
 
-`r msmbstyle::question_begin()`
+#### Question {-}
 
 Interprete the following PCAs.
 
@@ -564,6 +549,3 @@ pca %>%
         axis.ticks = element_blank(),
         aspect.ratio = 0.4)
 ```
-
-
-`r msmbstyle::question_end()`
