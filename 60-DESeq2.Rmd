@@ -156,13 +156,13 @@ genes with low counts (or counts about zero), and a few number of
 genes with a very high count level.
 
 As seen in the [WSBIM1322 course](http://bit.ly/WSBIM1322) with the
-example of the coin toss, count data are often modelised by a binomial
-distribution with parameters n and p where p is the discrete
-probability distribution of the number of successes in a sequence of n
-independent experiments. In an RNA-seq experiment, p would be the
+example of the coin toss, count data are often modelised by a binomial 
+distribution with parameters $n$ and $p$ where $p$ is the discrete
+probability distribution of the number of successes in a sequence of $n$
+independent experiments. In an RNA-seq experiment, $p$ would be the
 probability of getting a read associated to a particular gene given
-that n total number of reads were sequenced in the
-experiment. However, when n is large and p is low, Poisson
+that $n$ total number of reads were sequenced in the
+experiment. However, when $n$ is large and $p$ is low, Poisson
 distribution is used instead of binomial. It describes typically the
 distribution of a rare event in a large population, which fits better
 to RNA-seq. Indeed, for each sample, the total number of reads tends to
@@ -191,9 +191,9 @@ to this overdispersion, the Poisson distribution doesn't fit that well
 to RNA-seq counts.
 
 Actually, RNA-seq counts are better modelised by an alternative
-distribution, the negative-binomial. It is derived from the Poisson
+distribution, the **negative-binomial**. It is derived from the Poisson
 distribution but the negative-binomial distribution has, in addition
-to the mean parameter, an extra parameter $α$ called the “dispersion”
+to the mean parameter, an extra parameter $α$ called the dispersion
 parameter to model this “extra” variance that is empirically observed
 in RNA-Seq experiments.
 
@@ -209,7 +209,7 @@ binomial turns into a Poisson distribution.
 $$VAR(K_{ij}) = µ_{ij} + \alpha_i.µ_{ij}^2$$
 
 
-Having modelised counts by a negative-binomial distribution, next step
+Having modelised counts by a $negative-binomial$ distribution, next step
 is to estimate, for each gene, the two parameters of the distribution
 (mean and dispersion). The mean will be estimated easily from the
 observed normalised counts in both conditions, but the dispersion is
@@ -563,7 +563,7 @@ For genes with high counts, the transformation does not differ much from an
 ordinary log2 transformation. For genes with low expression, it applies stronger variance stabilization, which reduces the high variability associated with small counts and Poisson noise.
 See `?vst` for more details about the function.
 
-```{r echo=FALSE}
+```{r echo=FALSE, warning=FALSE}
 dds_group1 <- dds[, dds$group == "Epithelial_mock"]
 log_dds_group1 <- normTransform(dds_group1)
 vst_dds_group1 <- vst(dds_group1)
@@ -620,7 +620,7 @@ vsd <- vst(dds)
 
 The `plotPCA()` function can then be used on the transformed counts to generate a PCA.
 
-```{r}
+```{r warning=FALSE, message=FALSE}
 plotPCA(vsd, intgroup = "group")
 ```
 
@@ -634,7 +634,8 @@ pca_data <- plotPCA(vsd, intgroup = "group", returnData = TRUE)
 ggplot(pca_data, aes(x = PC1, y = PC2, color = Condition, shape = Type)) +
   geom_point(size = 3) +
   ggrepel::geom_text_repel(aes(label = sample), color = "black", size = 2) +
-  theme_bw()
+  theme_bw() +
+  theme(aspect.ratio = .5)
 ```
 
 #### Inspecting size factors
@@ -805,7 +806,7 @@ a down-regulation.
 
 **padj**: pvalue adjusted for multiple testing
 
-#### Question
+#### Question 1 {-}
 
 Inspect the results table and identify the "best gene" (showing
 the lowest padjusted value).
@@ -820,7 +821,7 @@ res_tbl %>%
 
 <details>
 
-#### Question {-}
+#### Question 2 {-}
 
 Calculate the mean expression level of the "best gene" using
 the function `counts()`. Compare with `baseMean` values.
@@ -837,7 +838,7 @@ best_gene <- res_tbl %>%
 rowMeans(counts(dds[best_gene], normalize = TRUE))
 ```
 
-#### Question {-}
+#### Question 3 {-}
 
 Extract the ß coefficient of these "best gene" from the GLM
 using the function `coefficients()`. Compare with `log2FoldChange` values.
@@ -852,7 +853,7 @@ coefficients(dds[best_gene])
 
 </details>
 
-#### Question {-}
+#### Question 4 {-}
 
 Using the function `counts()`, evaluate the mean expression level
 of the "best gene" in mock cells. Compare with ß coefficients.
@@ -867,7 +868,7 @@ log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_mock"], normalize =
 
 </details>
 
-#### Question {-}
+#### Question 5 {-}
 
 Evaluate the mean expression level of the "best gene"in KD cells.
 Compare with ß coefficients.
@@ -887,7 +888,7 @@ coefficients(dds[best_gene])[,1] + coefficients(dds[best_gene])[,2]
 
 </details>
 
-#### Question {-}
+#### Question 6 {-}
 
 How many genes have no padjusted value? Why?
 
@@ -938,7 +939,7 @@ as_tibble(metadata(res)$filterNumRej) %>%
 ```
 
 
-#### Question {-}
+#### Questions {-}
 
 1. Re-run the results() function on the same dds object, but set the
   independent filtering parameter to FALSE.  Check how many genes have
@@ -1036,13 +1037,12 @@ Drawing a volcano-plot is highly informative to have a global view on the result
 Recall that the most interesting features are those towards the top corners given
 that they have small pvalues and large fold-changes.
 
-```{r}
+```{r warning=FALSE}
 res_tbl %>%
   ggplot(aes(x = log2FoldChange, y = -log10(padj), color = padj < 0.05)) +
   scale_colour_manual(values = c("gray40", "red")) +
   geom_point(size = 0.5) +
-  ggrepel::geom_text_repel(data = res_tbl %>%
-                             filter(-log10(padj) > 30),
+  ggrepel::geom_text_repel(data = res_tbl %>% filter(-log10(padj) > 30),
                            aes(label = gene),
                            color = "black")+
   geom_hline(yintercept = -log10(0.05)) +
@@ -1075,13 +1075,13 @@ as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') %>%
         legend.title = element_text(size = 7))
 ```
 
-#### Question {-}
+#### Questions {-}
 
 1. Inspect counts of genes "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
    and "LOC124905065", plotted in red in the following volcano-plot.
    (These genes have a very large log2FC). What is the most striking?
 
-```{r echo=FALSE}
+```{r echo=FALSE, warning=FALSE}
 selected_genes <- res_tbl %>%
   filter(padj < 0.05 & abs(log2FoldChange) > 5) %>%
   pull(gene)
@@ -1105,9 +1105,7 @@ res_tbl %>%
 <details>
 <summary>Solution</summary>
 
-1. Inspect counts of genes "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
-   and "LOC124905065", plotted in red in the following volcano-plot.
-   (These genes have a very large log2FC). What is the most striking?
+QUESTION 1 :
 
 ```{r}
 selected_genes <- c("ZBED2", "GASK1B", "HS6ST2", "CASC18", "CKAP2LP1", "LOC124905065")
@@ -1127,11 +1125,12 @@ as_tibble(counts(dds[selected_genes, ], normalize = TRUE),
 ```
 
 
-2. Using the `dispersions()` function, inspect the dispersion values
-   of these genes.
+QUESTION 2:
 
 ```{r}
-dispersions(dds[selected_genes,])
+x <- dispersions(dds[selected_genes,])
+names(x) <- selected_genes
+x
 ```
 
 </details>
