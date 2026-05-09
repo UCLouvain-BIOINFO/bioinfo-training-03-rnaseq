@@ -49,22 +49,12 @@ BiocManager::install(pks)
 
 <!-- ## Data preparation  {-} -->
 
-<!-- To prepare soem of the data needed in this course, run -->
-<!-- `rWSBIM2122::prepare_shell()` as shown below: -->
-
-
-```{r unlink_wsbim2122_data, echo = FALSE}
+```{r prepare-wsbim2122-data, echo = FALSE, message = FALSE}
 unlink("wsbim2122_data", recursive = TRUE)
-```
-
-```{r prepare_shell, echo = FALSE}
 rWSBIM2122::prepare_shell()
-```
-
-```{r move_files, echo = FALSE}
 from <- list.files("wsbim2122_data/count_data", full.names = TRUE)
 to <- sub("wsbim2122_data/count_", "", from)
-file.rename(from, to)
+stopifnot(all(file.rename(from, to)))
 ```
 
 ## References {-}
