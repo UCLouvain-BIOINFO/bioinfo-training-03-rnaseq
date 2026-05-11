@@ -188,11 +188,11 @@ To take into account the treatment effect while controlling the batch
 effect, we should use the following design: $$design \sim Treatment +
 Batch$$
 
-in the following linear model:
+In the following linear model:
 
 $$y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2$$
 
-We could rewrite this equation as:
+we could rewrite this equation as:
 
 $$y = \beta_0 + Treatment. x_1 + Batch . x_2$$
 
@@ -200,16 +200,20 @@ In this equation:
 - The $\beta_0$ term represents the `intercept`, i.e, the **expression
   level of the gene in the reference sample**, for instance the
   untreated cells from batch1.
+  
 - The design factor $x_1$ is a binary indicator variable representing
   the two treatment conditions of our experiment. It will take the
   value of 0 if we are considering the untreated samples, and a value
   of 1 when considering treated samples.
+  
 - The `Treatment` term represents the **logFoldchange due to
   treatment**.
+  
 - The design factor $x_2$ is another binary indicator variable
   representing the two batches of our experiment. It will take the
   value of 0 if we are considering batch1, and a value of 1 when
   considering batch2.
+  
 - The `Batch` term represents the **logFoldchange associated with the
   batch effect**.
 
@@ -329,9 +333,8 @@ gene_count |>
 ```
 
 The model now adjusts for the baseline difference between epithelial
-and fibroblast cell types.
-
-It prevents cell type differences from biasing the condition effect.
+and fibroblast cell types. It prevents cell type differences from biasing the 
+condition effect.
 
 </details>
 
@@ -434,7 +437,7 @@ summary(mod4)
 ```
 
 The interaction term is significant. This indicates that the *KD
-effect* is significantly **different** in epithelial cells and
+effect* is **significantly different** in epithelial cells and
 fibroblasts.
 
 And indeed looking at the count values, we can see that the KD
