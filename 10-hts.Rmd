@@ -9,21 +9,18 @@ library(DT)
 
 **Learning Objectives**
 
-The aim of this chapter is to present high throughput sequencing by
-going through one of its key applications: RNAseq. It is a highly
-sensitive and accurate tool that has revolutionised the study of
-transcriptomes. The objective is to give an overview of the
-technology.
+The aim of this chapter is to provide an overview of RNA-seq technology.
+
+The main steps of an RNA-seq experiment will be described, from library 
+preparation to the sequencing process.
+
+We will explore FASTQ files and learn how to process them through a typical 
+RNA-seq pipeline, including quality control, read alignment, and gene 
+quantification.
 
 *RNA Sequencing Data: Hitchhiker's Guide to Expression Analysis*[@Van_den_Berge:2019]
 is an interesting review describing RNA-seq
 technology and data analysis.
-
-
-We will pass through the different steps starting from the library
-preparation and the sequencing process. We will explore the resulting
-fastq files and the downstream processing pipeline including quality
-control, alignment and counting steps.
 
 ## RNA-seq library preparation
 
@@ -34,7 +31,7 @@ done by extracting poly(A) RNA or by depleting rRNA. Purified RNA is then
 fragmented, reverse transcribed and adapters are ligated to both extremities
 to allow for amplification and sequencing.
 
-```{r, echo=FALSE, fig.align='center', out.width='100%'}
+```{r, echo=FALSE, fig.align='center', out.width='80%'}
 knitr::include_graphics("figs/Unstranded_lib_prep.png")
 ```
 
@@ -779,7 +776,7 @@ as_tibble(mat, rownames = "gene") |>
 Note that a "pseudo-count" was added before the log2 transformation of
 the counts, to avoid elimination of counts equal to zero.
 
-<details>
+
 
 
 
