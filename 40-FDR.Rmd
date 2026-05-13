@@ -8,7 +8,6 @@
 suppressPackageStartupMessages({
   library(tidyverse)
   library(patchwork)
-  library(ExploreModelMatrix)
   library(SummarizedExperiment)
 })
 ```
@@ -32,16 +31,10 @@ save(exp, file ="data/exp.rda")
 ```
 
 Let's use the `exp` dataset that provides log expression values for 20,000 genes
-in 6 samples, three in groupA and three in groupB.
+in 6 samples, three in groupA and three in groupB. You can download it 
+[here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/exp.rda).
 
 ```{r}
-if (!file.exists("data/exp.rda")) {
-    dir.create("data", showWarnings = FALSE)
-    download.file(
-        url = "https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/data/exp.rda?raw=true",
-        destfile = "data/exp.rda"
-    )
-}
 load("data/exp.rda")
 exp
 ```
@@ -152,18 +145,34 @@ res |>
 knitr::include_graphics("./fig/jellybeans.png")
 ```
 
-Now, let's slightly modify our simulated expression data.
+## Adjustment for multiple testing
 
 In a typical RNA-seq experiment, we may test around 20,000 genes, but
-only a fraction of them are expected to be truly differentially
-expressed. We could imagine a drug treatment that would modify the
-expression of about 1000 genes, but that would have no impact on the
-other ones.
+only a fraction of them are expected to be truly affected by the drug. 
+Imagine a drug treatment that modifies the expression of about 1000 genes, 
+but that has no impact on the other ones. 
 
-To mimic this, we are going to simulate a strong up-regulation for the
-first 1000 genes by increasing their expression values in group B.
+The first histogram bellow shows how the distribution of
+pvalues for truly modified genes ($H_0$ is false) would look like:
+most of the pvalues would be very small. Using a pvalue cutoff of 0.05
+should permit to identify most of these differentially expressed
+genes. 
 
-```{r, fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
+The second histogram shows the distribution of pvalues for
+unmodified genes ($H_0$ is true). Here the p-values are uniformly
+distributed between 0 and 1, and we can see that 5% of these genes
+appear to be significant even though this is only by chance as the
+drug had no real effect on them. 
+
+The third histogram illustrates the principle behind the
+**False discovery rate (FDR)** adjustment. As the statistical test is done on 
+the whole set of genes, the resulting pvalues will
+have a distribution corresponding to the combination of both
+histograms.  Most of the p-values are uniformly distributed between 0
+and 1 but there is a spike to the left close to zero, due to those
+p-values for which $H_0$ is false. 
+
+```{r echo=FALSE, fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
 exp_modified <- exp
 
 exp_modified[1:1000, c("B1", "B2", "B3")] <- log(matrix(rnorm(1000*3, mean = 300, sd = 20), ncol = 3))
@@ -171,25 +180,13 @@ exp_modified[1:1000, c("B1", "B2", "B3")] <- log(matrix(rnorm(1000*3, mean = 300
 exp_modified <- exp_modified |>
   mutate(DE = c(rep(TRUE, 1000), rep(FALSE, 19000)))
 
-exp_modified
-```
 
-Let's run a t-test on this new dataset:
-
-```{r}
 res_modified <- exp_modified |>
   rowwise() |>
   mutate(pval = t.test(c(A1, A2, A3), c(B1, B2, B3), var = TRUE)$p.value) |>
   ungroup()
-table(res_modified$pval < 0.05)
-```
+#table(res_modified$pval < 0.05)
 
-
-Now let's look at p-values histogram of the first 1000 genes (for
-which Ho is FALSE), and of the remaining genes.
-
-
-```{r echo=FALSE, fig.height=5, fig.width=15, message=FALSE, warning=FALSE}
 h1 <- res_modified |> filter(DE) |>
   ggplot(aes(x = pval)) +
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray") +
@@ -222,44 +219,45 @@ h3 <- res_modified |>
 h1 + h2 + h3
 ```
 
-The figure on the right illustrates the principle behind the FDR adjustment.
-The False discovery rate (FDR) is the expected proportion of false positives
-among all the results considered as "significant" (i.e. pval < 0.05).
-The adjustment procedure estimate the proportion of hypothesis that are null
-and then adjust the p-values accordingly.
 
 
-## Adjustment for multiple testing
+
+
 
 The False discovery rate (FDR) computes the expected fraction of false
-positives among all discoveries. It allows us to choose n results with a given FDR.
+positives among all discoveries. It allows us to choose n results with a given 
+FDR.
+
 Widely used examples are Benjamini-Hochberg or q-values.
 
-let's use the `p.adjust()` function to adjust the pvalues.
+Let's use the `p.adjust()` function to adjust the pvalues calculated previously 
+(from the t.test we did on data generated with the rnorm() function)
+
 
 ```{r}
-res_modified <- res_modified |>
+res <- res |>
   mutate(padj = p.adjust(pval, method = "BH"))
 
-table(sign_padj = res_modified$padj < 0.05, sign_pval = res_modified$pval < 0.05)
+res
 ```
 
-Only `r table(res_modified$padj < 0.05)["TRUE"]` were found to be significant after FDR correction.
+### Question {-}
 
-
-#### Question {-}
-
-- How many genes would you expect to remain significant after FDR
-  correction in the first dataset (`res` table) ?
+How many significant padjusted values do you expect to have?
 
 <details>
 <summary>Solution</summary>
 
 ```{r}
-res <- res |>
-  mutate(padj = p.adjust(pval, method = "BH"))
 table(res$pval < 0.05)
+```
+
+```{r}
 table(res$padj < 0.05)
 ```
 
 </details>
+
+
+
+
