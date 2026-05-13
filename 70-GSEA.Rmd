@@ -449,8 +449,7 @@ Setting this threshold might have an effect on the results.
 
 #### Question 1 {-}
 
-Test a different threshold to define the group of 'DE genes' and check if, 
-in the cases above, this has and effect on the GO terms of interest.
+Test a different threshold to define the group of 'DE genes'.
 
 
 <details>
