@@ -63,7 +63,7 @@ or a set of genes that are up-regulated in a certain disease.
 The [MSigDB database](https://www.gsea-msigdb.org/gsea/msigdb) contains a collection
 of annotated gene sets such as
 
-- `Gene Ontology (GO)`
+- **`Gene Ontology (GO)`**
 
 Gene Ontology defines concepts/classes used to describe gene function,
 and relationships between these concepts. GO terms are organized in a
@@ -77,16 +77,16 @@ It classifies functions along three aspects:
 -- `BP: Biological Process` pathways and larger processes made up of the activities
 of multiple gene products.
 
-- `Hallmark gene sets` are curated gene sets that represent well-defined biological
+- **`Hallmark gene sets`** are curated gene sets that represent well-defined biological
 states or processes (e.g. “Apoptosis”, “KRAS signaling”, “DNA repair”).
 
-- `Kyoto Encyclopedia of Genes and Genomes (KEGG)`
+- **`Kyoto Encyclopedia of Genes and Genomes (KEGG)`**
 
 KEGG is a collection of manually drawn pathway maps representing molecular
 interaction and reaction networks. These pathways cover a wide range of
 biochemical processes.
 
-- `Other gene sets`
+- **`Other gene sets`**
 
 Other gene sets include but are not limited to Positional gene sets, wikiPathways,
 Oncogenic signatures, Immunologic signatures...
@@ -168,10 +168,11 @@ hallmarks <- msigdbr(species = "Homo sapiens", collection = "H") %>%
 
 ## Input data
 
-We will use the differential expression analysis comparing KD to mock epithelial 
-cells. The following code summarizes the full DESeq2 analysis that you should 
-already have learned about in the previous episode. We will focus on
-the genes that have an adjusted p-value (those that have been tested).
+We will use the results of the differential expression analysis comparing KD to 
+mock epithelial cells. The following code summarizes the full DESeq2 analysis 
+that you should already have learned about in the previous episode. 
+We will focus on the genes that have an adjusted p-value (those that have been 
+tested).
 
 ```{r, message = FALSE, warning=FALSE}
 se <- readRDS("data/se.rds")
@@ -256,18 +257,18 @@ We could consider all genes that have a p-adjusted value < 0.05 (left volcano),
 in this case we would select `r length(genes_DE1)` genes. This number is probably 
 too large, so we should probably be more restrictive and select a smaller set of 
 genes, using a more stringent filtering on the p-adjusted value. 
-We could also consider filtering using the logFC, which could also make biological 
-sense.
+We could also consider filtering using the logFC, which could also make 
+biological sense.
 
 
-Whatever thresholds are used, the idea here is to start from a selection of genes
-that we will consider as our DE genes. 
+Whatever thresholds are used, the idea here is to start from a selection of 
+genes that we will consider as our DE genes. 
 **The selection is a choice the user has to make.**
 
-Here, we will apply the selection criteria illustrated in the second volcano. Hence,
-among all the genes (called the **universe**), we will consider the `r length(genes_DE2)`
-genes with a p-adjusted value < `r padj_thr` as our **genes of interest** or 
-**DE genes**.
+Here, we will apply the selection criteria illustrated in the second volcano. 
+Hence, among all the genes (called the **universe**), we will consider the 
+`r length(genes_DE2)` genes with a p-adjusted value < `r padj_thr` as our 
+**genes of interest** or **DE genes**.
 
 
 #### Step2: Counting

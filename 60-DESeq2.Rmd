@@ -1159,8 +1159,8 @@ This procedure improves interpretability of the fold-changes estimates.
 
 ```{r, warning = FALSE, message = FALSE}
 res_shr <- lfcShrink(dds, coef = "group_Epithelial_KD_vs_Epithelial_mock")
-res_shr_tbl <- as_tibble(res_shr, rownames = "gene")
-res_shr_tbl <- res_shr_tbl |> filter(!is.na(padj))
+res_shr_tbl <- as_tibble(res_shr, rownames = "gene") |> 
+  filter(!is.na(padj))
 
 fig1 <- ggplot(res_tbl, aes(x = baseMean, y = log2FoldChange)) +
   geom_point(alpha = 0.2) +
@@ -1188,16 +1188,19 @@ write_csv(res_tbl, file = "data/deseq_result_table.csv")
 ```
 
 
-## A more complex design
 
-#### Question {-}
+## Additional exercices
+
+
+### Question1 {-}
+
+Re-run the analysis to compare fibroblast and epithelial cells 
+(in mock condition)
+
+### Question2 {-}
 
 Which genes are affected differently by the siRNA in epithelial and
 fibroblast cells?
-
-Restart the analysis from the beginning to analyze the data in a way
-that addresses the previous question...
-
 
 
 ### Further links
