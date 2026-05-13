@@ -248,7 +248,8 @@ fig3 <- res_tbl %>%
   geom_hline(yintercept = -log10(padj_thr)) +
   geom_vline(xintercept = log2FC_thr) +
   geom_vline(xintercept = -log2FC_thr) +
-  ggtitle(paste0(length(genes_DE3), " DE selected (padj < ", padj_thr, ' and |logFC| > ', log2FC_thr, ""))
+  ggtitle(paste0(length(genes_DE3), " DE selected (padj < ", padj_thr, 
+                 ' and |logFC| > ', log2FC_thr, ")"))
 
 fig1 + fig2 + fig3
 ```
