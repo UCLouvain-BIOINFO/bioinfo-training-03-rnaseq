@@ -179,22 +179,19 @@ that the variance equals the mean.
 
 $$K_{ij} \sim P(µ_{ij} = \sigma^2_{ij})$$
 
+This assumption is, however, not valid for RNA-seq data, because the observed 
+variances tend to be higher than the means. RNA-seq data are said to be 
+**overdispersed** because counting noise is not the only source of variability. 
+Observed counts for each gene across biological replicates tend to fluctuate 
+more than expected due to the combination of biological and technical factors.
+Applying a Poisson distribution to RNA-seq counts would underestimate the 
+variance, resulting in a high number of false positives.
 
-Applying a Poisson distribution to RNA-seq counts holds true when
-comparing technical replicates from a same sample, where the variance
-only reflects the counting noise. But when comparing biological
-replicates, counting noise is not the only source of variance. The
-observed count values for each gene within biological replicates
-fluctuate more importantly, due to the combination of biological and
-technical factors: inter-individual variations in gene expression,
-sample purity, cell reponses to environment (e.g. heat-shock)... Due
-to this overdispersion, the Poisson distribution doesn't fit that well
-to RNA-seq counts.
 
 Actually, RNA-seq counts are better modelised by an alternative
 distribution, the **negative-binomial**. It is derived from the Poisson
 distribution but the negative-binomial distribution has, in addition
-to the mean parameter, an extra parameter $α$ called the dispersion
+to the $µ$ parameter, an extra parameter $α$ called the **dispersion**
 parameter to model this “extra” variance that is empirically observed
 in RNA-Seq experiments.
 
@@ -210,7 +207,7 @@ binomial turns into a Poisson distribution.
 $$VAR(K_{ij}) = µ_{ij} + \alpha_i.µ_{ij}^2$$
 
 
-Having modelised counts by a $negative-binomial$ distribution, next step
+Having modelised counts by a negative-binomial distribution, next step
 is to estimate, for each gene, the two parameters of the distribution
 (mean and dispersion). The mean will be estimated easily from the
 observed normalised counts in both conditions, but the dispersion is
@@ -435,7 +432,7 @@ library(tidyverse)
 ```
 
 
-### Construct DESeqDataSet object
+### DESeqDataSet object
 
 We will run a DESeq2 analysis using the real dataset that we stored previously
 as a SummarizedExperiment in our `se` object.
@@ -609,6 +606,10 @@ fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
 
 library("patchwork")
 fig1 | fig2 | fig3
+
+
+fig1 +
+  geom_abline(slope = 1)
 ```
 
 Let's apply the vst transformation on our `dds` object
