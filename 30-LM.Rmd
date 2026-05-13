@@ -181,12 +181,12 @@ We can see that the coefficient `ConditionKD` is highly significant.
 
 Let's consider a slightly more complex design. We now have the gene
 expression values of 6 control and 6 treated samples, but the
-experiment was conducted across two different batches (batch1 and
-batch2), with 3 control and 3 treated samples in each batch.
+experiment was conducted in two different cell types (with 3 control and 3 
+treated samples in each cell type).
 
-To take into account the treatment effect while controlling the batch
+To take into account the treatment effect while controlling the cell type
 effect, we should use the following design: $$design \sim Treatment +
-Batch$$
+cellType$$
 
 In the following linear model:
 
@@ -194,12 +194,12 @@ $$y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2$$
 
 we could rewrite this equation as:
 
-$$y = \beta_0 + Treatment. x_1 + Batch . x_2$$
+$$y = \beta_0 + Treatment. x_1 + cellType . x_2$$
 
 In this equation:
 - The $\beta_0$ term represents the `intercept`, i.e, the **expression
-  level of the gene in the reference sample**, for instance the
-  untreated cells from batch1.
+  level of the gene in the reference cell type**, for instance the
+  untreated cellType1.
   
 - The design factor $x_1$ is a binary indicator variable representing
   the two treatment conditions of our experiment. It will take the
@@ -210,12 +210,12 @@ In this equation:
   treatment**.
   
 - The design factor $x_2$ is another binary indicator variable
-  representing the two batches of our experiment. It will take the
-  value of 0 if we are considering batch1, and a value of 1 when
-  considering batch2.
+  representing the two cell types of our experiment. It will take the
+  value of 0 if we are considering cellType1, and a value of 1 when
+  considering cellType2.
   
-- The `Batch` term represents the **logFoldchange associated with the
-  batch effect**.
+- The `cellType` term represents the **logFoldchange associated with the
+  cell type effect**.
 
 The following figure (generated with the `ExploreModelMatrix` package)
 illustrates the value of the linear predictor of a linear model for
@@ -223,31 +223,31 @@ each combination of input variables.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=4, fig.width=6}
 coldata <- tibble(sample = paste0("sample", 1:12),
-                  Batch = c(rep("Batch1", 6), rep("Batch2", 6)),
+                  cellType = c(rep("cellType1", 6), rep("cellType2", 6)),
                   Treatment = rep(c(rep("Untreated", 3), rep("Treated", 3)), 2))
 
 coldata$Treatment <- factor(coldata$Treatment, levels = c("Untreated", "Treated"))
 
 vd <- VisualizeDesign(sampleData = coldata,
-                      designFormula = ~ Treatment + Batch)
+                      designFormula = ~ Treatment + cellType)
 vd$plotlist
 ```
 
 From this figure, we can see how the genes log expression values are
 modelised in the different samples:
 
-- In `untreated cells from Batch1`:
+- In `untreated cellType1`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$ =
   $\beta_0$
-- In `treated cells from Batch1`:
+- In `treated cellType1`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$
   = $\beta_0$ + *Treatment*
-- In `untreated cells from Batch2`:
+- In `untreated cellType2`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$ =
-  $\beta_0$ + *Batch*
-- In `treated cells from Batch2`:
+  $\beta_0$ + *cellType*
+- In `treated cellType2`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$
-  = $\beta_0$ + *Treatment* + *Batch*
+  = $\beta_0$ + *Treatment* + *cellType*
 
 ### Example
 
@@ -341,11 +341,11 @@ condition effect.
 ## Design with interaction
 
 Coming back to the previous experimental design were we considered 3
-controls and 3 treated samples across 2 different batches (batch1 and
-batch2).  An interaction term could be added to the linear model, to
-modelise a treatment effect that would differ across batches.
+controls and 3 treated samples across 2 different cell types.  
+An interaction term could be added to the linear model, to
+modelise a treatment effect that would differ across cell types.
 
-Our design would hence be: $$design \sim Treatment*Batch$$
+Our design would hence be: $$design \sim Treatment*cellType$$
 
 The linear model could be written
 
@@ -353,29 +353,29 @@ $$y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2 + \beta_{12}.x_1.x_2.$$
 
 We could rewrite this equation as:
 
-$$y = \beta_0 + Treatment. x_1 + Batch . x_2 + Treatment.Batch.x_1.x_2$$
+$$y = \beta_0 + Treatment. x_1 + Batch . x_2 + Treatment.cellType.x_1.x_2$$
 
 
 In this equation:
 
 - Rhe $\beta_0$ term represents the `intercept`, i.e, the **expression
-  level of the gene in the reference sample**, for instance the
-  untreated cells in batch1.
+  level of the gene in the reference cell type**, for instance the
+  untreated cells in cellType1.
 - The design factor $x_1$ will take the value of 0 if we are
   considering untreated samples, and a value of 1 when considering
   treated samples.
 - The `Treatment` term represents the **treatment effect in the
-  reference batch**.  In this case it would represent the
-  logFoldchange between treated and untreated cells in batch1.
+  reference cell type**.  In this case it would represent the
+  logFoldchange between treated cellType1 and untreated cellType1.
 - The design factor $x_2$ will take the value of 0 if we are
-  considering batch1, and a value of 1 when considering batch2.
-- The `Batch` term represents the **logFoldchange associated with the
-  batch effect in the reference treatment**.  In this case it would
-  represent the batch effect in untreated cells.
-- The `Treatment.Batch` term represents the **treatment effect that
-  would be different in batch2 compared to batch1**.  This term will
+  considering cellType1, and a value of 1 when considering cellType2.
+- The `cellType` term represents the **logFoldchange associated with the
+  cell type effect in the reference treatment**.  In this case it would
+  represent the cell type effect in untreated cells.
+- The `Treatment.cellType` term represents the **treatment effect that
+  would be different in cellType2 compared to cellType1**.  This term will
   only be considered in the equation when we are referring to treated
-  cells from batch2 (i.e. when $x_1$ = 1 and $x_2$ = 1)
+  cells from cellType2 (i.e. when $x_1$ = 1 and $x_2$ = 1)
 
 The following figure (generated with the `ExploreModelMatrix` package)
 illustrates the value of the linear predictor of a linear model for
@@ -383,31 +383,31 @@ each combination of input variables.
 
 ```{r echo=FALSE, warning=FALSE, message=FALSE, fig.height=4, fig.width=8}
 coldata <- tibble(sample = paste0("sample", 1:12),
-                  Batch = c(rep("batch1", 6), rep("batch2", 6)),
+                  cellType = c(rep("cellType1", 6), rep("cellType2", 6)),
                   Treatment = rep(c(rep("Untreated", 3), rep("Treated", 3)), 2))
 
 coldata$Treatment <- factor(coldata$Treatment, levels = c("Untreated", "Treated"))
 
 vd <- VisualizeDesign(sampleData = coldata,
-                      designFormula = ~ Treatment * Batch)
+                      designFormula = ~ Treatment * cellType)
 vd$plotlist
 ```
 
 From this figure, we can see how the genes log expression values are
 modelised in the different samples:
 
-- In `untreated cells from batch1`:
+- In `Untreated cellType1`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$ =
   $\beta_0$
-- In `treated cells from batch1`:
+- In `Treated cellType1`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$
   = $\beta_0$ + *Treatment*
-- In `untreated cells from batch2`:
+- In `Untreated cellType2`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$ =
-  $\beta_0$ + *Batch*
-- In `treated cells from batch2`:
+  $\beta_0$ + *cellType*
+- In `Treated cellType2`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$
-  = $\beta_0$ + *Treatment* + *Batch* + *Treatment.Batch*
+  = $\beta_0$ + *Treatment* + *cellType* + *Treatment.cellType1*
 
 ### Examples
 
