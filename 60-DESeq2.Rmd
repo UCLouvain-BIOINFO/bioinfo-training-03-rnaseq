@@ -606,10 +606,6 @@ fig2 <-  tibble(meanCounts = rowMeans(assay(log_dds_group1)),
 
 library("patchwork")
 fig1 | fig2 | fig3
-
-
-fig1 +
-  geom_abline(slope = 1)
 ```
 
 Let's apply the vst transformation on our `dds` object
@@ -652,7 +648,7 @@ Usually these size factors should vary around 1, indicating comparable sequencin
 sizeFactors(dds)
 ```
 
-#### Question {-}
+##### Question {-}
 
 Compare Size Factors to sequencing depth.
 
@@ -687,7 +683,7 @@ gene-wise estimates towards the fitted estimates.
 plotDispEsts(dds)
 ```
 
-#### Question {-}
+##### Question {-}
 
 Try to reproduce the previous dispersion plot using values from the rowData of dds.
 
@@ -719,6 +715,8 @@ x |>
 </details>
 
 ### DESeq2 results
+
+#### Extracting results
 
 The `resultsNames()` function gives the names of results that can be
 extracted.
@@ -772,7 +770,7 @@ res <- results(dds,
 ```
 
 
-#### Question {-}
+##### Question {-}
 
 
 How would you run the results() function to identify genes affected by the KD in
@@ -789,8 +787,8 @@ results(dds,
 
 </details>
 
+#### Exploring results
 
-Let's inspect the results and their signification.
 
 ```{r}
 res_tbl <- as_tibble(res, rownames = "gene")
@@ -813,7 +811,7 @@ a down-regulation.
 
 **padj**: pvalue adjusted for multiple testing
 
-#### Question 1 {-}
+##### Question 1 {-}
 
 Inspect the results table and identify the "best gene" (showing
 the lowest padjusted value).
@@ -828,7 +826,7 @@ res_tbl |>
 
 <details>
 
-#### Question 2 {-}
+##### Question 2 {-}
 
 Calculate the mean expression level of the "best gene" using
 the function `counts()`. Compare with `baseMean` values.
@@ -845,7 +843,7 @@ best_gene <- res_tbl |>
 rowMeans(counts(dds[best_gene], normalize = TRUE))
 ```
 
-#### Question 3 {-}
+##### Question 3 {-}
 
 Extract the ß coefficient of these "best gene" from the GLM
 using the function `coefficients()`. Compare with `log2FoldChange` values.
@@ -860,7 +858,7 @@ coefficients(dds[best_gene])
 
 </details>
 
-#### Question 4 {-}
+##### Question 4 {-}
 
 Using the function `counts()`, evaluate the mean expression level
 of the "best gene" in mock cells. Compare with ß coefficients.
@@ -875,7 +873,7 @@ log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_mock"], normalize =
 
 </details>
 
-#### Question 5 {-}
+##### Question 5 {-}
 
 Evaluate the mean expression level of the "best gene"in KD cells.
 Compare with ß coefficients.
@@ -895,7 +893,7 @@ coefficients(dds[best_gene])[,1] + coefficients(dds[best_gene])[,2]
 
 </details>
 
-#### Question 6 {-}
+##### Question 6 {-}
 
 How many genes have no padjusted value? Why?
 
@@ -918,7 +916,7 @@ out by the independent filtering procedure.
 
 </details>
 
-#### Independent filtering exploration
+#### Independent filtering 
 
 The filtering threshold that has been used to filter low count genes can be extracted
 from the results metadata.
@@ -927,8 +925,8 @@ from the results metadata.
 metadata(res)$filterThreshold
 ```
 
-This means that genes whith basemean < `r metadata(res)$filterThreshold` have been
-filtered. This represents `r names(metadata(res)$filterThreshold)` of all tested genes!
+This means that genes whith basemean < `r round(metadata(res)$filterThreshold,2)` have been
+filtered. This represents `r round(as.numeric(sub("%", "", names(metadata(res)$filterThreshold))), 1)` of all tested genes!
 
 Remember that the filtering threshold has been fixed in a way that maximizes the
 number of genes which will have a significant padjusted value.
@@ -946,7 +944,7 @@ as_tibble(metadata(res)$filterNumRej) |>
 ```
 
 
-#### Questions {-}
+##### Questions {-}
 
 1. Re-run the results() function on the same dds object, but set the
   independent filtering parameter to FALSE.  Check how many genes have
@@ -1082,7 +1080,7 @@ as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') |>
         legend.title = element_text(size = 7)) 
 ```
 
-#### Questions {-}
+##### Questions {-}
 
 1. Inspect counts of genes "CASC18" and "PRUNE1" plotted in red in the following 
 volcano-plot. What is the most striking?
