@@ -373,8 +373,8 @@ genes_DE <- res_tbl$gene[res_tbl$padj <= padj_thr &
 ORA_res <- enricher(gene          = genes_DE,
                     universe      = geneList,
                     pAdjustMethod = "BH",
-                    qvalueCutoff = 1,
-                    pvalueCutoff = 1,
+                    qvalueCutoff  = 1,
+                    pvalueCutoff  = 1,
                     TERM2GENE     = GO_BP)
 
 ORA_res_tbl_GO <- as_tibble(ORA_res) %>% filter(p.adjust < 0.05)
