@@ -669,7 +669,7 @@ featureCounts \
 -g gene_id \                
 -s 0 \                      
 -o all_samples_counts.tsv \ # Name of the output file
-processed_data/bam/*.bam    # All bam files
+*.bam                       # All bam files
 ```
 
 Here is an example of a `featureCounts` output file run on 6 BAM files. The last 
@@ -697,7 +697,6 @@ And finally, the column names can be simplified.
 
 ```{r}
 names(counts) <- sub(pattern = ".bam$", '', names(counts))
-names(counts) <- sub(pattern = "processed_data/bam/", '', names(counts))
 head(counts)
 
 mat <- as.matrix(counts[,-1])
