@@ -672,6 +672,10 @@ SF / SD
 
 </details>
 
+
+
+
+
 #### Dispersion plot
 
 Plotting the dispersion estimates is a useful diagnostic.
@@ -952,7 +956,7 @@ as_tibble(metadata(res)$filterNumRej) |>
 3. Imagine another way of filtering genes with very low counts
 
 <details>
-<summary>Solution</summary>
+<summary>Solutions</summary>
 
 1. Re-run the results() function on the same dds object, but set the
   independent filtering parameter to FALSE.  Check how many genes have
@@ -1074,19 +1078,16 @@ as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') |>
         axis.title.x = element_blank(),
         legend.position = "right",
         legend.text = element_text(size = 7),
-        legend.title = element_text(size = 7))
+        legend.title = element_text(size = 7)) 
 ```
 
 #### Questions {-}
 
-1. Inspect counts of genes "ZBED2", "HS6ST2", "CASC18", "CKAP2LP1",
-   and "LOC124905065", plotted in red in the following volcano-plot.
-   (These genes have a very large log2FC). What is the most striking?
+1. Inspect counts of genes "PGRMC1" and "CASC18" plotted in red in the following 
+volcano-plot. What is the most striking?
 
 ```{r echo=FALSE, warning=FALSE}
-selected_genes <- res_tbl |>
-  filter(padj < 0.05 & abs(log2FoldChange) > 5) |>
-  pull(gene)
+selected_genes <- c("PGRMC1", "CASC18")
 
 res_tbl |>
   ggplot(aes(x = log2FoldChange, y = -log10(padj),
@@ -1110,7 +1111,7 @@ res_tbl |>
 QUESTION 1 :
 
 ```{r}
-selected_genes <- c("ZBED2", "GASK1B", "HS6ST2", "CASC18", "CKAP2LP1", "LOC124905065")
+selected_genes <- c("PGRMC1", "CASC18")
 
 as_tibble(counts(dds[selected_genes, ], normalize = TRUE),
           rownames = 'gene') |>
