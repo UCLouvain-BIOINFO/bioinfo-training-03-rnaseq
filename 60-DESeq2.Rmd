@@ -19,6 +19,8 @@ used bioconductor package dedicated to this type of analysis. For more
 information read the original paper [@Huber:2014] and the [DESeq2
 vignette](https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html).
 
+
+
 The starting point of the analysis is a count matrix, and the goal is
 to identify genes that are differentially expressed between samples.
 
