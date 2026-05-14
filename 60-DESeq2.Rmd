@@ -475,21 +475,18 @@ As for SummarizedExperiments:
 
 #### Question {-}
 
-Access the count data from the dds object and plot the count distributions
-of each sample.
+How many genes are not expressed in the dataset (zero counts in all samples)?
 
 <details>
 <summary>Solution</summary>
 
 ```{r}
-as_tibble(assay(dds), rownames = "gene") |>
-  pivot_longer(names_to = "sample", values_to = "counts", -gene) |>
-  ggplot(aes(x = log2(counts + 1), fill = sample)) +
-  geom_histogram(bins = 20) +
-  facet_wrap(~ sample)
+table(rowSums(assay(dds)) > 0)
 ```
 
+
 </details>
+
 
 The count matrix contains many rows with only zeros. We can start by removing
 these rows of the dds object as anyway no statistical test can be done on
