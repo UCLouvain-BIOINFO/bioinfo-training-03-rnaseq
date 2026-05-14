@@ -784,7 +784,7 @@ function. But in this case don't forget to re-run `DESeq()` function
 after the re-leveling operation!
 
 
-```{r}
+```{r message=FALSE, warning=FALSE}
 dds_bis <- dds
 dds_bis$group <- relevel(dds_bis$group, ref = "Fibroblast_ctl")
 dds_bis <- DESeq(dds_bis)
