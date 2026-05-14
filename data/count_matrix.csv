@@ -1,4 +1,4 @@
-gene,Epi_mock1,Epi_mock2,Epi_mock3,Epi_KD1,Epi_KD2,Epi_KD3,Fib_mock1,Fib_mock2,Fib_mock3,Fib_KD1,Fib_KD2,Fib_KD3
+gene,Epi_ctl1,Epi_ctl2,Epi_ctl3,Epi_KD1,Epi_KD2,Epi_KD3,Fib_ctl1,Fib_ctl2,Fib_ctl3,Fib_KD1,Fib_KD2,Fib_KD3
 MIR6859-1,8,4,3,1,1,6,4,4,12,2,6,3
 MIR1302-2,0,0,0,0,0,0,0,0,0,0,0,0
 FAM138A,0,0,0,0,0,0,0,0,0,0,0,0
