@@ -88,8 +88,9 @@ counts <- as_tibble(counts, rownames = "ENSEMBL") |>
 load(file = "wsbim2122_data/deseq2/coldata_both.rda")
 coldata <- as_tibble(coldata, rownames = "sample") |>
     dplyr::select(-Cell)
-coldata$sample <- c(paste0("Epi_mock", 1:3), paste0("Epi_KD", 1:3),
-                    paste0("Fib_mock", 1:3), paste0("Fib_KD", 1:3))
+coldata$Condition[coldata$Condition == "mock"] <- "ctl"
+coldata$sample <- c(paste0("Epi_ctl", 1:3), paste0("Epi_KD", 1:3),
+                    paste0("Fib_ctl", 1:3), paste0("Fib_KD", 1:3))
 
 names(counts) <- c("gene", coldata$sample)
 
@@ -244,14 +245,14 @@ colData(se1)
 #### Question {-}
 
 Extract the gene expression levels of genes located on sex chromosomes 
-in Fibroblast mock cells
+in Fibroblast control cells
 
 <details>
 <summary>Solution</summary>
 
 ```{r, purl=FALSE}
 se2 <- se[rowData(se)$chr %in% c("X", "Y"), 
-          se$Type == "Fibroblast" & se$Condition == "mock"]
+          se$Type == "Fibroblast" & se$Condition == "ctl"]
 head(assay(se2))
 rowData(se2)
 ```
@@ -274,7 +275,7 @@ affecting the other structures!
 
 #### Question {-}
 
-Create a "group" column to to the metadata (i.e "Epithelial_mock", "Epithelial_KD", ...)
+Create a "group" column to to the metadata (i.e "Epithelial_ctl", "Epithelial_KD", ...)
 
 <details>
 <summary>Solution</summary>
