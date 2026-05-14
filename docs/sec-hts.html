@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 1 High throughput sequencing | RNA-Seq analysis with R and Bioconductor</title>
-  <meta name="description" content="Chapter 1 High throughput sequencing | RNA-Seq analysis with R and Bioconductor" />
+  <meta name="description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 1 High throughput sequencing | RNA-Seq analysis with R and Bioconductor" />
   <meta property="og:type" content="book" />
   
-  
+  <meta property="og:description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 1 High throughput sequencing | RNA-Seq analysis with R and Bioconductor" />
   
-  
+  <meta name="twitter:description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
   
 
 <meta name="author" content="Laurent Gatto and Axelle Loriot" />
@@ -172,7 +172,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.2" data-path="sec-hts.html"><a href="sec-hts.html#sequencing"><i class="fa fa-check"></i><b>1.2</b> Sequencing</a>
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="sec-hts.html"><a href="sec-hts.html#se-vs-pe-sequencing"><i class="fa fa-check"></i><b>1.2.1</b> SE vs PE sequencing</a></li>
-<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> cluster amplification</a></li>
+<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> Cluster amplification</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="sec-hts.html"><a href="sec-hts.html#fastq-files"><i class="fa fa-check"></i><b>1.3</b> fastq files</a></li>
 <li class="chapter" data-level="1.4" data-path="sec-hts.html"><a href="sec-hts.html#processing-pipeline"><i class="fa fa-check"></i><b>1.4</b> Processing pipeline</a>
@@ -214,7 +214,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.4.1" data-path="sec-lm.html"><a href="sec-lm.html#examples"><i class="fa fa-check"></i><b>3.4.1</b> Examples</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> FDR</a>
+<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> False discovery rate</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-FDR.html"><a href="sec-FDR.html#multiple-testing"><i class="fa fa-check"></i><b>4.1</b> Multiple testing</a></li>
 <li class="chapter" data-level="4.2" data-path="sec-FDR.html"><a href="sec-FDR.html#adjustment-for-multiple-testing"><i class="fa fa-check"></i><b>4.2</b> Adjustment for multiple testing</a>
@@ -222,7 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="sec-FDR.html"><a href="sec-FDR.html#question-13"><i class="fa fa-check"></i>Question</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> PCA</a>
+<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> Principle component analyses</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="sec-pca.html"><a href="sec-pca.html#introduction-to-pca"><i class="fa fa-check"></i><b>5.1</b> Introduction to PCA</a>
 <ul>
@@ -271,17 +271,17 @@ div.csl-indent {
 <li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
-<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#ora"><i class="fa fa-check"></i><b>7.4</b> ORA</a>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#over-representation-analysis"><i class="fa fa-check"></i><b>7.4</b> Over-representation analysis</a>
 <ul>
 <li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
-<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with the <code>clusterProfiler</code> package</a></li>
 <li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
 <li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gsea"><i class="fa fa-check"></i><b>7.5</b> GSEA</a>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>7.5</b> Gene set enrichment analysis</a>
 <ul>
 <li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
-<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -312,8 +312,8 @@ library preparation to the sequencing process.</li>
 typical RNA-seq pipeline, including quality control, read alignment,
 and gene quantification.</li>
 </ul>
-<p><em>RNA Sequencing Data: Hitchhiker’s Guide to Expression Analysis</em>
-<span class="citation">(<a href="#ref-Van_den_Berge:2019">Van den Berge et al. 2019</a>)</span> is an interesting review describing RNA-seq
+<p>See also <em>RNA Sequencing Data: Hitchhiker’s Guide to Expression
+Analysis</em> <span class="citation">(<a href="#ref-Van_den_Berge:2019">Van den Berge et al. 2019</a>)</span> for further details on RNA-seq
 technology and data analysis.</p>
 <div id="rna-seq-library-preparation" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> RNA-seq library preparation<a href="sec-hts.html#rna-seq-library-preparation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -333,7 +333,7 @@ be sequenced from the second strand cDNA. But we won’t know which strand was
 sequenced! So we lose the information about the orientation of the transcript.</p>
 <p>This can be avoided by using a <strong>stranded protocol</strong>.
 In this case, dUTPs are added during the 2nd strand cDNA synthesis and the
-newly synthetized cDNA strand is degradated after the ligation step.
+newly synthesised cDNA strand is degraded after the ligation step.
 This allows to infer the transcript orientation because only the first cDNA strand
 will be sequenced. Indeed, if the sequence of the read corresponds to the
 the sense strand of DNA, it means that the gene was originally transcribed in a
@@ -356,20 +356,20 @@ repeat regions, resulting in less multimapping reads.</p>
 <p><img src="figs/SE_vs_PE.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
 </div>
 <div id="cluster-amplification" class="section level3 hasAnchor" number="1.2.2">
-<h3><span class="header-section-number">1.2.2</span> cluster amplification<a href="sec-hts.html#cluster-amplification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<h3><span class="header-section-number">1.2.2</span> Cluster amplification<a href="sec-hts.html#cluster-amplification" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The sequencing is done by a cluster amplification process.</p>
-<p>The library preparation is hybridized to a flow cell coated with
-immobilized oligonucleotides that serve as support to hold the DNA
+<p>The library preparation is hybridised to a flow cell coated with
+immobilised oligonucleotides that serve as support to hold the DNA
 strands in place during sequencing. The templates are copied from the
-hybridized primers by 3’ extension using a high-fidelity DNA
+hybridised primers by 3’ extension using a high-fidelity DNA
 polymerase. The original templates are denatured, leaving the copies
-immobilized on the flow cell surface.</p>
-<p>Immobilized DNA template copies are then amplified by bridge
-amplification. The templates loop over to hybridize to adjacent
+immobilised on the flow cell surface.</p>
+<p>Immobilised DNA template copies are then amplified by bridge
+amplification. The templates loop over to hybridise to adjacent
 oligonucleotides. DNA polymerase copies the templates from the
-hybridized oligonucleotides, forming dsDNA bridges, which are
+hybridised oligonucleotides, forming dsDNA bridges, which are
 denatured to form two ssDNA strands. These two strands loop over and
-hybridize to adjacent oligonucleotides and are extended again to form
+hybridise to adjacent oligonucleotides and are extended again to form
 two new dsDNA loops. The process is repeated on each template by
 cycles of denaturation and amplification to create millions of
 individual, dense clonal clusters containing ~2,000 molecules.</p>
@@ -509,7 +509,7 @@ RNAseq reads.</p>
 <p>This plot makes more sense for whole genome shotgun sequencing,
 as the overall GC content should reflect the GC content of the underlying genome.
 (Note that since the software doesn’t know the the GC content of the genome,
-the theorical distribution is calculated from the observed data).</p>
+the theoretical distribution is calculated from the observed data).</p>
 <p>An unexpected distribution could indicate a contaminated library.</p>
 <p>For RNA sequencing, this plot makes less sense, as over-represented sequences
 might generate an unexpected distribution.</p>
@@ -523,8 +523,8 @@ position, it could indicate that something went wrong during
 sequencing.</p>
 <p><strong>7. Sequence Length Distribution</strong></p>
 <p><img src="figs/fastqc_fig7.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
-<p>The distribution of sequence lengths of all reads in the file.
-Here we see that most reads are 150 pb long but some reads are shorter.</p>
+<p>The distribution of sequence lengths of all reads in the file. Here
+we see that most reads are 150 pb long but some reads are shorter.</p>
 <p><strong>8. Sequence Duplication Levels</strong>:</p>
 <p><img src="figs/fastqc_fig8.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
 <p>It gives the distribution of duplicated reads. The blue line
@@ -542,7 +542,7 @@ expected in this case.</p>
 <p><strong>9. Overrepresented sequences</strong></p>
 <p><img src="figs/fastqc_fig9.png" alt="" width="80%" style="display: block; margin: auto;" /></p>
 <p>FastQC lists here all of the sequence which make up more than 0.1% of
-the total. Finding that a single sequence is highly overrepresented in
+the total. Finding that a single sequence is highly over-represented in
 the set means that it is either highly biologically significant, or
 that the library is biased or contaminated. Here it is of course not
 relevant as it just corresponds to a sequence full of ‘N’.</p>
@@ -629,12 +629,12 @@ alignment rate. For a PE-end alignment it could look like this:</p>
 <p><img src="figs/hisat2_report.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
 <p><strong>SAM format</strong></p>
 <p>The <a href="https://genome.sph.umich.edu/wiki/SAM">SAM</a> format is a generic
-format for storing large nucleotide sequence alignments.
-In a SAM file, each entry gives the alignment information for a single read.
-Each entry has 11 mandatories fields for essential mapping information
-and a variable number of other fields for aligner specific information.
-An example of few entries from a SAM
-file is displayed below.</p>
+format for storing large nucleotide sequence alignments. In a SAM
+file, each entry gives the alignment information for a single read.
+Each entry has 11 mandatory fields for essential mapping information
+and a variable number of other fields for aligner specific
+information. An example of few entries from a SAM file is displayed
+below.</p>
 <pre><code>## DRR016707.26395247   147 1   19626495    60  101M    =   19626490    -106    GTAACAATGTTATCAGTAATGCTTTAAACTCCAGCACCTGGTTATGCATTTGAAACCAAGTCTGTTTCTTGTTTTGTATTTTCTCTCTGGAAGTTGTAAGG   DDDDDDDDDDDDDEEEEEEEFFFFFFHCHHHJJJHHJJJJJJJJJJJJIHFJJIHJJJJJJJJJJJJJJJJJJJJJJJJJJJJIJJJJHHHHHFFFFFCCC   AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0  NM:i:0  MD:Z:101    YS:i:0  YT:Z:CP NH:i:1
 ## DRR016707.26395247   99  1   19626490    60  101M    =   19626495    106 CTTCTGTAACAATGTTATCAGTAATGCTTTAAACTCCAGCACCTGGTTATGCATTTGAAACCAAGTCTGTTTCTTGTTTTGTATTTTCTCTCTGGAAGTTG   CCCFFFFFHHHHHJIJJJJIJJJJJJJJJJIJJJJJJJJJJJJJJJHHIHIJJJIJJHIJJJIIIIIIJGIJJJJDHJJJHHHHHHHFFFFFFEDACEEDD   AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0  NM:i:0  MD:Z:101    YS:i:0  YT:Z:CP NH:i:1
 ## DRR016707.34969377   163 1   19626487    60  101M    =   19626493    107 ATTCTTCTGTAACAATGTTATCAGTAATGCTTTAAACTCCAGCACCTGGTTATGCATTTGAAACCAAGTCTGTTTCTTGTTTTGTATTTTCTCTCTGGAAG   CC@FFFFFHFHFFHGGJCIFJGHIIIIGIIIIJIIJJJIGIIIIIIGII?:BFHGHIIIIGEHHHGIIDGGH@GGIGHJGHHHHCEHDEFDDFFEEECCEC   AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0  NM:i:0  MD:Z:101    YS:i:0  YT:Z:CP NH:i:1
@@ -645,28 +645,36 @@ file is displayed below.</p>
 ## DRR016707.43465443   83  1   19626486    60  100M1S  =   19626483    -104    CATTCTTCTGTAACAATGTTATCAGTAATGCTTTAAACTCCAGCACCTGGTTATGCATTTGAAACCAAGTCTGTTTCTTGTTTTGTATTTTCTCTCTGGAG   DDDDDDCDDDDCCDEEEEDFFFFFDBHHHHHGJJGHDJIJJIGIHJGGJJJJJJJJJJJJJHG?JJJJJJJJJJJIIJJJJIJJJJJIGHGHHFFFFFCCC   AS:i:-1 ZS:i:-12    XN:i:0  XM:i:0  XO:i:0  XG:i:0  NM:i:0  MD:Z:100    YS:i:0  YT:Z:CP NH:i:1
 ## DRR016707.64407509   147 1   19626484    60  101M    =   19626484    -101    GCCATTCTTCTGTAACAATGTTATCAGTAATGCTTTAAACTCCAGCACCTGGTTATGCATTTGAAACCAAGTCTGTTTCTTGTTTTGTATTTTCTCTCTGG   DDDDDCDDDDDDEEDEEEEFFFFFFHHHHHHJJIJIGHFIHJJJIHFIHHFJJJJJIJJJJJJJIHJJJJJIJJJJJJJJJJJJJJJJHHHHHFFFFFBB@   AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0  NM:i:0  MD:Z:101    YS:i:0  YT:Z:CP NH:i:1
 ## DRR016707.64407509   99  1   19626484    60  101M    =   19626484    -101    GCCATTCTTCTGTAACAATGTTATCAGTAATGCTTTAAACTCCAGCACCTGGTTATGCATTTGAAACCAAGTCTGTTTCTTGTTTTGTATTTTCTCTCTGG   CCCFFFFFHHHHHJJJJJJJIJJJJJJJJJJJJJJJJJJJJJIJJJJJJIJJDGIJJJJJJJJCGIJJJIIHHJJJHHIJJJHHHHHDFFFFFFEEEEEED   AS:i:0  XN:i:0  XM:i:0  XO:i:0  XG:i:0  NM:i:0  MD:Z:101    YS:i:0  YT:Z:CP NH:i:1</code></pre>
-<p>Field 1: Sequence ID</p>
-<p>Field 2: <a href="https://broadinstitute.github.io/picard/explain-flags.html">SAM Flag</a>. It gives information about
-the read (is it paired, aligned, is the mate read properly aligned…)</p>
-<p>Field 3: Chromosome where alignment occurs</p>
-<p>Field 4: Position of alignment</p>
-<p>Field 5: Mapping quality score (read uniquely mapped (60), multiply mapped (1) or unmapped (0))</p>
-<p>Field 6: <a href="https://sites.google.com/site/bioinformaticsremarks/bioinfo/sam-bam-format/what-is-a-cigar">CIGAR</a>
-string. It is a representation of alignment indicating positions of match/mismatch/deletion/insertion
-compared to the reference.</p>
-<p>Field 7: Reference name of the mate (Set to ‘=’ if the mate’s reference sequence is the same as this alignment’s)</p>
-<p>Field 8: Position of mate</p>
-<p>Field 9: Inferred fragment length</p>
-<p>Field 10: Read sequence (reverse-complemented if aligned to the reverse strand)</p>
-<p>Field 11: Base quality (Phred score)</p>
-<p>Field 12: Optional. See <a href="http://daehwankimlab.github.io/hisat2/manual/">hisat2 manual</a> for more information.</p>
+<ul>
+<li>Field 1: Sequence ID</li>
+<li>Field 2: <a href="https://broadinstitute.github.io/picard/explain-flags.html">SAM
+Flag</a>. It
+gives information about the read (is it paired, aligned, is the mate
+read properly aligned…)</li>
+<li>Field 3: Chromosome where alignment occurs</li>
+<li>Field 4: Position of alignment</li>
+<li>Field 5: Mapping quality score (read uniquely mapped (60), multiply mapped (1) or unmapped (0))</li>
+<li>Field 6:
+<a href="https://sites.google.com/site/bioinformaticsremarks/bioinfo/sam-bam-format/what-is-a-cigar">CIGAR</a>
+string. It is a representation of alignment indicating positions of
+match/mismatch/deletion/insertion compared to the reference.</li>
+<li>Field 7: Reference name of the mate (Set to ‘=’ if the mate’s
+reference sequence is the same as this alignment’s)</li>
+<li>Field 8: Position of mate</li>
+<li>Field 9: Inferred fragment length</li>
+<li>Field 10: Read sequence (reverse-complemented if aligned to the reverse strand)</li>
+<li>Field 11: Base quality (Phred score)</li>
+<li>Field 12: Optional. See <a href="http://daehwankimlab.github.io/hisat2/manual/">hisat2
+manual</a> for more
+information.</li>
+</ul>
 <p><strong>BAM format</strong></p>
 <p>The BAM file is a compressed binary version of SAM file. SAM files can be
 easily converted into BAM files using <a href="http://www.htslib.org%20software">samtools</a>, and it is sometimes mandatory to sort the SAM/BAM by
 chromosomal coordinates for downstream applications.</p>
 <pre><code>samtools view -Sb SampleName.sam | samtools sort &gt; SampleName.bam</code></pre>
 <p><strong>Alignment visualisation</strong></p>
-<p>Alignements described in BAM files can easily be viewed using
+<p>Alignments described in BAM files can easily be viewed using
 <a href="https://software.broadinstitute.org/software/igv/">IGV</a> (Integrative Genomics Viewer),
 a very useful interactive tool for the visual exploration of genomic data.</p>
 <p>Visualising the alignments is not part of the processing pipeline
@@ -681,9 +689,10 @@ Below is an example of visualisation of a bam file using IGV, focusing on CDKN1A
 <p><img src="figs/IGV.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
 <p>Loading a BAM file creates 3 associated tracks:</p>
 <ul>
-<li><p>Coverage Track to view depth of coverage</p></li>
-<li><p>Splice Junction Track which provides an alternative view of reads spanning splice junctions</p></li>
-<li><p>Alignment Track to view individual aligned reads</p></li>
+<li>Coverage Track to view depth of coverage</li>
+<li>Splice Junction Track which provides an alternative view of reads
+spanning splice junctions</li>
+<li>Alignment Track to view individual aligned reads</li>
 </ul>
 </div>
 <div id="counting" class="section level2 hasAnchor" number="1.6">
@@ -706,7 +715,7 @@ gtf annotation file for human genome assembly GRCh38 look like this:</p>
 <p><img src="figs/gtf_example.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
 <p>FeatureCounts will count the number of uniquely mapped reads assigned
 to features (e.g. an exon) or meta-features (e.g. a gene) of the gtf
-file. When summarizing reads at gene level, read counts obtained for
+file. When summarising reads at gene level, read counts obtained for
 exons belonging to the same gene will be added up to yield the read
 count for the corresponding gene. Note that an exon-spanning read
 will be counted only once for the corresponding gene even if it
@@ -725,7 +734,7 @@ for more details).</p>
 -s 0 \                      # strand-specificity
 -o SampleName_counts.tsv \  # Name of the output file
 SampleName.bam              # bam file</code></pre>
-<p>Here is an example of featurecounts output file. The last column gives
+<p>Here is an example of FeatureCounts output file. The last column gives
 the raw counts of each gene in that sample.</p>
 <pre><code>## # A tibble: 58,735 × 7
 ##    Geneid          Chr          Start End   Strand Length ../processed_data/ba…¹
@@ -762,10 +771,10 @@ in each sample must then be generated.</p>
 -s 0 \
 -o all_samples_counts.tsv \ # Name of the output file
 *.bam                       # All bam files</code></pre>
-<p>Here is an example of a <code>featureCounts</code> output file run on 6 BAM files. The last
-6 columns of the table give the raw counts for each gene in each sample.
-You can download it
-<a href="https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseqdata/data/all_samples_counts.tsv.gz">here</a>.</p>
+<p>Here is an example of a <code>featureCounts</code> output file run on 6 BAM
+files. The last 6 columns of the table give the raw counts for each
+gene in each sample. You can download it
+<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/all_samples_counts.tsv.gz">here</a>.</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="sec-hts.html#cb12-1" tabindex="-1"></a>counts <span class="ot">&lt;-</span> <span class="fu">read_tsv</span>(<span class="st">&quot;data/all_samples_counts.tsv.gz&quot;</span>, <span class="at">skip =</span> <span class="dv">1</span>)</span>
 <span id="cb12-2"><a href="sec-hts.html#cb12-2" tabindex="-1"></a><span class="fu">head</span>(counts)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 12
@@ -820,20 +829,18 @@ analysis.</p>
 <h3>Questions<a href="sec-hts.html#questions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Inspect the count table.</p>
 <ol style="list-style-type: decimal">
-<li><p>How many genes are tested ?</p></li>
-<li><p>How many reads were assigned to genes in each sample?</p></li>
-<li><p>Inspect the counts.</p></li>
-</ol>
+<li>How many genes are tested ?</li>
+<li>How many reads were assigned to genes in each sample?</li>
+<li>Inspect the counts.
 <ul>
-<li><p>What is the maximum value in each sample?</p></li>
-<li><p>How many genes have zero counts in each sample?</p></li>
-</ul>
-<ol start="4" style="list-style-type: decimal">
+<li>What is the maximum value in each sample?</li>
+<li>How many genes have zero counts in each sample?</li>
+</ul></li>
 <li>Plot the distributions of counts for each sample. What do they look like?</li>
 </ol>
 <details>
 <summary>
-Solutions
+Solution
 </summary>
 <ol style="list-style-type: decimal">
 <li>How many genes are tested ?</li>
@@ -847,16 +854,12 @@ Solutions
 <pre><code>##  Sample1  Sample2  Sample3  Sample4  Sample5  Sample6 
 ## 10527830 18577116 15893966 15302122 15767968 15752882</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Inspect the counts.</li>
-</ol>
+<li>Inspect the counts.
 <ul>
-<li><p>What is the maximum value in each sample?</p></li>
-<li><p>How many genes have zero counts in each sample?</p></li>
-</ul>
-<details>
-<summary>
-Solution
-</summary>
+<li>What is the maximum value in each sample?</li>
+<li>How many genes have zero counts in each sample?</li>
+</ul></li>
+</ol>
 <div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="sec-hts.html#cb24-1" tabindex="-1"></a><span class="fu">summary</span>(mat)</span></code></pre></div>
 <pre><code>##     Sample1            Sample2            Sample3            Sample4        
 ##  Min.   :     0.0   Min.   :     0.0   Min.   :     0.0   Min.   :     0.0  
@@ -886,6 +889,7 @@ Solution
 <p><img src="rnaseq_files/figure-html/unnamed-chunk-41-1.png" alt="" width="672" /></p>
 <p>Note that a “pseudo-count” was added before the log2 transformation of
 the counts, to avoid elimination of counts equal to zero.</p>
+</details>
 
 </div>
 </div>
@@ -936,14 +940,14 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
   "sharing": {
     "github": false,
-    "facebook": true,
-    "twitter": true,
+    "facebook": false,
+    "twitter": false,
     "linkedin": false,
     "weibo": false,
     "instapaper": false,
     "vk": false,
     "whatsapp": false,
-    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+    "all": {}
   },
   "fontsettings": {
     "theme": "white",
@@ -962,7 +966,7 @@ gitbook.start({
     "link": null,
     "text": null
   },
-  "download": null,
+  "download": ["rnaseq.pdf"],
   "search": {
     "engine": "fuse",
     "options": null

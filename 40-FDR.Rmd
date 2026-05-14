@@ -1,8 +1,8 @@
-# FDR {#sec-FDR}
+# False discovery rate {#sec-FDR}
 
 **Objective**
 
-Address the multiple testing issue
+- Address the multiple testing issue.
 
 ```{r load-pkg-fdr, include=FALSE}
 suppressPackageStartupMessages({
@@ -31,7 +31,7 @@ save(exp, file ="data/exp.rda")
 ```
 
 Let's use the `exp` dataset that provides log expression values for 20,000 genes
-in 6 samples, three in groupA and three in groupB. You can download it 
+in 6 samples, three in groupA and three in groupB. You can download it
 [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/exp.rda).
 
 ```{r}
@@ -148,29 +148,29 @@ knitr::include_graphics("./fig/jellybeans.png")
 ## Adjustment for multiple testing
 
 In a typical RNA-seq experiment, we may test around 20,000 genes, but
-only a fraction of them are expected to be truly affected by the drug. 
-Imagine a drug treatment that modifies the expression of about 1000 genes, 
-but that has no impact on the other ones. 
+only a fraction of them are expected to be truly affected by the drug.
+Imagine a drug treatment that modifies the expression of about 1000 genes,
+but that has no impact on the other ones.
 
 The first histogram bellow shows how the distribution of
 pvalues for truly modified genes ($H_0$ is false) would look like:
 most of the pvalues would be very small. Using a pvalue cutoff of 0.05
 should permit to identify most of these differentially expressed
-genes. 
+genes.
 
 The second histogram shows the distribution of pvalues for
 unmodified genes ($H_0$ is true). Here the p-values are uniformly
 distributed between 0 and 1, and we can see that 5% of these genes
 appear to be significant even though this is only by chance as the
-drug had no real effect on them. 
+drug had no real effect on them.
 
 The third histogram illustrates the principle behind the
-**False discovery rate (FDR)** adjustment. As the statistical test is done on 
+**False discovery rate (FDR)** adjustment. As the statistical test is done on
 the whole set of genes, the resulting pvalues will
 have a distribution corresponding to the combination of both
 histograms.  Most of the p-values are uniformly distributed between 0
 and 1 but there is a spike to the left close to zero, due to those
-p-values for which $H_0$ is false. 
+p-values for which $H_0$ is false.
 
 ```{r echo=FALSE, fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
 exp_modified <- exp
@@ -225,12 +225,12 @@ h1 + h2 + h3
 
 
 The False discovery rate (FDR) computes the expected fraction of false
-positives among all discoveries. It allows us to choose n results with a given 
+positives among all discoveries. It allows us to choose n results with a given
 FDR.
 
 Widely used examples are Benjamini-Hochberg or q-values.
 
-Let's use the `p.adjust()` function to adjust the pvalues calculated previously 
+Let's use the `p.adjust()` function to adjust the pvalues calculated previously
 (from the t.test we did on data generated with the rnorm() function)
 
 
@@ -257,7 +257,3 @@ table(res$padj < 0.05)
 ```
 
 </details>
-
-
-
-

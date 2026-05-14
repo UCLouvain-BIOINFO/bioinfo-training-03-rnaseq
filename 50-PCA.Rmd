@@ -1,11 +1,9 @@
-# PCA {#sec-pca}
+# Principle component analyses {#sec-pca}
 
 **Objectives**
 
-- Understand why we use PCA
-
-- Get an intuition for how it works
-
+- Understand why we use principle component analyses.
+- Get an intuition for how it works.
 - What can PCA reveal from RNA-seq data?
 
 ```{r load-pkg-pca, include=FALSE}
@@ -435,7 +433,7 @@ We will make a PCA on our RNAseq dataset in the next chapter.
 
 ```{r eval=FALSE, include=FALSE}
 # Let's make a PCA on our `se` dataset.
-# 
+#
 # Note that performing PCA on log-transformed RNA-seq data is not ideal,
 # as we will see in next chapter. For now, let us assume that we can do so.
 

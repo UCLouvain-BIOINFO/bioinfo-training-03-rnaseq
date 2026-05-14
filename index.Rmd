@@ -2,15 +2,16 @@
 title: "RNA-Seq analysis with R and Bioconductor"
 author: "Laurent Gatto and Axelle Loriot"
 date: "`r Sys.Date()`"
-site: bookdown::bookdown_site
-knit: bookdown::preview_chapter
-# output:
-#   msmbstyle::msmb_html_book:
-#     toc: TRUE
-#     toc_depth: 1
-#     split_by: chapter
-#     split_bib: no
-#   css: style.css
+description: "This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation."
+output:
+  bookdown::gitbook:
+    config:
+      download: "pdf"
+      sharing:
+        facebook: false
+        twitter: false
+        all: []
+documentclass: book
 link-citations: yes
 bibliography: [refs.bib, packages.bib]
 ---
@@ -22,9 +23,9 @@ with a complete analysis of RNA-seq data, including principal
 component analysis, identification of differentially expressed genes
 and gene set enrichment and over-representation analysis.
 
-The background for these analyses inludes introductions to hypthesis
+The background for these analyses includes introductions to hypothesis
 testing, linear modelling and adjustment for multiple comparisons,
-principal component analysis and high throughtput sequencing.
+principal component analysis and high throughput sequencing.
 
 This course is based on material from the
 [WSBIM1322](https://uclouvain-cbio.github.io/WSBIM1322/) and

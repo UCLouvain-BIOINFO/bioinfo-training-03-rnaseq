@@ -15,8 +15,8 @@ library(DT)
   typical RNA-seq pipeline, including quality control, read alignment,
   and gene quantification.
 
-*RNA Sequencing Data: Hitchhiker's Guide to Expression Analysis*
-[@Van_den_Berge:2019] is an interesting review describing RNA-seq
+See also *RNA Sequencing Data: Hitchhiker's Guide to Expression
+Analysis* [@Van_den_Berge:2019] for further details on RNA-seq
 technology and data analysis.
 
 ## RNA-seq library preparation
@@ -44,7 +44,7 @@ sequenced! So we lose the information about the orientation of the transcript.
 
 This can be avoided by using a **stranded protocol**.
 In this case, dUTPs are added during the 2nd strand cDNA synthesis and the
-newly synthetized cDNA strand is degradated after the ligation step.
+newly synthesised cDNA strand is degraded after the ligation step.
 This allows to infer the transcript orientation because only the first cDNA strand
 will be sequenced. Indeed, if the sequence of the read corresponds to the
 the sense strand of DNA, it means that the gene was originally transcribed in a
@@ -73,23 +73,23 @@ repeat regions, resulting in less multimapping reads.
 knitr::include_graphics("figs/SE_vs_PE.png")
 ```
 
-### cluster amplification
+### Cluster amplification
 
 The sequencing is done by a cluster amplification process.
 
-The library preparation is hybridized to a flow cell coated with
-immobilized oligonucleotides that serve as support to hold the DNA
+The library preparation is hybridised to a flow cell coated with
+immobilised oligonucleotides that serve as support to hold the DNA
 strands in place during sequencing. The templates are copied from the
-hybridized primers by 3’ extension using a high-fidelity DNA
+hybridised primers by 3’ extension using a high-fidelity DNA
 polymerase. The original templates are denatured, leaving the copies
-immobilized on the flow cell surface.
+immobilised on the flow cell surface.
 
-Immobilized DNA template copies are then amplified by bridge
-amplification. The templates loop over to hybridize to adjacent
+Immobilised DNA template copies are then amplified by bridge
+amplification. The templates loop over to hybridise to adjacent
 oligonucleotides. DNA polymerase copies the templates from the
-hybridized oligonucleotides, forming dsDNA bridges, which are
+hybridised oligonucleotides, forming dsDNA bridges, which are
 denatured to form two ssDNA strands. These two strands loop over and
-hybridize to adjacent oligonucleotides and are extended again to form
+hybridise to adjacent oligonucleotides and are extended again to form
 two new dsDNA loops.  The process is repeated on each template by
 cycles of denaturation and amplification to create millions of
 individual, dense clonal clusters containing ~2,000 molecules.
@@ -296,7 +296,7 @@ It gives the GC distribution across the reads.
 This plot makes more sense for whole genome shotgun sequencing,
 as the overall GC content should reflect the GC content of the underlying genome.
 (Note that since the software doesn't know the the GC content of the genome,
-the theorical distribution is calculated from the observed data).
+the theoretical distribution is calculated from the observed data).
 
 An unexpected distribution could indicate a contaminated library.
 
@@ -322,8 +322,8 @@ sequencing.
 knitr::include_graphics("figs/fastqc_fig7.png")
 ```
 
-The distribution of sequence lengths of all reads in the file.
-Here we see that most reads are 150 pb long but some reads are shorter.
+The distribution of sequence lengths of all reads in the file.  Here
+we see that most reads are 150 pb long but some reads are shorter.
 
 **8. Sequence Duplication Levels**:
 
@@ -353,7 +353,7 @@ knitr::include_graphics("figs/fastqc_fig9.png")
 ```
 
 FastQC lists here all of the sequence which make up more than 0.1% of
-the total. Finding that a single sequence is highly overrepresented in
+the total. Finding that a single sequence is highly over-represented in
 the set means that it is either highly biologically significant, or
 that the library is biased or contaminated.  Here it is of course not
 relevant as it just corresponds to a sequence full of 'N'.
@@ -482,43 +482,38 @@ knitr::include_graphics("figs/hisat2_report.png")
 **SAM format**
 
 The [SAM](https://genome.sph.umich.edu/wiki/SAM) format is a generic
-format for storing large nucleotide sequence alignments.
-In a SAM file, each entry gives the alignment information for a single read.
-Each entry has 11 mandatories fields for essential mapping information
-and a variable number of other fields for aligner specific information.
-An example of few entries from a SAM
-file is displayed below.
+format for storing large nucleotide sequence alignments.  In a SAM
+file, each entry gives the alignment information for a single read.
+Each entry has 11 mandatory fields for essential mapping information
+and a variable number of other fields for aligner specific
+information.  An example of few entries from a SAM file is displayed
+below.
 
 ```{bash, echo = FALSE}
 head wsbim2122_data/RNAseq_pipeline/example.sam
 ```
 
-Field 1: Sequence ID
-
-Field 2: [SAM Flag](https://broadinstitute.github.io/picard/explain-flags.html). It gives information about
-the read (is it paired, aligned, is the mate read properly aligned...)
-
-Field 3: Chromosome where alignment occurs
-
-Field 4: Position of alignment
-
-Field 5: Mapping quality score (read uniquely mapped (60), multiply mapped (1) or unmapped (0))
-
-Field 6: [CIGAR](https://sites.google.com/site/bioinformaticsremarks/bioinfo/sam-bam-format/what-is-a-cigar)
-string. It is a representation of alignment indicating positions of match/mismatch/deletion/insertion
-compared to the reference.
-
-Field 7: Reference name of the mate (Set to '=' if the mate’s reference sequence is the same as this alignment’s)
-
-Field 8: Position of mate
-
-Field 9: Inferred fragment length
-
-Field 10: Read sequence (reverse-complemented if aligned to the reverse strand)
-
-Field 11: Base quality (Phred score)
-
-Field 12: Optional. See [hisat2 manual](http://daehwankimlab.github.io/hisat2/manual/) for more information.
+- Field 1: Sequence ID
+- Field 2: [SAM
+  Flag](https://broadinstitute.github.io/picard/explain-flags.html). It
+  gives information about the read (is it paired, aligned, is the mate
+  read properly aligned...)
+- Field 3: Chromosome where alignment occurs
+- Field 4: Position of alignment
+- Field 5: Mapping quality score (read uniquely mapped (60), multiply mapped (1) or unmapped (0))
+- Field 6:
+  [CIGAR](https://sites.google.com/site/bioinformaticsremarks/bioinfo/sam-bam-format/what-is-a-cigar)
+  string. It is a representation of alignment indicating positions of
+  match/mismatch/deletion/insertion compared to the reference.
+- Field 7: Reference name of the mate (Set to '=' if the mate’s
+  reference sequence is the same as this alignment’s)
+- Field 8: Position of mate
+- Field 9: Inferred fragment length
+- Field 10: Read sequence (reverse-complemented if aligned to the reverse strand)
+- Field 11: Base quality (Phred score)
+- Field 12: Optional. See [hisat2
+  manual](http://daehwankimlab.github.io/hisat2/manual/) for more
+  information.
 
 **BAM format**
 
@@ -533,7 +528,7 @@ samtools view -Sb SampleName.sam | samtools sort > SampleName.bam
 
 **Alignment visualisation**
 
-Alignements described in BAM files can easily be viewed using
+Alignments described in BAM files can easily be viewed using
 [IGV](https://software.broadinstitute.org/software/igv/) (Integrative Genomics Viewer),
 a very useful interactive tool for the visual exploration of genomic data.
 
@@ -569,11 +564,9 @@ knitr::include_graphics("figs/IGV.png")
 Loading a BAM file creates 3 associated tracks:
 
 - Coverage Track to view depth of coverage
-
-- Splice Junction Track which provides an alternative view of reads spanning splice junctions
-
+- Splice Junction Track which provides an alternative view of reads
+  spanning splice junctions
 - Alignment Track to view individual aligned reads
-
 
 ## Counting
 
@@ -602,10 +595,9 @@ gtf annotation file for human genome assembly GRCh38 look like this:
 knitr::include_graphics("figs/gtf_example.png")
 ```
 
-
 FeatureCounts will count the number of uniquely mapped reads assigned
 to features (e.g. an exon) or meta-features (e.g. a gene) of the gtf
-file. When summarizing reads at gene level, read counts obtained for
+file. When summarising reads at gene level, read counts obtained for
 exons belonging to the same gene will be added up to yield the read
 count for the corresponding gene.  Note that an exon-spanning read
 will be counted only once for the corresponding gene even if it
@@ -632,7 +624,7 @@ featureCounts \
 SampleName.bam              # bam file
 ```
 
-Here is an example of featurecounts output file. The last column gives
+Here is an example of FeatureCounts output file. The last column gives
 the raw counts of each gene in that sample.
 
 ```{r echo=FALSE, message=FALSE}
@@ -665,12 +657,10 @@ featureCounts \
 *.bam                       # All bam files
 ```
 
-Here is an example of a `featureCounts` output file run on 6 BAM files. The last
-6 columns of the table give the raw counts for each gene in each sample.
-You can download it
-[here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseqdata/data/all_samples_counts.tsv.gz).
-
-
+Here is an example of a `featureCounts` output file run on 6 BAM
+files. The last 6 columns of the table give the raw counts for each
+gene in each sample.  You can download it
+[here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/all_samples_counts.tsv.gz).
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
 counts <- read_tsv("data/all_samples_counts.tsv.gz", skip = 1)
@@ -706,23 +696,14 @@ analysis.
 Inspect the count table.
 
 1. How many genes are tested ?
-
-
 2. How many reads were assigned to genes in each sample?
-
-
 3. Inspect the counts.
-
-- What is the maximum value in each sample?
-
-- How many genes have zero counts in each sample?
-
-
+   - What is the maximum value in each sample?
+   - How many genes have zero counts in each sample?
 4. Plot the distributions of counts for each sample. What do they look like?
 
 <details>
-<summary>Solutions</summary>
-
+<summary>Solution</summary>
 
 1. How many genes are tested ?
 
@@ -730,23 +711,15 @@ Inspect the count table.
 nrow(mat)
 ```
 
-
 2. How many reads were assigned to genes in each sample?
-
-
 
 ```{r}
 colSums(mat)
 ```
 
 3. Inspect the counts.
-
-- What is the maximum value in each sample?
-
-- How many genes have zero counts in each sample?
-
-<details>
-<summary>Solution</summary>
+   - What is the maximum value in each sample?
+   - How many genes have zero counts in each sample?
 
 ```{r}
 summary(mat)
@@ -754,7 +727,6 @@ colSums(mat == 0)
 ```
 
 4. Plot the distributions of counts for each sample. What do they look like?
-
 
 
 ```{r}
@@ -767,3 +739,5 @@ as_tibble(mat, rownames = "gene") |>
 
 Note that a "pseudo-count" was added before the log2 transformation of
 the counts, to avoid elimination of counts equal to zero.
+
+</details>

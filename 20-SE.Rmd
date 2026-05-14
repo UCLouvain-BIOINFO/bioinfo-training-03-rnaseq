@@ -7,18 +7,18 @@ library("tidyverse")
 **Objectives**
 
 - Present the `SummarizedExperiment` class, dedicated to store and
-  manipulate quantiative omics data.
+  manipulate quantitative omics data.
 - Show how to build `SummarizedExperiment` objects.
 
-Data in bioinformatics is often more complex than the basic data types
-we have seen so far. To deal with this, developers define specialised
-data containers (termed classes) that match the properties of the data
-they need to handle.
+Data in bioinformatics is often more complex. To deal with this,
+developers define specialised data containers (termed classes) that
+match the properties of the data they need to handle.
 
 This aspect is central to the **Bioconductor**[^Bioconductor] project
-which uses the same **core data infrastructure** across packages. This
-certainly contributed to Bioconductor's success. Bioconductor package
-developers are advised to make use of [existing
+that reuses the same **core data infrastructure** across
+packages. This certainly contributed to Bioconductor's
+success. Bioconductor package developers are advised to make use of
+[existing
 infrastructure](https://uclouvain-cbio.github.io/WSBIM1322/sec-obj.html#examples-from-the-bioconductor-project)
 to provide coherence, interoperability and stability to the project as
 a whole.
@@ -34,7 +34,8 @@ To illustrate such an omics data container, we'll present the
 
 ## SummarizedExperiment
 
-The figure below represents the anatomy of the SummarizedExperiment class.
+The figure below represents the anatomy of the `SummarizedExperiment`
+class.
 
 ```{r SE,  echo=FALSE, out.width = '80%'}
 knitr::include_graphics("https://uclouvain-cbio.github.io/WSBIM1322/figs/SE.svg")
@@ -47,32 +48,31 @@ Objects of the class SummarizedExperiment contain :
   transcripts, proteins, ...) are defined along the rows, and samples
   along the columns.
 
-- A **sample metadata** slot containing sample co-variates, stored as a
-  data frame. Rows from this table represent samples (rows match exactly the
-  columns of the expression data).
+- A **sample metadata** slot containing sample co-variates, stored as
+  a data frame. Rows from this table represent samples, and the rows
+  match exactly the columns of the expression data.
 
 - A **feature metadata** slot containing feature co-variates, stored as
   a data frame. The rows of this data frame match exactly the rows of the
   expression data.
 
-The coordinated nature of the SummarizedExperiment guarantees that
+The coordinated nature of the `SummarizedExperiment` guarantees that
 during data manipulation, the dimensions of the different slots will
 always match (i.e the columns in the expression data and then rows in
 the sample metadata, as well as the rows in the expression data and
-feature metadata) during data manipulation. For example, if we had to
-exclude one sample from the assay, it would be automatically removed
-from the sample metadata in the same operation.
+feature metadata). For example, if we had to exclude one sample from
+the assay, it would be automatically removed from the sample metadata
+in the same operation.
 
-The metadata slots can grow additional co-variates
-(columns) without affecting the other structures.
-
+The metadata slots can grow additional co-variates (columns) without
+affecting the other structures.
 
 ### Creating a SummarizedExperiment
 
 In order to create a `SummarizedExperiment`, we will create the
 individual components, i.e the count matrix, the sample and gene
 metadata from csv files. These are typically how RNA-Seq data are
-provided (after raw data have been processed).
+provided (after the raw data have been processed).
 
 ```{r eval=FALSE, message=FALSE, include=FALSE}
 # Simplify dataset
@@ -99,19 +99,16 @@ rowdata <- tibble(gene = counts$gene,
   mutate(chr = sub("p.*", "", x = chr)) |>
   mutate(chr = sub("q.*", "", x = chr))
 
-
-dir.create("data", showWarnings = F)
+dir.create("data", showWarnings = FALSE)
 write_csv(counts, file = "data/count_matrix.csv")
 write_csv(coldata, file = "data/sample_metadata.csv")
 write_csv(rowdata, file = "data/gene_metadata.csv")
 ```
 
-
-
 - **An expression matrix**: we load the count matrix, specifying that
   the first columns contains row/gene names, and convert the
   `data.frame` to a `matrix`. You can download it
-  [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/count_matrix.csv).
+  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/count_matrix.csv).
 
 
 ```{r countMatrix}
@@ -124,8 +121,7 @@ dim(count_matrix)
 
 
 - **A table describing the samples**, available
-  [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/gene_metadata.csv).
-
+  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/gene_metadata.csv).
 
 ```{r sampleMetadata, message = FALSE}
 sample_metadata <- read_csv("data/sample_metadata.csv")
@@ -134,7 +130,7 @@ dim(sample_metadata)
 ```
 
 - **A table describing the genes**, available
-  [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/sample_metadata.csv).
+  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/sample_metadata.csv).
 
 ```{r geneMetadata, message = FALSE}
 gene_metadata <- read_csv("data/gene_metadata.csv")
@@ -144,13 +140,11 @@ dim(gene_metadata)
 
 We will create a `SummarizedExperiment` from these tables:
 
-- The count matrix that will be used as the **`assay`**
-
+- The **count** matrix that will be used as the `assay`.
 - The table describing the samples will be used as the **sample
-  metadata** slot
-
+  metadata** `colData` slot.
 - The table describing the genes will be used as the **features
-  metadata** slot
+  metadata** `rowData` slot.
 
 To do this we can put the different parts together using the
 `SummarizedExperiment` constructor:
@@ -216,7 +210,6 @@ se1
 colData(se1)
 rowData(se1)
 ```
-
 
 We can also use the `colData()` function to subset on something from
 the sample metadata or the `rowData()` to subset on something from the

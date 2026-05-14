@@ -26,7 +26,7 @@ this episode, we will focus on two widely used methods: the
 over-representation analysis (ORA) and the Gene set enrichment
 analysis (GSEA).
 
-```{r load-pkg, include=FALSE}
+```{r load-pkg-enrich, include=FALSE}
 suppressPackageStartupMessages({
   library(DESeq2)
   library(tidyverse)
@@ -56,39 +56,53 @@ or a set of genes that are up-regulated in a certain disease.
 The [MSigDB database](https://www.gsea-msigdb.org/gsea/msigdb) contains a collection
 of annotated gene sets such as
 
-- **`Gene Ontology (GO)`**
+#### Gene Ontology (GO) {-}
 
 Gene Ontology defines concepts/classes used to describe gene function,
 and relationships between these concepts. GO terms are organized in a
-directed acyclic graph, where edges between terms represent parent-child relationship.
-It classifies functions along three aspects:
+directed acyclic graph, where edges between terms represent
+parent-child relationship.  It classifies functions along three
+aspects.
 
-- **MF: Molecular Function**: molecular activities of gene products
-- **CC: Cellular Component**: where gene products are active
-- **BP: Biological Process** pathways and larger processes made up of
+- **Molecular Function (MF)**: molecular activities of gene products
+- **Cellular Component (CC)**: where gene products are active
+- **Biological Process (BP)** pathways and larger processes made up of
   the activities of multiple gene products.
-- **Hallmark gene sets** are curated gene sets that represent
-  well-defined biologicalstates or processes (e.g. “Apoptosis”, “KRAS
-  signaling”, “DNA repair”).
-- **Kyoto Encyclopedia of Genes and Genomes (KEGG)**: KEGG is a
-  collection of manually drawn pathway maps representing molecular
-  interaction and reaction networks. These pathways cover a wide range
-  of biochemical processes.
-- **Other gene sets**: Other gene sets include but are not limited to
-  Positional gene sets, wikiPathways, Oncogenic signatures,
-  Immunologic signatures ...
+
+#### Hallmark gene sets {-}
+
+Hallmark gene sets are curated gene sets that represent well-defined
+biologicalstates or processes (e.g. Apoptosis, KRAS signaling, DNA
+repair).
+
+#### Kyoto Encyclopedia of Genes and Genomes {-}
+
+Kyoto Encyclopedia of Genes and Genomes (KEGG) is a collection of
+manually drawn pathway maps representing molecular interaction and
+reaction networks. These pathways cover a wide range of biochemical
+processes.
+
+#### Other gene sets
+
+Other gene sets include but are not limited to Positional gene sets,
+wikiPathways, Oncogenic signatures, Immunologic signatures ...
 
 
 ### Access the gene sets from MSigDB
 
-
-```{r eval=FALSE, message=FALSE, include=FALSE}
+```{r getMsigdb, eval=FALSE, message=FALSE, include=FALSE}
 ## listCollections(MSigDBGeneSets)
 ## listSubCollections(MSigDBGeneSets)
+
 MSigDBGeneSets <- getMsigdb(org = "mm", id = "SYM", version = "7.4")
-GOBP <- subsetCollection(MSigDBGeneSets, collection = "c5", subcollection = "GO:BP")
-# problem with function: the subcollection doesn't seem to work, all GO terms were selected.
-# + No way to retrieve KEGG pathways
+
+GOBP <- subsetCollection(MSigDBGeneSets,
+                         collection = "c5",
+                         subcollection = "GO:BP")
+
+## problem with function: the subcollection doesn't seem to work, all
+## GO terms were selected + No way to retrieve KEGG pathways
+
 gene_sets <- stack(geneIds(GOBP)) |> #stack() transforms a list of elements into a dataframe
   as_tibble() |>
   dplyr::rename(gs_name = ind, gene = values) |>
@@ -103,19 +117,25 @@ The
 CRAN package provides the MSigDB gene sets in a standard R data frame
 with key-value pairs.
 
-One can use msigdbr_collections() to see the available collections
+One can use `msigdbr_collections()` to see the available collections:
 
-```{r}
-msigdbr_collections()
+```{r msigdbr-collections}
+msigdbr_collections() |>
+    as_tibble()
 ```
 
+The `msigdbr()` function retrieves a data frame of gene sets and their
+member genes. Below we set the species of interest, the GO collection
+C5, and more specifically the Biological Process sub-collection. We
+also select the gene set name and gene symbols among the 20 variables.
 
-
-```{r}
+```{r GOBP}
 GO_BP <- msigdbr(species = "Homo sapiens",
                  collection = "C5",
                  subcollection = "BP") |>
-  dplyr::select(gs_name, gene_symbol)
+    dplyr::select(gs_name, gene_symbol)
+
+GO_BP
 ```
 
 
@@ -124,12 +144,11 @@ GO_BP <- msigdbr(species = "Homo sapiens",
 How many genes belong to the `GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION`
 geneset?
 
-
 <details>
 <summary>Solution</summary>
 
 
-```{r}
+```{r GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION}
 GO_BP |>
   filter(gs_name == "GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION")
 ```
@@ -138,18 +157,21 @@ GO_BP |>
 
 #### Question {-}
 
-Retrieve `Hallmarks` genesets
-
+Retrieve human `Hallmarks` gene sets. How many different gene sets are
+available?
 
 <details>
 <summary>Solution</summary>
 
 
-```{r}
-hallmarks <- msigdbr(species = "Homo sapiens", collection = "H") |>
+```{r hallmarks}
+hallmarks <- msigdbr(species = "Homo sapiens",
+                     collection = "H") |>
     dplyr::select(gs_name, gene_symbol)
 
 hallmarks
+
+table(hallmarks[[1]])
 ```
 
 </details>
@@ -163,7 +185,7 @@ the full DESeq2 analysis that you should already have learned about in
 the previous episode.  We will focus on the genes that have an
 adjusted p-value (those that have been tested).
 
-```{r, message = FALSE, warning=FALSE}
+```{r quick-deseq2-enrich, message = FALSE, warning=FALSE}
 se <- readRDS("data/se.rds")
 dds <- DESeqDataSet(se, design = ~ group)
 dds <- DESeq(dds)
@@ -172,8 +194,7 @@ res_tbl <- as_tibble(res, rownames = "gene")
 res_tbl <- res_tbl |> filter(!is.na(padj))
 ```
 
-
-## ORA
+## Over-representation analysis
 
 ### Principle
 
@@ -182,7 +203,6 @@ expressed genes (DE) is enriched in certain biological categories
 (such as genesets from Gene Ontology terms, KEGG pathways, or Reactome
 pathways), i.e, if it contains more genes from these categories than
 would be expected by chance.
-
 
 #### Step 1: selection of DE genes
 
@@ -241,39 +261,42 @@ fig3 <- res_tbl |>
 fig1 + fig2 + fig3
 ```
 
-We could consider all genes that have a p-adjusted value < 0.05 (left
-volcano), in this case we would select `r length(genes_DE1)`
+We could consider all genes that have a p-adjusted value < 0.05
+(left), in which case we would select `r length(genes_DE1)`
 genes. This number is probably too large, so we should probably be
 more restrictive and select a smaller set of genes, using a more
-stringent filtering on the p-adjusted value.  We could also consider
-filtering using the logFC, which could also make biological sense.
-
+stringent filtering on the p-adjusted value (center).  We could also
+consider filtering using the logFC, which could also make biological
+sense (right).
 
 Whatever thresholds are used, the idea here is to start from a
 selection of genes that we will consider as our DE genes.  **The
 selection is a choice the user has to make.**
 
-Here, we will apply the selection criteria illustrated in the second volcano.
-Hence, among all the genes (called the **universe**), we will consider the
-`r length(genes_DE2)` genes with a p-adjusted value < `r padj_thr` as our
-**genes of interest** or **DE genes**.
-
+Here, we will apply the selection criteria illustrated in the second
+volcano. Hence, among all the genes in our experiment (called the
+**universe**), we will consider the `r length(genes_DE2)` genes with a
+p-adjusted value < `r padj_thr` as our **genes of interest** or **DE
+genes**.
 
 #### Step 2: Counting
 
 For each biological category, we can count how many genes from our DE
 genes are in that category, and how many are not.
 
-Let's say we want to test the enrichment of the `GOBP_ENDODERM_DEVELOPMENT` geneset.
+```{r my-geneset}
+my_geneset <- "GOBP_ENDODERM_DEVELOPMENT"
+```
 
+Let's say we want to test the enrichment of the `r my_geneset` gene
+set. The volcano plot below highlights the genes from the set in blue.
 
-```{r echo=FALSE, out.width='80%'}
+```{r ora-GOBP-ENDODERM-DEVELOPMENT, echo=FALSE, out.width='80%'}
 GO_BP <- msigdbr(species = "Homo sapiens",
                  collection = "C5",
                  subcollection = "BP") |>
     dplyr::select(gs_name, gene_symbol)
 
-my_geneset <- "GOBP_ENDODERM_DEVELOPMENT"
 genes_from_geneset <- GO_BP |>
     filter(gs_name == my_geneset) |>
     pull(gene_symbol)
@@ -299,9 +322,8 @@ res_tbl |>
 ```
 
 
-
-We will count the number of DE genes from that are in `GOBP_LEUKOCYTE_CHEMOTAXIS`
-geneset, and how many are not.
+We will count the number of DE genes from that are in
+`r my_geneset` gene set, and how many are not.
 
 ```{r echo=FALSE, fig.align='center'}
 # DE and GO
@@ -338,35 +360,45 @@ fisher.test(count_mat, alternative = "greater")
 ```
 
 
-### Running an ORA with `clusterProfiler` package
+### Running an ORA with the `clusterProfiler` package
 
-In practice, the analysis presented above can be executed using any of the very
-many packages that are available.
+In practice, the analysis presented above can be executed using any of
+the very many packages that are available.
 
-Here, we will use the
-[clusterProfiler package](https://yulab-smu.top/clusterProfiler-book/)
-to test if any GO terms from the Biological Process is enriched among our DE genes.
+Here, we will use the [clusterProfiler
+package](https://yulab-smu.top/clusterProfiler-book/) to test if any
+GO terms from the Biological Process is enriched among our DE genes.
 
-```{r}
-## Define our DE genes
+Let's start be defining our DE genes and our universe.
+
+```{r ora-de-genes}
 padj_thr <- 1e-10
 log2FC_thr <- 0
-geneList <- res_tbl$gene
-genes_DE <- res_tbl$gene[res_tbl$padj <= padj_thr &
-                           abs(res_tbl$log2FoldChange) >= log2FC_thr]
 
+genes_DE <- res_tbl |>
+    filter(padj <= padj_thr,
+           abs(log2FoldChange) >= log2FC_thr) |>
+    pull(gene)
+
+geneList <- res_tbl$gene
+```
+
+We won't set any (adjusted) p-value threshold and filter the results
+by hand to be able to adapt the it without re-running the analysis.
+
+```{r run-ora}
 ORA_res <- enricher(gene          = genes_DE,
                     universe      = geneList,
                     pAdjustMethod = "BH",
                     qvalueCutoff  = 1,
                     pvalueCutoff  = 1,
-                    TERM2GENE     = GO_BP)
+                    TERM2GENE     = GO_BP) |>
+    as_tibble()
 
-ORA_res_tbl_GO <- as_tibble(ORA_res) |>
+ORA_res_tbl_GO <- ORA_res |>
     filter(p.adjust < 0.05)
 
-ORA_res_tbl_GO |>
-  select(ID, GeneRatio, BgRatio, pvalue, p.adjust)
+ORA_res_tbl_GO
 ```
 
 In the output data frame, there are the following columns:
@@ -381,7 +413,6 @@ In the output data frame, there are the following columns:
   positives in multiple testings.
 - `geneID`: A list of DE genes in the gene set.
 - `Count`: Number of DE genes in the gene set.
-
 
 You may have noticed the total number of DE genes changes. We defined
 `r length(genes_DE)` DE genes, but only
@@ -406,7 +437,7 @@ Let's inspect genes from the
 `GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTOR_BETA`on the volcano
 
 
-```{r}
+```{r volcano-GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTOR_BETA}
 my_geneset <- "GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTOR_BETA"
 
 genes_from_geneset <- GO_BP |>
@@ -443,60 +474,67 @@ non-DE genes.  Setting this threshold might have an effect on the
 results.
 
 
-#### Question 1 {-}
+#### Question {-}
 
-Test a different threshold to define the group of 'DE genes'.
+Test different p-value and/or log fold-change thresholds to define the
+group of 'DE genes'.
 
 <details>
 <summary>Solution</summary>
 
 
-```{r}
-# Define our DE genes
+```{r ora-2, warning = FALSE}
 padj_thr <- 1e-10
 log2FC_thr <- 1
 
+genes_DE <- res_tbl |>
+    filter(padj <= padj_thr,
+           abs(log2FoldChange) >= log2FC_thr) |>
+    pull(gene)
+
 geneList <- res_tbl$gene
-genes_DE <- res_tbl$gene[res_tbl$padj <= padj_thr &
-                           abs(res_tbl$log2FoldChange) >= log2FC_thr]
 
 res_tbl |>
-  ggplot(aes(x = log2FoldChange, y = -log10(padj))) +
-  geom_point(aes(color = gene %in% genes_DE), size = 1) +
-  scale_color_manual(values = c("gray", "red")) +
-  theme_bw() +
-  theme(legend.position = "none") +
-  geom_hline(yintercept = -log10(padj_thr)) +
-  geom_vline(xintercept = -log2FC_thr) +
-  geom_vline(xintercept = log2FC_thr) +
-  ggtitle(paste0(length(genes_DE), " DE selected (padj < ", padj_thr, ")"))
+    ggplot(aes(x = log2FoldChange, y = -log10(padj))) +
+    geom_point(aes(color = gene %in% genes_DE), size = 1) +
+    scale_color_manual(values = c("gray", "red")) +
+    theme_bw() +
+    theme(legend.position = "none") +
+    geom_hline(yintercept = -log10(padj_thr)) +
+    geom_vline(xintercept = -log2FC_thr) +
+    geom_vline(xintercept = log2FC_thr) +
+    ggtitle(paste0(length(genes_DE), " DE selected (padj < ", padj_thr,
+                   ", abs(lfc) > ", log2FC_thr, ")"))
 
 ORA_res_new_thr <- enricher(gene          = genes_DE,
                             universe      = geneList,
                             pAdjustMethod = "BH",
                             qvalueCutoff  = 1,
                             pvalueCutoff  = 1,
-                            TERM2GENE     = GO_BP)
+                            TERM2GENE     = GO_BP) |>
+    as_tibble()
 
-ORA_res_GO_new_thr <- as_tibble(ORA_res_new_thr) |>
+ORA_res_new_thr |>
+    filter(p.adjust < 0.05)
+
+ORA_res_GO_new_thr <- ORA_res_new_thr |>
     filter(p.adjust < 0.1)
+```
 
-ORA_res_GO_new_thr |>
-  select(ID, GeneRatio, BgRatio, pvalue, p.adjust)
-
+```{r venn-ora-ora, warning = FALSE}
 if (!require(Vennerable))
     BiocManager::install("js229/Vennerable")
+
 geneset_list <- list(prev_thr = ORA_res_tbl_GO$ID,
                      new_thr = ORA_res_GO_new_thr$ID)
 plot(Venn(geneset_list))
 ```
 
-<details>
+</details>
 
-#### Question 2 {-}
+#### Question {-}
 
 Repeat the ORA analysis using this time the Hallmarks genesets.
-
 
 <details>
 <summary>Solution</summary>
@@ -507,80 +545,90 @@ Repeat the ORA analysis using this time the Hallmarks genesets.
 padj_thr <- 1e-10
 log2FC_thr <- 0
 
+genes_DE <- res_tbl |>
+    filter(padj <= padj_thr,
+           abs(log2FoldChange) >= log2FC_thr) |>
+    pull(gene)
+
 geneList <- res_tbl$gene
-genes_DE <- res_tbl$gene[res_tbl$padj <= padj_thr &
-                           abs(res_tbl$log2FoldChange) >= log2FC_thr]
 
-
-hallmarks <- msigdbr(species = "Homo sapiens", collection = "H") |>
-  dplyr::select(gs_name, gene_symbol)
+hallmarks <- msigdbr(species = "Homo sapiens",
+                     collection = "H") |>
+    dplyr::select(gs_name, gene_symbol)
 
 ORA_hallmarks <- enricher(gene          = genes_DE,
                           universe      = geneList,
                           pAdjustMethod = "BH",
                           qvalueCutoff = 1,
                           pvalueCutoff = 1,
-                          TERM2GENE     = hallmarks)
+                          TERM2GENE     = hallmarks) |>
+    as_tibble()
 
-ORA_hallmarks_tbl <- as_tibble(ORA_hallmarks) |> filter(p.adjust < 0.05)
-ORA_hallmarks_tbl |>
-  select(ID, GeneRatio, BgRatio, pvalue, p.adjust)
+ORA_hallmarks_tbl <- ORA_hallmarks |>
+    filter(p.adjust < 0.05)
+
+ORA_hallmarks_tbl
 ```
 
-<details>
+</details>
 
-## GSEA
-
+## Gene set enrichment analysis
 
 ### Principle
 
-Gene set enrichment analysis refers to a broad family of tests. Here, we will
-define the principles based on [Subramanian et al. 2005](https://pubmed.ncbi.nlm.nih.gov/16199517/)
-keeping in mind that the exact implementation will differ in different tools.
+Gene set enrichment analysis (GSEA) refers to a broad family of
+tests. Here, we will define the principles based on
+[@Subramanian:2005]. keeping in mind that the exact implementation
+will differ in different tools.
 
-Gene Set Enrichment Analysis (GSEA) is a statistical method used to determine
-whether predefined sets of genes (for example, genes belonging to a GO term) show
-systematic differences in expression between two biological conditions.
-Instead of focusing only on individual genes, GSEA evaluates
-the **collective behavior of gene groups**.
+Gene Set Enrichment Analysis (GSEA) is a statistical method used to
+determine whether predefined sets of genes (for example, genes
+belonging to a GO term) show systematic differences in expression
+between two biological conditions.  Instead of focusing only on
+individual genes, GSEA evaluates the **collective behavior of gene
+groups**.
 
-The major advantage of GSEA approaches is that they don’t rely on defining DE genes.
+The major advantage of GSEA approaches is that they don't rely on
+defining DE genes.
 
 #### Step 1: Gene ranking
 
-The first step is to order the genes of interest. Genes could be ranked for example
-by the value of the test statistic or by their p-value.
+The first step is to order the genes of interest. Genes could be
+ranked for example by the value of the test statistic or by their
+p-value.
 
-Depending on the metric used for the ranking, genes will be ordered from the
-most up-regulated to the most down-regulated (if the test statistic is used for
-instance) or by the most significantly DE (no matter if they are up or down-regulated)
-to genes not differentially expressed.
-
+Depending on the metric used for the ranking, genes will be ordered
+from the most up-regulated to the most down-regulated (if the test
+statistic is used for instance) or by the most significantly DE (no
+matter if they are up or down-regulated) to genes not differentially
+expressed.
 
 #### Step 2: Check where the genes of a specific geneset appear
 
-For a given gene set (a GO-term, or a KEGG pathaway for example),
-The idea is to check if these genes tend to appear toward the top or bottom of
-the ranked list, rather than being randomly scattered.
+For a given gene set (a GO-term, or a KEGG pathaway for example), The
+idea is to check if these genes tend to appear toward the top or
+bottom of the ranked list, rather than being randomly scattered.
 
 #### Step 3: Compute an Enrichment Score (ES)
 
-The algorithm walks down the ranked list, increasing a running-sum statistic
-when it encounters a gene from the set, and decreasing it otherwise.
+The algorithm walks down the ranked list, increasing a running-sum
+statistic when it encounters a gene from the set, and decreasing it
+otherwise.
 
 The positive score is defined by $\frac{n_{genes} -
-n_{genes~in~set}}{n_{genes~in~set}}$, and the decreasing score by -1, so that
-the sum of all genes in the set and those not in the set becomes zero.
+n_{genes~in~set}}{n_{genes~in~set}}$, and the decreasing score by -1,
+so that the sum of all genes in the set and those not in the set
+becomes zero.
 
-The maximum deviation from zero is the Enrichment Score (ES), reflecting how
-strongly the gene set is enriched at either end of the ranking.
+The maximum deviation from zero is the Enrichment Score (ES),
+reflecting how strongly the gene set is enriched at either end of the
+ranking.
 
 
-```{r echo=FALSE, warning=FALSE, fig.height = 5, fig.width = 8}
+```{r gsea-step-3, echo=FALSE, warning=FALSE, fig.height = 5, fig.width = 8}
 geneList <- res_tbl$stat
 names(geneList) <- res_tbl$gene
 geneList <- geneList[order(geneList, decreasing = TRUE)]
-
 
 set.seed(1)
 GSEA_res <- GSEA(geneList,
@@ -591,43 +639,37 @@ GSEA_res <- GSEA(geneList,
              pvalueCutoff = 1,
              pAdjustMethod = "BH",
              eps = 0)
-GSEA_res_tbl <- as_tibble(GSEA_res) |> filter(p.adjust < 0.05)
 
-gseaplot(GSEA_res, GSEA_res_tbl$ID[1], by = "runningScore", title = GSEA_res_tbl$ID[1])
+GSEA_res_tbl <- as_tibble(GSEA_res) |>
+    filter(p.adjust < 0.05)
+
+gseaplot(GSEA_res,
+         GSEA_res_tbl$ID[1],
+         by = "runningScore",
+         title = GSEA_res_tbl$ID[1])
 ```
 
 
 #### Step 4: Assess significance by permutation
 
-To evaluate whether the observed ES is greater than expected by chance,
-GSEA performs permutations (of either gene labels or sample labels).
-This generates a null distribution to compute a p-value.
+To evaluate whether the observed Enrichment Score (ES) is greater than
+expected by chance, GSEA performs permutations (of either gene labels
+or sample labels). This generates a null distribution to compute a
+p-value.
 
-An Enrichment score is recomputed for each permutation.
-The p-value is given by the proportion of permutations where the permuted ES is at
-least as extreme as the observed ES:
-
-
-
-
-
+An Enrichment Score (ES) is recomputed for each permutation. The
+p-value is given by the proportion of permutations where the permuted
+ES is at least as extreme as the observed ES:
 
 $$p = \frac{\#\{ ES_{\text{permuted}} \ge ES_{\text{observed}} \}}{\text{total number of permutations}}$$
 
+### Running a GSEA with the `clusterProfiler` package
 
+Here, we will re-use the [clusterProfiler
+package](https://yulab-smu.top/clusterProfiler-book/) to run a GSEA
+this time, using `hallmark genesets`.
 
-
-
-
-
-
-### Running a GSEA with `clusterProfiler` package
-
-Here, we will re-use the
-[clusterProfiler package](https://yulab-smu.top/clusterProfiler-book/) to run a
-GSEA this time, using `hallmark genesets`.
-
-```{r, message=FALSE, warning = FALSE}
+```{r run-gsea-hallmark, message = FALSE, warning = FALSE}
 # Ranking our DE results by the statistic value used in DESeq2
 geneList <- res_tbl$stat
 names(geneList)<- res_tbl$gene
@@ -643,52 +685,62 @@ GSEA_res <- GSEA(geneList,
              pAdjustMethod = "BH",
              eps = 0)
 
-GSEA_hallmarks_tbl <- as_tibble(GSEA_res) |> filter(p.adjust < 0.05)
+GSEA_hallmarks_tbl <- GSEA_res |>
+    as_tibble() |>
+    filter(p.adjust < 0.05)
+
 GSEA_hallmarks_tbl
 ```
 
 In the output data frame, there are the following columns:
 
 - `ID`: ID of the gene set. In this example analysis, it is the GO ID.
-- `Description`: Readable description. Here it is the name of the GO term.
-- `setSize`: Number of genes in this gene set that are present in your universe of tested genes.
-- `enrichmentScore`: Raw enrichment score calculated from the running-sum statistic.
+- `Description`: Readable description. Here it is the name of the GO
+  term.
+- `setSize`: Number of genes in this gene set that are present in your
+  universe of tested genes.
+- `enrichmentScore`: Raw enrichment score calculated from the
+  running-sum statistic.
 - `NES`: ES normalized by gene set size. T
 - `pvalue`: _p_-value calculated from the hypergeometric distribution.
 - `p.adjust`: Adjusted _p_-value by the BH method.
-- `qvalue`: _q_-value which is another way for controlling false positives in multiple testings.
-- `rank`: Position in the ranked gene list where the running score reaches its maximum (the ES).
-- `leadingEdge`: List of genes in the set contributing most to the ES (genes before the peak), often called the core enrichment.
+- `qvalue`: _q_-value which is another way for controlling false
+  positives in multiple testings.
+- `rank`: Position in the ranked gene list where the running score
+  reaches its maximum (the ES).
+- `leadingEdge`: List of genes in the set contributing most to the ES
+  (genes before the peak), often called the core enrichment.
 
+The GSEA plot can be drawn with the `gseaplot()` function
 
-
-The GSEA plot can be drawn with the gseaplot() function
-
-```{r warning=FALSE, fig.height = 5, fig.width = 8}
-gseaplot(GSEA_res, GSEA_hallmarks_tbl$ID[1], by = "runningScore", title = GSEA_hallmarks_tbl$ID[1])
+```{r gseaplot-hallmarks, fig.height = 5, fig.width = 8}
+gseaplot(GSEA_res,
+         GSEA_hallmarks_tbl$ID[1],
+         by = "runningScore",
+         title = GSEA_hallmarks_tbl$ID[1])
 ```
 
-#### Question 1 {-}
+#### Question {-}
 
 Compare the results obtained using ORA and GSEA on GO terms (BP)
 
 <details>
 <summary>Solution</summary>
 
-```{r}
+```{r venn-ora-gsea, warning = FALSE}
 library(Vennerable)
 geneset_list <- list(ORA = ORA_hallmarks_tbl$ID,
                      GSEA = GSEA_hallmarks_tbl$ID)
 plot(Venn(geneset_list))
 ```
 
-<details>
+</details>
 
-#### Question 2 {-}
+#### Question {-}
 
 Compare GSEA and ORA methods, what are pros and cons of both methods?
 
-#### Question 3 {-}
+#### Question {-}
 
 Think about the different ways to order the genes for the GSEA analysis.
 What impact could the ranking method have on the GSEA analysis?

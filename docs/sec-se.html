@@ -5,19 +5,19 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 SummarizedExperiments | RNA-Seq analysis with R and Bioconductor</title>
-  <meta name="description" content="Chapter 2 SummarizedExperiments | RNA-Seq analysis with R and Bioconductor" />
+  <meta name="description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
   <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 SummarizedExperiments | RNA-Seq analysis with R and Bioconductor" />
   <meta property="og:type" content="book" />
   
-  
+  <meta property="og:description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
   
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 2 SummarizedExperiments | RNA-Seq analysis with R and Bioconductor" />
   
-  
+  <meta name="twitter:description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
   
 
 <meta name="author" content="Laurent Gatto and Axelle Loriot" />
@@ -172,7 +172,7 @@ div.csl-indent {
 <li class="chapter" data-level="1.2" data-path="sec-hts.html"><a href="sec-hts.html#sequencing"><i class="fa fa-check"></i><b>1.2</b> Sequencing</a>
 <ul>
 <li class="chapter" data-level="1.2.1" data-path="sec-hts.html"><a href="sec-hts.html#se-vs-pe-sequencing"><i class="fa fa-check"></i><b>1.2.1</b> SE vs PE sequencing</a></li>
-<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> cluster amplification</a></li>
+<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> Cluster amplification</a></li>
 </ul></li>
 <li class="chapter" data-level="1.3" data-path="sec-hts.html"><a href="sec-hts.html#fastq-files"><i class="fa fa-check"></i><b>1.3</b> fastq files</a></li>
 <li class="chapter" data-level="1.4" data-path="sec-hts.html"><a href="sec-hts.html#processing-pipeline"><i class="fa fa-check"></i><b>1.4</b> Processing pipeline</a>
@@ -214,7 +214,7 @@ div.csl-indent {
 <li class="chapter" data-level="3.4.1" data-path="sec-lm.html"><a href="sec-lm.html#examples"><i class="fa fa-check"></i><b>3.4.1</b> Examples</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> FDR</a>
+<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> False discovery rate</a>
 <ul>
 <li class="chapter" data-level="4.1" data-path="sec-FDR.html"><a href="sec-FDR.html#multiple-testing"><i class="fa fa-check"></i><b>4.1</b> Multiple testing</a></li>
 <li class="chapter" data-level="4.2" data-path="sec-FDR.html"><a href="sec-FDR.html#adjustment-for-multiple-testing"><i class="fa fa-check"></i><b>4.2</b> Adjustment for multiple testing</a>
@@ -222,7 +222,7 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="sec-FDR.html"><a href="sec-FDR.html#question-13"><i class="fa fa-check"></i>Question</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> PCA</a>
+<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> Principle component analyses</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="sec-pca.html"><a href="sec-pca.html#introduction-to-pca"><i class="fa fa-check"></i><b>5.1</b> Introduction to PCA</a>
 <ul>
@@ -271,17 +271,17 @@ div.csl-indent {
 <li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
-<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#ora"><i class="fa fa-check"></i><b>7.4</b> ORA</a>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#over-representation-analysis"><i class="fa fa-check"></i><b>7.4</b> Over-representation analysis</a>
 <ul>
 <li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
-<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with the <code>clusterProfiler</code> package</a></li>
 <li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
 <li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
 </ul></li>
-<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gsea"><i class="fa fa-check"></i><b>7.5</b> GSEA</a>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>7.5</b> Gene set enrichment analysis</a>
 <ul>
 <li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
-<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
 </ul>
@@ -306,17 +306,17 @@ div.csl-indent {
 <p><strong>Objectives</strong></p>
 <ul>
 <li>Present the <code>SummarizedExperiment</code> class, dedicated to store and
-manipulate quantiative omics data.</li>
+manipulate quantitative omics data.</li>
 <li>Show how to build <code>SummarizedExperiment</code> objects.</li>
 </ul>
-<p>Data in bioinformatics is often more complex than the basic data types
-we have seen so far. To deal with this, developers define specialised
-data containers (termed classes) that match the properties of the data
-they need to handle.</p>
+<p>Data in bioinformatics is often more complex. To deal with this,
+developers define specialised data containers (termed classes) that
+match the properties of the data they need to handle.</p>
 <p>This aspect is central to the <strong>Bioconductor</strong><a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> project
-which uses the same <strong>core data infrastructure</strong> across packages. This
-certainly contributed to Bioconductor’s success. Bioconductor package
-developers are advised to make use of <a href="https://uclouvain-cbio.github.io/WSBIM1322/sec-obj.html#examples-from-the-bioconductor-project">existing
+that reuses the same <strong>core data infrastructure</strong> across
+packages. This certainly contributed to Bioconductor’s
+success. Bioconductor package developers are advised to make use of
+<a href="https://uclouvain-cbio.github.io/WSBIM1322/sec-obj.html#examples-from-the-bioconductor-project">existing
 infrastructure</a>
 to provide coherence, interoperability and stability to the project as
 a whole.</p>
@@ -324,7 +324,8 @@ a whole.</p>
 <code>SummarizedExperiment</code> class.</p>
 <div id="summarizedexperiment" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> SummarizedExperiment<a href="sec-se.html#summarizedexperiment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>The figure below represents the anatomy of the SummarizedExperiment class.</p>
+<p>The figure below represents the anatomy of the <code>SummarizedExperiment</code>
+class.</p>
 <p><img src="https://uclouvain-cbio.github.io/WSBIM1322/figs/SE.svg" alt="" width="80%" /></p>
 <p>Objects of the class SummarizedExperiment contain :</p>
 <ul>
@@ -332,33 +333,33 @@ a whole.</p>
 (expression data), stored as a matrix-like object. Features (genes,
 transcripts, proteins, …) are defined along the rows, and samples
 along the columns.</p></li>
-<li><p>A <strong>sample metadata</strong> slot containing sample co-variates, stored as a
-data frame. Rows from this table represent samples (rows match exactly the
-columns of the expression data).</p></li>
+<li><p>A <strong>sample metadata</strong> slot containing sample co-variates, stored as
+a data frame. Rows from this table represent samples, and the rows
+match exactly the columns of the expression data.</p></li>
 <li><p>A <strong>feature metadata</strong> slot containing feature co-variates, stored as
 a data frame. The rows of this data frame match exactly the rows of the
 expression data.</p></li>
 </ul>
-<p>The coordinated nature of the SummarizedExperiment guarantees that
+<p>The coordinated nature of the <code>SummarizedExperiment</code> guarantees that
 during data manipulation, the dimensions of the different slots will
 always match (i.e the columns in the expression data and then rows in
 the sample metadata, as well as the rows in the expression data and
-feature metadata) during data manipulation. For example, if we had to
-exclude one sample from the assay, it would be automatically removed
-from the sample metadata in the same operation.</p>
-<p>The metadata slots can grow additional co-variates
-(columns) without affecting the other structures.</p>
+feature metadata). For example, if we had to exclude one sample from
+the assay, it would be automatically removed from the sample metadata
+in the same operation.</p>
+<p>The metadata slots can grow additional co-variates (columns) without
+affecting the other structures.</p>
 <div id="creating-a-summarizedexperiment" class="section level3 hasAnchor" number="2.1.1">
 <h3><span class="header-section-number">2.1.1</span> Creating a SummarizedExperiment<a href="sec-se.html#creating-a-summarizedexperiment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In order to create a <code>SummarizedExperiment</code>, we will create the
 individual components, i.e the count matrix, the sample and gene
 metadata from csv files. These are typically how RNA-Seq data are
-provided (after raw data have been processed).</p>
+provided (after the raw data have been processed).</p>
 <ul>
 <li><strong>An expression matrix</strong>: we load the count matrix, specifying that
 the first columns contains row/gene names, and convert the
 <code>data.frame</code> to a <code>matrix</code>. You can download it
-<a href="https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/count_matrix.csv">here</a>.</li>
+<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/count_matrix.csv">here</a>.</li>
 </ul>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="sec-se.html#cb29-1" tabindex="-1"></a>count_matrix <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/count_matrix.csv&quot;</span>,</span>
 <span id="cb29-2"><a href="sec-se.html#cb29-2" tabindex="-1"></a>                         <span class="at">row.names =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span></span>
@@ -380,7 +381,7 @@ the first columns contains row/gene names, and convert the
 <pre><code>## [1] 36223    12</code></pre>
 <ul>
 <li><strong>A table describing the samples</strong>, available
-<a href="https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/gene_metadata.csv">here</a>.</li>
+<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/gene_metadata.csv">here</a>.</li>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="sec-se.html#cb33-1" tabindex="-1"></a>sample_metadata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/sample_metadata.csv&quot;</span>)</span>
 <span id="cb33-2"><a href="sec-se.html#cb33-2" tabindex="-1"></a>sample_metadata</span></code></pre></div>
@@ -403,7 +404,7 @@ the first columns contains row/gene names, and convert the
 <pre><code>## [1] 12  3</code></pre>
 <ul>
 <li><strong>A table describing the genes</strong>, available
-<a href="https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/sample_metadata.csv">here</a>.</li>
+<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/sample_metadata.csv">here</a>.</li>
 </ul>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="sec-se.html#cb37-1" tabindex="-1"></a>gene_metadata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/gene_metadata.csv&quot;</span>)</span>
 <span id="cb37-2"><a href="sec-se.html#cb37-2" tabindex="-1"></a><span class="fu">head</span>(gene_metadata)</span></code></pre></div>
@@ -420,11 +421,11 @@ the first columns contains row/gene names, and convert the
 <pre><code>## [1] 36223     3</code></pre>
 <p>We will create a <code>SummarizedExperiment</code> from these tables:</p>
 <ul>
-<li><p>The count matrix that will be used as the <strong><code>assay</code></strong></p></li>
-<li><p>The table describing the samples will be used as the <strong>sample
-metadata</strong> slot</p></li>
-<li><p>The table describing the genes will be used as the <strong>features
-metadata</strong> slot</p></li>
+<li>The <strong>count</strong> matrix that will be used as the <code>assay</code>.</li>
+<li>The table describing the samples will be used as the <strong>sample
+metadata</strong> <code>colData</code> slot.</li>
+<li>The table describing the genes will be used as the <strong>features
+metadata</strong> <code>rowData</code> slot.</li>
 </ul>
 <p>To do this we can put the different parts together using the
 <code>SummarizedExperiment</code> constructor:</p>
@@ -830,14 +831,14 @@ gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
   "sharing": {
     "github": false,
-    "facebook": true,
-    "twitter": true,
+    "facebook": false,
+    "twitter": false,
     "linkedin": false,
     "weibo": false,
     "instapaper": false,
     "vk": false,
     "whatsapp": false,
-    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+    "all": {}
   },
   "fontsettings": {
     "theme": "white",
@@ -856,7 +857,7 @@ gitbook.start({
     "link": null,
     "text": null
   },
-  "download": null,
+  "download": ["rnaseq.pdf"],
   "search": {
     "engine": "fuse",
     "options": null
