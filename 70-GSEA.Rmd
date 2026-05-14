@@ -32,7 +32,6 @@ suppressPackageStartupMessages({
   library(tidyverse)
   library(org.Hs.eg.db)
   library(msigdbr)
-  #library(msigdb)
   library(clusterProfiler)})
 ```
 
