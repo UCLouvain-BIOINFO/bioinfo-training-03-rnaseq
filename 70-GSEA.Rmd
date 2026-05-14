@@ -30,9 +30,9 @@ analysis (GSEA).
 suppressPackageStartupMessages({
   library(DESeq2)
   library(tidyverse)
-  library(org.Mm.eg.db)
+  library(org.Hs.eg.db)
   library(msigdbr)
-  library(msigdb)
+  #library(msigdb)
   library(clusterProfiler)})
 ```
 
