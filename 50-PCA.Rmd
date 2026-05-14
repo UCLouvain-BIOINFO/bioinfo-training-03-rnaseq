@@ -423,50 +423,38 @@ Are principal components effectively representing the main patterns and structur
 of the dataset?
 
 
-## Starting from a real dataset
+## PCA on a real datasets
 
 In real RNA-seq datasets, the data usually consists of tens of thousands of
 dimensions (genes), which are impossible to explore by eye. In this context,
 PCA is extremely useful, as it summarizes the data into a smaller number of
 dimensions, making it easier to explore.
 
-Let's make a PCA on our `se` dataset.
+We will make a PCA on our RNAseq dataset in the next chapter.
 
-Note that performing PCA on log-transformed RNA-seq data is not ideal,
-as we will see in next chapter. For now, let us assume that we can do so.
 
-```{r}
+```{r eval=FALSE, include=FALSE}
+# Let's make a PCA on our `se` dataset.
+# 
+# Note that performing PCA on log-transformed RNA-seq data is not ideal,
+# as we will see in next chapter. For now, let us assume that we can do so.
+
+
 se <- readRDS("data/se.rds")
 pca <- prcomp(t(log1p(assay(se))))
-```
 
-
-```{r}
 as_tibble(pca$x, rownames = "sample") |>
   left_join(as_tibble(colData(se))) |>
   ggplot(aes(x = PC1, y = PC2, shape = Type, color = Condition)) +
   geom_point(size = 3) +
   theme(aspect.ratio = .4)
-```
 
-
-```{r}
 summary(pca)
 ```
 
 
-#### Question {-}
 
-Try to interpret this PCA
-
-## What can PCA reveal from RNA-seq data?
-
-In real RNA-seq datasets, the data usually consists of tens of thousands of
-dimensions (genes), which are impossible to explore by eye. In this context,
-PCA is extremely useful, as it summarizes the data into a smaller number of
-dimensions, making it easier to explore.
-
-What insights can PCA provide for RNA-seq data?
+**What can PCA reveal from RNA-seq data?**
 
 - Which samples are similar or distinct to each other?
 - What are the main sources of variability in the data?
@@ -476,8 +464,6 @@ What insights can PCA provide for RNA-seq data?
 - Are they any outliers which may need to be explored further?
 
 #### Question {-}
-
-Interprete the following PCAs.
 
 Here are a few examples of PCAs corresponding to different experimental designs.
 How would you interprete them and what impact would they have on the analysis?
