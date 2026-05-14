@@ -126,7 +126,7 @@ dim(count_matrix)
 
 - **A table describing the samples**, available
   [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/gene_metadata.csv).
-  
+
 
 ```{r sampleMetadata, message = FALSE}
 sample_metadata <- read_csv("data/sample_metadata.csv")
@@ -244,14 +244,14 @@ colData(se1)
 
 #### Question {-}
 
-Extract the gene expression levels of genes located on sex chromosomes 
+Extract the gene expression levels of genes located on sex chromosomes
 in Fibroblast control cells
 
 <details>
 <summary>Solution</summary>
 
 ```{r, purl=FALSE}
-se2 <- se[rowData(se)$chr %in% c("X", "Y"), 
+se2 <- se[rowData(se)$chr %in% c("X", "Y"),
           se$Type == "Fibroblast" & se$Condition == "ctl"]
 head(assay(se2))
 rowData(se2)
@@ -288,7 +288,7 @@ se$group <- paste(se$Type, se$Condition, sep = "_")
 
 ### Adding gene annotations to the feature metadata
 
-The rowData slot of our se provides the ENSEMBL gene references. It might be 
+The rowData slot of our se provides the ENSEMBL gene references. It might be
 interesting to add other types of informative annotations describing genes.
 
 #### Gene annotation database
@@ -315,7 +315,7 @@ keytypes(org.Hs.eg.db)
 
 We can easily extract information from this database using the `mapIds()` function.
 
-For example, we can retrieve the ENTREZID references, or the chromosomal 
+For example, we can retrieve the ENTREZID references, or the chromosomal
 location of the 5 first genes as follow:
 
 
@@ -326,7 +326,7 @@ mapIds(x = org.Hs.eg.db,
        column = "ENTREZID",
        keytype = "SYMBOL")
 
-# Retrieving the chromosomal location 
+# Retrieving the chromosomal location
 mapIds(x = org.Hs.eg.db,
        keys = rownames(se)[1:5],
        column = "MAP",
@@ -336,7 +336,7 @@ mapIds(x = org.Hs.eg.db,
 
 #### Questions {-}
 
-1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object) to the 
+1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object) to the
 feature metadata slot of our SummarizedExperiment se.
 
 2. How many genes from each biotype do we have?
@@ -344,11 +344,11 @@ feature metadata slot of our SummarizedExperiment se.
 <details>
 <summary>Solutions</summary>
 
-1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object) to the 
+1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object) to the
 feature metadata slot of our SummarizedExperiment se.
 
 ```{r, purl=FALSE}
-rowData(se)$gene_biotype <-  mapIds(x = org.Hs.eg.db, keys = rownames(se), 
+rowData(se)$gene_biotype <-  mapIds(x = org.Hs.eg.db, keys = rownames(se),
                                     column = "GENETYPE", keytype = "SYMBOL")
 head(rowData(se))
 ```
@@ -357,7 +357,8 @@ head(rowData(se))
 2. How many protein-coding genes do we have?
 
 ```{r, purl=FALSE}
-se[rowData(se)$gene_biotype == "protein-coding",]
+## se[rowData(se)$gene_biotype == "protein-coding", ]
+table(rowData(se)$gene_biotype == "protein-coding", useNA = "ifany")
 ```
 
 </details>
