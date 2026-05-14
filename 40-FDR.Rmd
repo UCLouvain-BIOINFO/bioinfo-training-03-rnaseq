@@ -1,8 +1,8 @@
 # FDR {#sec-FDR}
 
-**Objectives**
+**Objective**
 
-- Address the multiple testing issue
+Address the multiple testing issue
 
 ```{r load-pkg-fdr, include=FALSE}
 suppressPackageStartupMessages({
