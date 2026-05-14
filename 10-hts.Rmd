@@ -80,7 +80,7 @@ The sequencing is done by a cluster amplification process.
 The library preparation is hybridised to a flow cell coated with
 immobilised oligonucleotides that serve as support to hold the DNA
 strands in place during sequencing. The templates are copied from the
-hybridised primers by 3’ extension using a high-fidelity DNA
+hybridised primers by 3' extension using a high-fidelity DNA
 polymerase. The original templates are denatured, leaving the copies
 immobilised on the flow cell surface.
 
@@ -96,7 +96,7 @@ individual, dense clonal clusters containing ~2,000 molecules.
 
 Each cluster of dsDNA bridges is denatured, and the reverse strand is
 removed by specific base cleavage, leaving the forward DNA strand. The
-3’-ends of the DNA strands and flow cell-bound oligonucleotides are
+3'-ends of the DNA strands and flow cell-bound oligonucleotides are
 blocked to prevent interference with the sequencing reaction. The
 sequencing primer is hybridised to the Illumina adapter. Clusters are
 ready for sequencing.
@@ -311,7 +311,7 @@ knitr::include_graphics("figs/fastqc_fig6.png")
 
 If a sequencer is unable to make a base call with sufficient
 confidence then it will replace the conventional base call with an
-'N'. This graph plots the percent of times that ‘N’ occurs at a
+'N'. This graph plots the percent of times that 'N' occurs at a
 position in all reads. If there was an increase at a particular
 position, it could indicate that something went wrong during
 sequencing.
@@ -505,8 +505,8 @@ head wsbim2122_data/RNAseq_pipeline/example.sam
   [CIGAR](https://sites.google.com/site/bioinformaticsremarks/bioinfo/sam-bam-format/what-is-a-cigar)
   string. It is a representation of alignment indicating positions of
   match/mismatch/deletion/insertion compared to the reference.
-- Field 7: Reference name of the mate (Set to '=' if the mate’s
-  reference sequence is the same as this alignment’s)
+- Field 7: Reference name of the mate (Set to '=' if the mate's
+  reference sequence is the same as this alignment's)
 - Field 8: Position of mate
 - Field 9: Inferred fragment length
 - Field 10: Read sequence (reverse-complemented if aligned to the reverse strand)

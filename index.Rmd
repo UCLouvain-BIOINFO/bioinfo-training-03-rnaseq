@@ -21,9 +21,8 @@ bibliography: [refs.bib, packages.bib]
 The main objective of this course is to demonstrate how to proceed
 with a complete analysis of RNA-seq data, including principal
 component analysis, identification of differentially expressed genes
-and gene set enrichment and over-representation analysis.
-
-The background for these analyses includes introductions to hypothesis
+and gene set enrichment and over-representation analysis. The
+background for these analyses includes introductions to hypothesis
 testing, linear modelling and adjustment for multiple comparisons,
 principal component analysis and high throughput sequencing.
 
@@ -33,9 +32,55 @@ This course is based on material from the
 taught at the [Faculty of Pharmacy and Biomedical
 Sciences](https://uclouvain.be/en/faculties/fasb) at the UCLouvain.
 
+## Authors {-}
+
+This material has been developed by Dr Axelle Loriot and Prof Laurent
+Gatto, both members of the [Computional Biology and Bioinformatics
+lab](https://lgatto.codeberg.page/cbio-lab/) and the [bioinformatics
+core facility](https://sites.uclouvain.be/training/bioinfo/).
+
+## License {-}
+
+This book is distributed under a Attribution-NonCommercial-ShareAlike
+([CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/))
+4.0 license. This means that
+
+You are free to:
+
+- **Share** - copy and redistribute the material in any medium or format
+- **Adapt** - remix, transform, and build upon the material
+- The licensor cannot revoke these freedoms as long as you follow the
+  license terms.
+
+Under the following terms:
+
+- **Attribution** - You must give appropriate credit, provide a link
+  to the license, and indicate if changes were made. You may do so in
+  any reasonable manner, but not in any way that suggests the licensor
+  endorses you or your use.
+- **NonCommercial** - You may not use the material for commercial
+  purposes.
+- **ShareAlike** - If you remix, transform, or build upon the
+  material, you must distribute your contributions under the same
+  license as the original.
+- **No additional restrictions** - You may not apply legal terms or
+  technological measures that legally restrict others from doing
+  anything the license permits.
+
+Notices:
+
+You do not have to comply with the license for elements of the
+material in the public domain or where your use is permitted by an
+applicable exception or limitation.
+
+No warranties are given. The license may not give you all of the
+permissions necessary for your intended use. For example, other rights
+such as publicity, privacy, or moral rights may limit how you use the
+material.
+
 ## Installation instructions {-}
 
-```{r install, eval=FALSE}
+```{r installation-instructions, eval=FALSE}
 pks <- c("tidyverse", "patchwork", "remotes",
          "SummarizedExperiment", "DESeq2",
          "AnnotationDbi", "factoextra", "pRolocdata",
@@ -55,10 +100,9 @@ unlink("wsbim2122_data", recursive = TRUE)
 rWSBIM2122::prepare_shell()
 ```
 
-## References {-}
-
-- References are provided throughout the workshop material.
+# References {-}
 
 - **Modern Statistics for Modern Biology**, by Susan Holmes and
   Wolfgang Huber [@MSMB]. A free online version of the book is
   available [here](https://www-huber.embl.de/msmb/).
+- Additional references are provided throughout the workshop material.

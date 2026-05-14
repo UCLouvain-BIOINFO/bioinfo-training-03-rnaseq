@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>References | RNA-Seq analysis with R and Bioconductor</title>
+  <meta name="description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="References | RNA-Seq analysis with R and Bioconductor" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="References | RNA-Seq analysis with R and Bioconductor" />
+  
+  <meta name="twitter:description" content="This course illustrates how to understand and analyse bulk RNA-seq data, from data generation to interpretation." />
+  
+
+<meta name="author" content="Laurent Gatto and Axelle Loriot" />
+
+
+<meta name="date" content="2026-05-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="index.html"/>
+<link rel="next" href="sec-hts.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-hts.html"><a href="sec-hts.html#stranded-versus-unstranded-libraries"><i class="fa fa-check"></i><b>1.1.1</b> Stranded versus unstranded libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-hts.html"><a href="sec-hts.html#sequencing"><i class="fa fa-check"></i><b>1.2</b> Sequencing</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="sec-hts.html"><a href="sec-hts.html#se-vs-pe-sequencing"><i class="fa fa-check"></i><b>1.2.1</b> SE vs PE sequencing</a></li>
+<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> Cluster amplification</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="sec-hts.html"><a href="sec-hts.html#fastq-files"><i class="fa fa-check"></i><b>1.3</b> fastq files</a></li>
+<li class="chapter" data-level="1.4" data-path="sec-hts.html"><a href="sec-hts.html#processing-pipeline"><i class="fa fa-check"></i><b>1.4</b> Processing pipeline</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-hts.html"><a href="sec-hts.html#quality-control"><i class="fa fa-check"></i><b>1.4.1</b> Quality control</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-hts.html"><a href="sec-hts.html#alignment"><i class="fa fa-check"></i><b>1.5</b> Alignment</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-hts.html"><a href="sec-hts.html#counting"><i class="fa fa-check"></i><b>1.6</b> Counting</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-hts.html"><a href="sec-hts.html#sec-counts"><i class="fa fa-check"></i><b>1.7</b> Preparing the count matrix</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-hts.html"><a href="sec-hts.html#questions"><i class="fa fa-check"></i>Questions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sec-se.html"><a href="sec-se.html"><i class="fa fa-check"></i><b>2</b> SummarizedExperiments</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sec-se.html"><a href="sec-se.html#summarizedexperiment"><i class="fa fa-check"></i><b>2.1</b> SummarizedExperiment</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-se.html"><a href="sec-se.html#creating-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.1</b> Creating a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-se.html"><a href="sec-se.html#subsetting-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.2</b> Subsetting a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-se.html"><a href="sec-se.html#adding-variables-to-the-sample-metadata"><i class="fa fa-check"></i><b>2.1.3</b> Adding variables to the sample metadata</a></li>
+<li class="chapter" data-level="2.1.4" data-path="sec-se.html"><a href="sec-se.html#adding-gene-annotations-to-the-feature-metadata"><i class="fa fa-check"></i><b>2.1.4</b> Adding gene annotations to the feature metadata</a></li>
+<li class="chapter" data-level="2.1.5" data-path="sec-se.html"><a href="sec-se.html#save-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.5</b> Save a SummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-se.html"><a href="sec-se.html#rangedsummarizedexperiment"><i class="fa fa-check"></i><b>2.2</b> RangedSummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sec-lm.html"><a href="sec-lm.html"><i class="fa fa-check"></i><b>3</b> Linear Models</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sec-lm.html"><a href="sec-lm.html#multifactorial-design-and-linear-models"><i class="fa fa-check"></i><b>3.1</b> Multifactorial design and linear models</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-lm.html"><a href="sec-lm.html#single-factor-design"><i class="fa fa-check"></i><b>3.2</b> Single-factor design</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-lm.html"><a href="sec-lm.html#example"><i class="fa fa-check"></i><b>3.2.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-lm.html"><a href="sec-lm.html#two-factor-design"><i class="fa fa-check"></i><b>3.3</b> Two-factor design</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-lm.html"><a href="sec-lm.html#example-1"><i class="fa fa-check"></i><b>3.3.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-lm.html"><a href="sec-lm.html#design-with-interaction"><i class="fa fa-check"></i><b>3.4</b> Design with interaction</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-lm.html"><a href="sec-lm.html#examples"><i class="fa fa-check"></i><b>3.4.1</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> False discovery rate</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-FDR.html"><a href="sec-FDR.html#multiple-testing"><i class="fa fa-check"></i><b>4.1</b> Multiple testing</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-FDR.html"><a href="sec-FDR.html#adjustment-for-multiple-testing"><i class="fa fa-check"></i><b>4.2</b> Adjustment for multiple testing</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-FDR.html"><a href="sec-FDR.html#question-13"><i class="fa fa-check"></i>Question</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> Principle component analyses</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sec-pca.html"><a href="sec-pca.html#introduction-to-pca"><i class="fa fa-check"></i><b>5.1</b> Introduction to PCA</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="sec-pca.html"><a href="sec-pca.html#lower-dimensional-projections"><i class="fa fa-check"></i><b>5.1.1</b> Lower-dimensional projections</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html"><i class="fa fa-check"></i><b>6</b> Differential expression analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#theory-behind-deseq2"><i class="fa fa-check"></i><b>6.1</b> Theory behind DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#size-factor-estimation"><i class="fa fa-check"></i><b>6.1.1</b> Size factor estimation</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#count-modeling"><i class="fa fa-check"></i><b>6.1.2</b> Count modeling</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#dispersion-estimation"><i class="fa fa-check"></i><b>6.1.3</b> Dispersion estimation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#generalized-linear-model"><i class="fa fa-check"></i><b>6.1.4</b> Generalized linear model</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#hypothesis-testing"><i class="fa fa-check"></i><b>6.1.5</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="6.1.6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#multiple-testing-correction"><i class="fa fa-check"></i><b>6.1.6</b> Multiple testing correction</a></li>
+<li class="chapter" data-level="6.1.7" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#independent-filtering"><i class="fa fa-check"></i><b>6.1.7</b> Independent filtering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#running-deseq2"><i class="fa fa-check"></i><b>6.2</b> Running DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseqdataset-object"><i class="fa fa-check"></i><b>6.2.1</b> DESeqDataSet object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#run-deseq2"><i class="fa fa-check"></i><b>6.2.2</b> Run DESeq2</a></li>
+<li class="chapter" data-level="6.2.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#exploring-data"><i class="fa fa-check"></i><b>6.2.3</b> Exploring data</a></li>
+<li class="chapter" data-level="6.2.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseq2-results"><i class="fa fa-check"></i><b>6.2.4</b> DESeq2 results</a></li>
+<li class="chapter" data-level="6.2.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#saving-the-result-table"><i class="fa fa-check"></i><b>6.2.5</b> Saving the result table</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#additional-exercices"><i class="fa fa-check"></i><b>6.3</b> Additional exercices</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question-27"><i class="fa fa-check"></i>Question</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question-28"><i class="fa fa-check"></i>Question</a></li>
+<li class="chapter" data-level="6.3.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#further-links"><i class="fa fa-check"></i><b>6.3.1</b> Further links</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sec-gsea.html"><a href="sec-gsea.html"><i class="fa fa-check"></i><b>7</b> Enrichment analyses</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sec-gsea.html"><a href="sec-gsea.html#objectives-of-an-enrichment-analysis"><i class="fa fa-check"></i><b>7.1</b> Objectives of an enrichment analysis</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-gsea.html"><a href="sec-gsea.html#genesets"><i class="fa fa-check"></i><b>7.2</b> GeneSets</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#over-representation-analysis"><i class="fa fa-check"></i><b>7.4</b> Over-representation analysis</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
+<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with the <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
+<li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>7.5</b> Gene set enrichment analysis</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session infromation</a></li>
+<li class="chapter" data-level="9" data-path="sec-refs.html"><a href="sec-refs.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">RNA-Seq analysis with R and Bioconductor</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="references" class="section level1 unnumbered hasAnchor">
+<h1>References<a href="references.html#references" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<ul>
+<li><strong>Modern Statistics for Modern Biology</strong>, by Susan Holmes and
+Wolfgang Huber <span class="citation">(<a href="#ref-MSMB">Holmes and Huber 2019</a>)</span>. A free online version of the book is
+available <a href="https://www-huber.embl.de/msmb/">here</a>.</li>
+<li>Additional references are provided throughout the workshop material.</li>
+</ul>
+
+</div>
+<h3> References<a href="sec-refs.html#sec-refs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-MSMB" class="csl-entry">
+Holmes, Susan, and Wolfgang Huber. 2019. <em>Modern Statistics for Modern Biology</em>. Cambridge Univeristy Press.
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="index.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-hts.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": false,
+    "twitter": false,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": {}
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["rnaseq.pdf"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

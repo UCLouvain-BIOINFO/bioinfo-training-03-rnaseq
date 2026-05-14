@@ -1,0 +1,7 @@
+# Session infromation {#sec-si}
+
+```{r si}
+sessionInfo()
+```
+
+# References {#sec-refs}

@@ -20,7 +20,7 @@ real RNA-seq experiment, we will have a few thousand tests to perform,
 as each gene is going to be tested.
 
 
-```{r include=FALSE}
+```{r fdr-make-exp, include=FALSE}
 set.seed(2025)
 exp <- matrix(rnorm(20000*6, mean = 100, sd = 20), ncol = 6)
 rownames(exp) <- paste0("Gene", 1:20000)
@@ -34,15 +34,15 @@ Let's use the `exp` dataset that provides log expression values for 20,000 genes
 in 6 samples, three in groupA and three in groupB. You can download it
 [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/exp.rda).
 
-```{r}
+```{r fdr-load-exp}
 load("data/exp.rda")
 exp
 ```
 
 
-Let's apply a t.test on all these genes:
+Let's apply a t-test on all these genes:
 
-```{r}
+```{r fdr-make-ttest}
 res <- exp |>
   rowwise() |>
   mutate(pval = t.test(c(A1, A2, A3), c(B1,B2,B3))$p.value) |>
@@ -58,7 +58,7 @@ biological interest?
 <details>
 <summary>Solution</summary>
 
-```{r}
+```{r fdr-ex-pval}
 table(res$pval < 0.05)
 res |> filter(pval < 0.05) |>
   arrange(pval)
@@ -70,7 +70,7 @@ The data above have been generated with the `rnorm()` function for all samples.
 
 This is the code that generated the data:
 
-```{r, eval = F}
+```{r fdr-rnorm-data, eval = FALSE}
 set.seed(2025)
 exp <- matrix(rnorm(20000*6, mean = 100, sd = 20), ncol = 6)
 rownames(exp) <- paste0("Gene", 1:20000)
@@ -94,7 +94,7 @@ real difference existed (if the null hypothesis was really true).
 In other words, choosing a cut off of 0.05 means there is 5% chance that the
 wrong decision is made (resulting in a false positive).
 
-```{r echo=FALSE}
+```{r fdr-fdr-fig, echo=FALSE}
 sign_genes <- res |> filter(pval < 0.05)
 unsign_genes <- res |> filter(pval > 0.05)
 
@@ -129,7 +129,7 @@ how would you expect it to look like?
 <details>
 <summary>Solution</summary>
 
-```{r, fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
+```{r fdr-pval-hist, fig.height=4, fig.width=7, message=FALSE, warning=FALSE}
 res |>
   ggplot(aes(x = pval)) +
   geom_histogram(binwidth = 0.05, boundary = 0, color = "black", fill = "gray")
@@ -138,7 +138,7 @@ res |>
 </details>
 
 
-```{r eval=FALSE, fig.align='center', fig.cap="Do jelly beans cause acne? Scientists investigate. From [xkcd](https://xkcd.com/882/).", include=FALSE, purl=FALSE, results='markup'}
+```{r fdr-xkcd-jellybeans, eval=FALSE, fig.align='center', fig.cap="Do jelly beans cause acne? Scientists investigate. From [xkcd](https://xkcd.com/882/).", include=FALSE, purl=FALSE, results='markup'}
 #[This xkcd cartoon](https://xkcd.com/882/) humorously illustrates the multiple
 #testing issue by depicting scientists testing whether eating jelly beans causes acne.
 
@@ -172,14 +172,13 @@ histograms.  Most of the p-values are uniformly distributed between 0
 and 1 but there is a spike to the left close to zero, due to those
 p-values for which $H_0$ is false.
 
-```{r echo=FALSE, fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
+```{r fdr-adj-fig, echo=FALSE, fig.height=4, fig.width=8, message=FALSE, warning=FALSE}
 exp_modified <- exp
 
 exp_modified[1:1000, c("B1", "B2", "B3")] <- log(matrix(rnorm(1000*3, mean = 300, sd = 20), ncol = 3))
 
 exp_modified <- exp_modified |>
   mutate(DE = c(rep(TRUE, 1000), rep(FALSE, 19000)))
-
 
 res_modified <- exp_modified |>
   rowwise() |>
@@ -219,14 +218,9 @@ h3 <- res_modified |>
 h1 + h2 + h3
 ```
 
-
-
-
-
-
 The False discovery rate (FDR) computes the expected fraction of false
-positives among all discoveries. It allows us to choose n results with a given
-FDR.
+positives among all discoveries. It allows us to choose n results with
+a given FDR.
 
 Widely used examples are Benjamini-Hochberg or q-values.
 
@@ -234,7 +228,7 @@ Let's use the `p.adjust()` function to adjust the pvalues calculated previously
 (from the t.test we did on data generated with the rnorm() function)
 
 
-```{r}
+```{r fdr-make-padj}
 res <- res |>
   mutate(padj = p.adjust(pval, method = "BH"))
 
@@ -248,11 +242,9 @@ How many significant padjusted values do you expect to have?
 <details>
 <summary>Solution</summary>
 
-```{r}
+```{r fdr-ex-padj}
 table(res$pval < 0.05)
-```
 
-```{r}
 table(res$padj < 0.05)
 ```
 

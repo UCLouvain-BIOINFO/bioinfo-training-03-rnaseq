@@ -160,9 +160,11 @@ div.csl-indent {
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
@@ -258,8 +260,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#additional-exercices"><i class="fa fa-check"></i><b>6.3</b> Additional exercices</a>
 <ul>
-<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question1"><i class="fa fa-check"></i>Question1</a></li>
-<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question2"><i class="fa fa-check"></i>Question2</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question-27"><i class="fa fa-check"></i>Question</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question-28"><i class="fa fa-check"></i>Question</a></li>
 <li class="chapter" data-level="6.3.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#further-links"><i class="fa fa-check"></i><b>6.3.1</b> Further links</a></li>
 </ul></li>
 </ul></li>
@@ -284,6 +286,8 @@ div.csl-indent {
 <li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session infromation</a></li>
+<li class="chapter" data-level="9" data-path="sec-refs.html"><a href="sec-refs.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 </ul>
 
       </nav>
@@ -332,7 +336,7 @@ in 6 samples, three in groupA and three in groupB. You can download it
 ##  9 Gene9   4.53  4.84  4.51  4.53  4.61  4.59
 ## 10 Gene10  4.74  4.09  4.61  4.33  4.72  4.61
 ## # ℹ 19,990 more rows</code></pre>
-<p>Let’s apply a t.test on all these genes:</p>
+<p>Let’s apply a t-test on all these genes:</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="sec-FDR.html#cb131-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> exp <span class="sc">|&gt;</span></span>
 <span id="cb131-2"><a href="sec-FDR.html#cb131-2" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
 <span id="cb131-3"><a href="sec-FDR.html#cb131-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pval =</span> <span class="fu">t.test</span>(<span class="fu">c</span>(A1, A2, A3), <span class="fu">c</span>(B1,B2,B3))<span class="sc">$</span>p.value) <span class="sc">|&gt;</span></span>
@@ -404,7 +408,7 @@ Solution
 real difference existed (if the null hypothesis was really true).</p>
 <p>In other words, choosing a cut off of 0.05 means there is 5% chance that the
 wrong decision is made (resulting in a false positive).</p>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-84-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/fdr-fdr-fig-1.png" alt="" width="672" /></p>
 </details>
 </div>
 <div id="question-12" class="section level4 unnumbered hasAnchor">
@@ -418,7 +422,7 @@ Solution
 <div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="sec-FDR.html#cb138-1" tabindex="-1"></a>res <span class="sc">|&gt;</span></span>
 <span id="cb138-2"><a href="sec-FDR.html#cb138-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pval)) <span class="sc">+</span></span>
 <span id="cb138-3"><a href="sec-FDR.html#cb138-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray&quot;</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-85-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/fdr-pval-hist-1.png" alt="" width="672" /></p>
 </details>
 </div>
 </div>
@@ -445,10 +449,10 @@ have a distribution corresponding to the combination of both
 histograms. Most of the p-values are uniformly distributed between 0
 and 1 but there is a spike to the left close to zero, due to those
 p-values for which <span class="math inline">\(H_0\)</span> is false.</p>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-87-1.png" alt="" width="768" /></p>
+<p><img src="rnaseq_files/figure-html/fdr-adj-fig-1.png" alt="" width="768" /></p>
 <p>The False discovery rate (FDR) computes the expected fraction of false
-positives among all discoveries. It allows us to choose n results with a given
-FDR.</p>
+positives among all discoveries. It allows us to choose n results with
+a given FDR.</p>
 <p>Widely used examples are Benjamini-Hochberg or q-values.</p>
 <p>Let’s use the <code>p.adjust()</code> function to adjust the pvalues calculated previously
 (from the t.test we did on data generated with the rnorm() function)</p>

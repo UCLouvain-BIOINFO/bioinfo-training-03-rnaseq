@@ -299,7 +299,7 @@ str(pca)
 ```
 
 
-```{r include=FALSE}
+```{r pve-comp, include=FALSE}
 var <- pca$sdev^2
 pve <- var/sum(var)
 pve
@@ -322,13 +322,13 @@ summary(pca)
 The x element of the prcomp output is a table that gives the sample coordinates
 in the new space of components.
 
-```{r}
+```{r pca-x}
 pca$x
 ```
 
 These values can be used to draw the PCA plot
 
-```{r}
+```{r ggplot-pca}
 as_tibble(pca$x, rownames = "sample") |>
   mutate(group = sub(pattern = "_.*", x = sample, replacement = '')) |>
   ggplot(aes(x = PC1, y = PC2, color = group)) +
@@ -364,7 +364,7 @@ Loadings are stored in the `rotation` slot of the prcomp output. Genes with the
 largest absolute PC1 loadings are the ones that contribute most to that component
 (GeneB, GeneC and GeneE in this case).
 
-```{r}
+```{r pca-rotation}
 pca$rotation
 ```
 
@@ -373,7 +373,7 @@ Loadings can be visualised on a **biplot**, where the arrows show the contributi
 of each gene to the principal components.
 
 
-```{r echo=FALSE, fig.height=4, fig.width=10}
+```{r pca-biplot, echo=FALSE, fig.height=4, fig.width=10}
 scale_factor <- 1
 
 # Scale loadings by each PC sd (ex: PC1_score* PC1_sd)
@@ -401,7 +401,7 @@ as_tibble(pca$x, rownames = "sample") |>
               color = "blue")
 ```
 
-This biplot shows that:
+This *biplot* shows that:
 
 - PC1 is mostly driven by GeneB, GeneC and GeneE.
 - GeneB and GeneC are pointing in the same direction, which means that
@@ -431,12 +431,11 @@ dimensions, making it easier to explore.
 We will make a PCA on our RNAseq dataset in the next chapter.
 
 
-```{r eval=FALSE, include=FALSE}
+```{r pca-ex, eval=FALSE, include=FALSE}
 # Let's make a PCA on our `se` dataset.
 #
 # Note that performing PCA on log-transformed RNA-seq data is not ideal,
 # as we will see in next chapter. For now, let us assume that we can do so.
-
 
 se <- readRDS("data/se.rds")
 pca <- prcomp(t(log1p(assay(se))))
@@ -449,7 +448,6 @@ as_tibble(pca$x, rownames = "sample") |>
 
 summary(pca)
 ```
-
 
 
 **What can PCA reveal from RNA-seq data?**
@@ -467,7 +465,7 @@ Here are a few examples of PCAs corresponding to different experimental designs.
 How would you interprete them and what impact would they have on the analysis?
 
 
-```{r echo=FALSE, fig.height=4, fig.width=10}
+```{r pca-qst-1, echo=FALSE, fig.height=4, fig.width=10}
 set.seed(123)
 pca <- tibble(batch = c(rep("batch1", 6), rep("batch2", 6), rep("batch3", 6)),
                group = rep(c(rep("CTL", 3), rep("Treated", 3)), 3),
@@ -489,7 +487,7 @@ pca |>
 ```
 
 
-```{r echo=FALSE, fig.height=4, fig.width=10}
+```{r pca-qst-2, echo=FALSE, fig.height=4, fig.width=10}
 set.seed(123)
 pca <- tibble(Genotype = c(rep("wt", 6), rep("KO", 6)),
                Treatment = rep(c(rep("CTL", 3), rep("Treated", 3)), 2),
@@ -512,7 +510,7 @@ pca |>
 
 
 
-```{r echo=FALSE, fig.height=4, fig.width=10}
+```{r pca-qst-3, echo=FALSE, fig.height=4, fig.width=10}
 set.seed(123)
 pca <- tibble(Group = c(rep("Control", 6), rep("Treated", 6)),
                PC1 = c(rnorm(6, -4, 0.7),  rnorm(6, 4, .7)),

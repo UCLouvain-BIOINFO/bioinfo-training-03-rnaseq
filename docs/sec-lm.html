@@ -160,9 +160,11 @@ div.csl-indent {
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
-<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
@@ -258,8 +260,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="6.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#additional-exercices"><i class="fa fa-check"></i><b>6.3</b> Additional exercices</a>
 <ul>
-<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question1"><i class="fa fa-check"></i>Question1</a></li>
-<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question2"><i class="fa fa-check"></i>Question2</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question-27"><i class="fa fa-check"></i>Question</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question-28"><i class="fa fa-check"></i>Question</a></li>
 <li class="chapter" data-level="6.3.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#further-links"><i class="fa fa-check"></i><b>6.3.1</b> Further links</a></li>
 </ul></li>
 </ul></li>
@@ -284,6 +286,8 @@ div.csl-indent {
 <li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session infromation</a></li>
+<li class="chapter" data-level="9" data-path="sec-refs.html"><a href="sec-refs.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 </ul>
 
       </nav>
@@ -377,7 +381,7 @@ log-transformed expression values.</p>
 <span id="cb98-5"><a href="sec-lm.html#cb98-5" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>,</span>
 <span id="cb98-6"><a href="sec-lm.html#cb98-6" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>,</span>
 <span id="cb98-7"><a href="sec-lm.html#cb98-7" tabindex="-1"></a>               <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
-<span id="cb98-8"><a href="sec-lm.html#cb98-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span> </span>
+<span id="cb98-8"><a href="sec-lm.html#cb98-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span></span>
 <span id="cb98-9"><a href="sec-lm.html#cb98-9" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(se)))</span>
 <span id="cb98-10"><a href="sec-lm.html#cb98-10" tabindex="-1"></a></span>
 <span id="cb98-11"><a href="sec-lm.html#cb98-11" tabindex="-1"></a>gene_count</span></code></pre></div>
@@ -404,11 +408,12 @@ as we’ll see later, this isn’t actually true for RNAseq data!), let’s use 
 ## Coefficients:
 ## (Intercept)  ConditionKD  
 ##       2.090        4.221</code></pre>
-<p>The lm() function has estimated the coefficients of the linear model:</p>
+<p>The <code>lm()</code> function has estimated the coefficients of the linear
+model:</p>
 <ul>
-<li><p>The estimate for the <span class="math inline">\(\beta_0\)</span> coefficient (the <code>Intercept</code>) is 2.09</p></li>
-<li><p>The estimate for the <span class="math inline">\(\beta_1\)</span> coefficient (annotated as the <code>ConditionKD</code> coefficient)
-is 4.221</p></li>
+<li>The estimate for the <span class="math inline">\(\beta_0\)</span> coefficient (the <code>Intercept</code>) is 2.09</li>
+<li>The estimate for the <span class="math inline">\(\beta_1\)</span> coefficient (annotated as the
+<code>ConditionKD</code> coefficient) is 4.221</li>
 </ul>
 <p>We can visualise this linear model with:</p>
 <div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="sec-lm.html#cb102-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
@@ -419,7 +424,7 @@ is 4.221</p></li>
 <span id="cb102-6"><a href="sec-lm.html#cb102-6" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
 <span id="cb102-7"><a href="sec-lm.html#cb102-7" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;KD&quot;</span>, <span class="at">y =</span> <span class="fu">coefficients</span>(mod1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coefficients</span>(mod1)[<span class="dv">2</span>]),</span>
 <span id="cb102-8"><a href="sec-lm.html#cb102-8" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-64-1.png" alt="" width="480" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-62-1.png" alt="" width="480" /></p>
 <p>And indeed, we see that</p>
 <ul>
 <li>the intercept (the <span class="math inline">\(\beta_0\)</span> coefficient) corresponds to the mean
@@ -465,11 +470,11 @@ cellType\]</span></p>
 <p><span class="math display">\[y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2\]</span></p>
 <p>we could rewrite this equation as:</p>
 <p><span class="math display">\[y = \beta_0 + Treatment. x_1 + cellType . x_2\]</span></p>
-<p>In this equation:
-- The <span class="math inline">\(\beta_0\)</span> term represents the <code>intercept</code>, i.e, the <strong>expression
-level of the gene in the reference cell type</strong>, for instance the
-untreated cellType1.</p>
+<p>In this equation:</p>
 <ul>
+<li><p>The <span class="math inline">\(\beta_0\)</span> term represents the <code>intercept</code>, i.e, the <strong>expression
+level of the gene in the reference cell type</strong>, for instance the
+untreated cellType1.</p></li>
 <li><p>The design factor <span class="math inline">\(x_1\)</span> is a binary indicator variable representing
 the two treatment conditions of our experiment. It will take the
 value of 0 if we are considering the untreated samples, and a value
@@ -487,7 +492,7 @@ cell type effect</strong>.</p></li>
 illustrates the value of the linear predictor of a linear model for
 each combination of input variables.</p>
 <pre><code>## [[1]]</code></pre>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-66-1.png" alt="" width="576" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-64-1.png" alt="" width="576" /></p>
 <p>From this figure, we can see how the genes log expression values are
 modelised in the different samples:</p>
 <ul>
@@ -528,8 +533,8 @@ modelised in the different samples:</p>
 ## 10 DRAM1 Fib_KD1   8.04 Fibroblast KD        UCLouvain  Fibroblast_KD 
 ## 11 DRAM1 Fib_KD2   7.77 Fibroblast KD        UCLouvain  Fibroblast_KD 
 ## 12 DRAM1 Fib_KD3   7.95 Fibroblast KD        UCLouvain  Fibroblast_KD</code></pre>
-<p>We will start by fitting a linear model that only accounts for the <em>Condition</em> effect,
-ignoring the <em>cell type</em> effect.</p>
+<p>We will start by fitting a linear model that only accounts for the
+<em>Condition</em> effect, ignoring the <em>cell type</em> effect.</p>
 <p>Our design would hence be <span class="math display">\[design \sim Condition\]</span></p>
 <div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="sec-lm.html#cb110-1" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> Condition, <span class="at">data =</span> gene_count)</span>
 <span id="cb110-2"><a href="sec-lm.html#cb110-2" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code></pre></div>
@@ -568,7 +573,7 @@ clearly don’t start at the same baseline.</p>
 <span id="cb112-3"><a href="sec-lm.html#cb112-3" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="fu">aes</span>(<span class="at">color =</span> Type)) <span class="sc">+</span></span>
 <span id="cb112-4"><a href="sec-lm.html#cb112-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
 <span id="cb112-5"><a href="sec-lm.html#cb112-5" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-69-1.png" alt="" width="288" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-66-1.png" alt="" width="288" /></p>
 </details>
 </div>
 <div id="question-7" class="section level4 unnumbered hasAnchor">
@@ -610,7 +615,7 @@ both significant.</p>
 <span id="cb115-4"><a href="sec-lm.html#cb115-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
 <span id="cb115-5"><a href="sec-lm.html#cb115-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Type)<span class="sc">+</span></span>
 <span id="cb115-6"><a href="sec-lm.html#cb115-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-71-1.png" alt="" width="480" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-68-1.png" alt="" width="480" /></p>
 <p>The model now adjusts for the baseline difference between epithelial
 and fibroblast cell types. It prevents cell type differences from biasing the
 condition effect.</p>
@@ -621,7 +626,7 @@ condition effect.</p>
 <div id="design-with-interaction" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Design with interaction<a href="sec-lm.html#design-with-interaction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Coming back to the previous experimental design were we considered 3
-controls and 3 treated samples across 2 different cell types.<br />
+controls and 3 treated samples across 2 different cell types.
 An interaction term could be added to the linear model, to
 modelise a treatment effect that would differ across cell types.</p>
 <p>Our design would hence be: <span class="math display">\[design \sim Treatment*cellType\]</span></p>
@@ -643,10 +648,10 @@ represent the logFoldchange between treated cellType1 and untreated cellType1.</
 <li>The design factor <span class="math inline">\(x_2\)</span> will take the value of 0 if we are
 considering cellType1, and a value of 1 when considering cellType2.</li>
 <li>The <code>cellType</code> term represents the
-<strong>logFoldchange associated with the cell type effect in the reference treatment</strong>.<br />
+<strong>logFoldchange associated with the cell type effect in the reference treatment</strong>.
 In this case it would represent the cell type effect in untreated cells.</li>
 <li>The <code>Treatment.cellType</code> term represents the
-<strong>treatment effect that would be different in cellType2 compared to cellType1</strong>.<br />
+<strong>treatment effect that would be different in cellType2 compared to cellType1</strong>.
 This term will only be considered in the equation when we are referring to treated
 cells from cellType2 (i.e. when <span class="math inline">\(x_1\)</span> = 1 and <span class="math inline">\(x_2\)</span> = 1)</li>
 </ul>
@@ -654,7 +659,7 @@ cells from cellType2 (i.e. when <span class="math inline">\(x_1\)</span> = 1 an
 illustrates the value of the linear predictor of a linear model for
 each combination of input variables.</p>
 <pre><code>## [[1]]</code></pre>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-72-1.png" alt="" width="768" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-69-1.png" alt="" width="768" /></p>
 <p>From this figure, we can see how the genes log expression values are
 modelised in the different samples:</p>
 <ul>
@@ -678,7 +683,7 @@ modelised in the different samples:</p>
 <p>Let’s subset the original dataset to keep only on the gene <em>ZBED2</em>.</p>
 <div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="sec-lm.html#cb117-1" tabindex="-1"></a>gene_count <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">assay</span>(se[<span class="st">&quot;ZBED2&quot;</span>]), <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
 <span id="cb117-2"><a href="sec-lm.html#cb117-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
-<span id="cb117-3"><a href="sec-lm.html#cb117-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span> </span>
+<span id="cb117-3"><a href="sec-lm.html#cb117-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span></span>
 <span id="cb117-4"><a href="sec-lm.html#cb117-4" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(se)))</span>
 <span id="cb117-5"><a href="sec-lm.html#cb117-5" tabindex="-1"></a>gene_count</span></code></pre></div>
 <pre><code>## # A tibble: 12 × 7
@@ -736,7 +741,7 @@ effect in fibroblasts.</p>
 <span id="cb121-4"><a href="sec-lm.html#cb121-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
 <span id="cb121-5"><a href="sec-lm.html#cb121-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Type)<span class="sc">+</span></span>
 <span id="cb121-6"><a href="sec-lm.html#cb121-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-75-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/lm-plot-ZBED2-1.png" alt="" width="672" /></p>
 </details>
 </div>
 <div id="question-9" class="section level4 unnumbered hasAnchor">
@@ -804,7 +809,7 @@ types</p>
 <span id="cb128-4"><a href="sec-lm.html#cb128-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
 <span id="cb128-5"><a href="sec-lm.html#cb128-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Type)<span class="sc">+</span></span>
 <span id="cb128-6"><a href="sec-lm.html#cb128-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-78-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/lm-plot-GOLGA4-1.png" alt="" width="672" /></p>
 </details>
 
 </div>

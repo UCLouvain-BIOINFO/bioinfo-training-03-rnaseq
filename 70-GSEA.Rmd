@@ -185,7 +185,7 @@ the full DESeq2 analysis that you should already have learned about in
 the previous episode.  We will focus on the genes that have an
 adjusted p-value (those that have been tested).
 
-```{r quick-deseq2-enrich, message = FALSE, warning=FALSE}
+```{r enrich-quick-deseq2, message = FALSE, warning = FALSE}
 se <- readRDS("data/se.rds")
 dds <- DESeqDataSet(se, design = ~ group)
 dds <- DESeq(dds)
@@ -209,7 +209,7 @@ would be expected by chance.
 To perform an over representation analysis, we first need to define
 the genes we will consider as differentially expressed (DE).
 
-```{r echo=FALSE, fig.height=6, fig.width=15, message=FALSE, warning=FALSE}
+```{r ora-step-1, echo=FALSE, fig.height=6, fig.width=15, message=FALSE, warning=FALSE}
 padj_thr <- 0.05
 log2FC_thr <- 0
 genes_DE1 <- res_tbl$gene[res_tbl$padj <= padj_thr &
@@ -325,7 +325,7 @@ res_tbl |>
 We will count the number of DE genes from that are in
 `r my_geneset` gene set, and how many are not.
 
-```{r echo=FALSE, fig.align='center'}
+```{r enrich-ora-table, echo=FALSE, fig.align='center'}
 # DE and GO
 n <- length(intersect(res_tbl$gene[res_tbl$gene %in% genes_DE2],
                       genes_from_geneset))
@@ -352,10 +352,11 @@ knitr::kable(count_mat)
 
 #### Step 3: Statistical test
 
-We can now apply a Fisher’s exact (or hypergeometric test) that will test whether
-there is a significant enrichment of DE genes in the GO term.
+We can now apply a Fisher’s exact (or hypergeometric test) that will
+test whether there is a significant enrichment of DE genes in the GO
+term.
 
-```{r}
+```{r enrich-fisher-test}
 fisher.test(count_mat, alternative = "greater")
 ```
 
@@ -540,7 +541,7 @@ Repeat the ORA analysis using this time the Hallmarks genesets.
 <summary>Solution</summary>
 
 
-```{r}
+```{r ora-hallmark-ex}
 # Define our DE genes
 padj_thr <- 1e-10
 log2FC_thr <- 0
