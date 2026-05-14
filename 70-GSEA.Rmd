@@ -177,10 +177,8 @@ tested).
 ```{r, message = FALSE, warning=FALSE}
 se <- readRDS("data/se.rds")
 dds <- DESeqDataSet(se, design = ~ group)
-dds$group <- relevel(dds$group, ref = "Epithelial_mock")
-dds <- dds[rowSums(assay(dds)) > 0, ]
 dds <- DESeq(dds)
-res <- results(dds, name = "group_Epithelial_KD_vs_Epithelial_mock")
+res <- results(dds, name = "group_Epithelial_KD_vs_Epithelial_ctl")
 res_tbl <- as_tibble(res, rownames = "gene")
 res_tbl <- res_tbl %>% filter(!is.na(padj))
 ```
@@ -395,12 +393,14 @@ In the output data frame, there are the following columns:
 - `Count`: Number of DE genes in the gene set.
 
 
-You may have noticed the total number of DE genes changes. We defined `r length(genes_DE)` DE genes,
-but only `r length(genes_DE[genes_DE %in% GO_BP$gene_symbol])` DE genes are
+You may have noticed the total number of DE genes changes. We defined 
+`r length(genes_DE)` DE genes, but only 
+`r length(genes_DE[genes_DE %in% GO_BP$gene_symbol])` DE genes are
 included in the enrichment result table (in the GeneRatio column).
-Similarly, our universe had `r length(geneList)` genes, but the total number of tested genes was
-only `r nrow(res_tbl %>% filter(gene %in% GO_BP$gene_symbol))` in the result table.
-The main reason is by default DE genes not annotated to any GO gene set are filtered out.
+Similarly, our universe had `r length(geneList)` genes, but the total number of 
+tested genes was only `r nrow(res_tbl %>% filter(gene %in% GO_BP$gene_symbol))` 
+in the result table. The main reason is by default DE genes not annotated to any 
+GO gene set are filtered out.
 
 ### Visualisation
 
@@ -579,7 +579,7 @@ strongly the gene set is enriched at either end of the ranking.
 
 ```{r echo=FALSE, warning=FALSE, fig.height = 5, fig.width = 8}
 geneList <- res_tbl$stat
-names(geneList)<- res_tbl$gene
+names(geneList) <- res_tbl$gene
 geneList <- geneList[order(geneList, decreasing = TRUE)]
 
 
