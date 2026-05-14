@@ -98,7 +98,8 @@ which is the same as saying that the $\beta_1$ = 0.
 ### Example
 
 We are going to use a subset of our previous dataset as a toy example.
-Let's focus only on the gene *ZBED2* in *Epithelial* cell type.
+Let's focus only on the gene *ZBED2* in *Epithelial* cell type, and use the 
+log-transformed expression values.
 
 
 ```{r, eval=TRUE, purl=TRUE, message=FALSE, warning = F}
@@ -106,29 +107,18 @@ se <- readRDS("data/se.rds")
 
 gene_count <- as_tibble(assay(se["ZBED2", se$Type == "Epithelial"]),
                         rownames = "gene") |>
-    pivot_longer(names_to = "sample",
-                 values_to = "count",
-                 -gene) |>
+  pivot_longer(names_to = "sample",
+               values_to = "count",
+               -gene) |>
+  mutate(count = log1p(count)) |> 
   left_join(as_tibble(colData(se)))
-```
 
-Let's also convert the `Condition` column into a factor, in order to set the `mock`
-condition as the reference level.
-
-```{r}
-gene_count$Condition <- factor(gene_count$Condition, levels = c("mock", "KD"))
-```
-
-And finally, let’s log-transform the count values.
-
-```{r}
-gene_count <- gene_count |>
-  mutate(count = log1p(count))
+gene_count
 ```
 
 Assuming the expression values follow a normal distribution (even though,
-as we’ll see later, this isn’t actually true for RNAseq data!) and let's use the
-`lm()` function to fit a linear model to compare KD to mock cells.
+as we’ll see later, this isn’t actually true for RNAseq data!), let's use the
+`lm()` function to fit a linear model to compare KD to control cells.
 
 In this case the design of our experiment would be :
 
@@ -154,7 +144,7 @@ gene_count |>
     ggplot(aes(x = Condition, y = count)) +
     geom_jitter() +
     geom_boxplot(alpha = 0) +
-    geom_point(aes(x = "mock", y = coefficients(mod1)[1]),
+    geom_point(aes(x = "ctl", y = coefficients(mod1)[1]),
                color = "blue", size = 4) +
     geom_point(aes(x = "KD", y = coefficients(mod1)[1] + coefficients(mod1)[2]),
                color = "red", size = 4)
@@ -163,7 +153,7 @@ gene_count |>
 And indeed, we see that
 
 - the intercept (the $\beta_0$ coefficient) corresponds to the mean
-  level of the gene in the `mock` group (the blue dot)
+  level of the gene in the `ctl` group (the blue dot)
 - the sum of $\beta_0$ and $\beta_1$ coefficients (the intercept + the
   logFC) corresponds to the mean expression level of the gene in the
   `KD` group (the red dot)
@@ -256,17 +246,13 @@ Let's subset the original dataset as below to keep only on the gene *DRAM1*.
 ```{r, eval=TRUE, purl=TRUE}
 gene_count <- as_tibble(assay(se["DRAM1"]), rownames = "gene") |>
   pivot_longer(names_to = "sample", values_to = "count", -gene) |>
+  mutate(count = log1p(count)) |>
   left_join(as_tibble(colData(se)))
+
+gene_count
 ```
 
-Let's also convert the `Condition` column into a factor, in order to set the `mock`
-condition as the reference level, and log-transform the count values.
 
-```{r}
-gene_count$Condition <- factor(gene_count$Condition, levels = c("mock", "KD"))
-gene_count <- gene_count |>
-  mutate(count = log1p(count))
-```
 
 We will start by fitting a linear model that only accounts for the *Condition* effect,
 ignoring the *cell type* effect.
@@ -353,7 +339,7 @@ $$y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2 + \beta_{12}.x_1.x_2.$$
 
 We could rewrite this equation as:
 
-$$y = \beta_0 + Treatment. x_1 + Batch . x_2 + Treatment.cellType.x_1.x_2$$
+$$y = \beta_0 + Treatment. x_1 + cellType . x_2 + Treatment.cellType.x_1.x_2$$
 
 
 In this equation:
@@ -364,17 +350,17 @@ In this equation:
 - The design factor $x_1$ will take the value of 0 if we are
   considering untreated samples, and a value of 1 when considering
   treated samples.
-- The `Treatment` term represents the **treatment effect in the
-  reference cell type**.  In this case it would represent the
-  logFoldchange between treated cellType1 and untreated cellType1.
+- The `Treatment` term represents the 
+**treatment effect in the reference cell type**.  In this case it would 
+represent the logFoldchange between treated cellType1 and untreated cellType1.
 - The design factor $x_2$ will take the value of 0 if we are
   considering cellType1, and a value of 1 when considering cellType2.
-- The `cellType` term represents the **logFoldchange associated with the
-  cell type effect in the reference treatment**.  In this case it would
-  represent the cell type effect in untreated cells.
-- The `Treatment.cellType` term represents the **treatment effect that
-  would be different in cellType2 compared to cellType1**.  This term will
-  only be considered in the equation when we are referring to treated
+- The `cellType` term represents the 
+**logFoldchange associated with the cell type effect in the reference treatment**.  
+In this case it would represent the cell type effect in untreated cells.
+- The `Treatment.cellType` term represents the 
+**treatment effect that would be different in cellType2 compared to cellType1**.  
+This term will only be considered in the equation when we are referring to treated
   cells from cellType2 (i.e. when $x_1$ = 1 and $x_2$ = 1)
 
 The following figure (generated with the `ExploreModelMatrix` package)
@@ -418,10 +404,9 @@ Let's subset the original dataset to keep only on the gene *ZBED2*.
 ```{r, eval=TRUE, purl=TRUE, message=FALSE}
 gene_count <- as_tibble(assay(se["ZBED2"]), rownames = "gene") |>
   pivot_longer(names_to = "sample", values_to = "count", -gene) |>
+  mutate(count = log1p(count)) |> 
   left_join(as_tibble(colData(se)))
-gene_count$Condition <- factor(gene_count$Condition, levels = c("mock", "KD"))
-gene_count <- gene_count |>
-  mutate(count = log1p(count))
+gene_count
 ```
 
 Fit a linear model with an interaction between condition and type.
@@ -436,8 +421,8 @@ mod4 <- lm(count ~ Condition * Type, data = gene_count)
 summary(mod4)
 ```
 
-The interaction term is significant. This indicates that the *KD
-effect* is **significantly different** in epithelial cells and
+The interaction term is significant. This indicates that the 
+**KD effect is significantly different** in epithelial cells and
 fibroblasts.
 
 And indeed looking at the count values, we can see that the KD
@@ -463,10 +448,9 @@ gene *GOLGA4*.
 ```{r, eval=TRUE, purl=TRUE}
 gene_count <- as_tibble(assay(se["GOLGA4"]), rownames = "gene") |>
   pivot_longer(names_to = "sample", values_to = "count", -gene) |>
+  mutate(count = log1p(count)) |>
   left_join(as_tibble(colData(se)))
-gene_count$Condition <- factor(gene_count$Condition, levels = c("mock", "KD"))
-gene_count <- gene_count |>
-  mutate(count = log1p(count))
+gene_count
 ```
 
 Fit a linear model with an interaction between condition and type.
@@ -483,7 +467,7 @@ summary(mod5)
 
 The coefficients `ConditionKD` (representing the *KD Effect*) is
 significant, but the interaction term is not. This indicates that the
-*KD Effect* is not significantly different between fibroblasts and
+**KD Effect is not significantly different** between fibroblasts and
 epithelial cells.
 
 This is not surprising because the effect is consistent in both cell
