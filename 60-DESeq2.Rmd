@@ -554,13 +554,15 @@ normalised counts. However, log-transformed counts still exhibit heteroscedastic
 (middle panel).
 
 As a solution, DESeq2 offers the varianceStabilizingTransformation , `vst()`,
-which stabilizes the variance across the range of mean expression values (right panel).
-For genes with high counts, the transformation does not differ much from an
-ordinary log2 transformation. For genes with low expression, it applies stronger variance stabilization, which reduces the high variability associated with small counts and Poisson noise.
+which stabilizes the variance across the range of mean expression values (right 
+panel). For genes with high counts, the transformation does not differ much from 
+an ordinary log2 transformation. For genes with low expression, it applies 
+stronger variance stabilization, which reduces the high variability associated 
+with small counts and Poisson noise.
 See `?vst` for more details about the function.
 
 ```{r echo=FALSE, warning=FALSE}
-dds_group1 <- dds[, dds$group == "Epithelial_mock"]
+dds_group1 <- dds[, dds$group == "Epithelial_ctl"]
 log_dds_group1 <- normTransform(dds_group1)
 vst_dds_group1 <- vst(dds_group1)
 
@@ -724,33 +726,24 @@ resultsNames(dds)
 ```
 
 Note that by default, R will choose a reference level for factors
-based on alphabetical order. Here `Epithelial_KD` was hence set
+based on alphabetical order. Here `Epithelial_ctl` was hence set
 arbitrarily as the reference level of the group factor.
 
 ```{r}
 dds$group
 ```
 
-In this case, it seems more logical to use `mock` cells as reference.
-Reference levels can be changed using the `relevel()` function. But in
-this case don't forget to re-run `DESeq()` function after the
-re-leveling operation.
 
-```{r, message = FALSE}
-dds$group <- relevel(dds$group, ref = "Epithelial_mock")
-dds <- DESeq(dds)
-resultsNames(dds)
-```
 
 Results can then be extracted using the `results()` function.
-
 The `name` parameter must be an element of resultsNames(object)
 specifying the samples to compare.
 
+Let's say we want to test the **KD effect in epithelial cells**. 
 
 ```{r}
 res <- results(dds,
-               name = "group_Epithelial_KD_vs_Epithelial_mock")
+               name = "group_Epithelial_KD_vs_Epithelial_ctl")
 ```
 
 
@@ -763,24 +756,54 @@ specific coefficients from more complex designs.
 
 ```{r}
 res <- results(dds,
-               contrast = c("group", "Epithelial_KD", "Epithelial_mock"))
+               contrast = c("group", "Epithelial_KD", "Epithelial_ctl"))
 ```
 
 
 ##### Question {-}
 
 
-How would you run the results() function to identify genes affected by the KD in
-fibroblast cells?
+How would you use the results() function to test the KD effect in fibroblast 
+cells? Try to do it in two different ways: one using the `contrast` argument 
+and one using the `name` argument.
 
 <details>
 <summary>Solution</summary>
 
+1. With the `contrast` argument: 
 
 ```{r}
 results(dds,
-        contrast = c("group", "Fibroblast_KD", "Fibroblast_mock"))
+        contrast = c("group", "Fibroblast_KD", "Fibroblast_ctl"))
 ```
+2. With the `name` argument: 
+
+Using the resultsNames(), we can see that there is not coefficient corresponding
+to `group_Fibroblast_KD_vs_Fibroblast_ctl`. This is not surprising because the 
+reference level of the group factor is `Epithelial_ctl`.
+
+```{r}
+resultsNames(dds)
+dds$group
+```
+
+In this case, we should first set the `Fibroblast_ctl` group as the reference 
+group. Reference levels can be changed using the `relevel()` function. But in
+this case don't forget to re-run `DESeq()` function after the
+re-leveling operation!
+
+
+```{r}
+dds_bis <- dds
+dds_bis$group <- relevel(dds_bis$group, ref = "Fibroblast_ctl")
+dds_bis <- DESeq(dds_bis)
+resultsNames(dds_bis)
+results(dds_bis, name = "group_Fibroblast_KD_vs_Fibroblast_ctl")
+```
+
+
+
+
 
 </details>
 
@@ -796,9 +819,9 @@ res_tbl
 
 **log2FoldChange**: Fold-change between the comparison and control groups,
 reported on a logarithmic scale to base 2. In this case, as we are testing
-the "Condition_KD_vs_mock" coefficient, positive log2FC indicates a gene up-regulated
-in the KD condition compared to the mock condition, while a negative log2FC indicate
-a down-regulation.
+the "Condition_KD_vs_ctl" coefficient, positive log2FC indicates a gene up-regulated
+in the KD condition compared to the control condition, while a negative log2FC 
+indicate a down-regulation.
 
 **lfcSE**: The standard error estimate for the log2FoldChange estimate
 
@@ -858,14 +881,14 @@ coefficients(dds[best_gene])
 ##### Question 4 {-}
 
 Using the function `counts()`, evaluate the mean expression level
-of the "best gene" in mock cells. Compare with ß coefficients.
+of the "best gene" in control cells. Compare with ß coefficients.
 
 <details>
 <summary>Solution</summary>
 
 ```{r}
-# log2 expression level in mock cells
-log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_mock"], normalize = TRUE)))
+# log2 expression level in control cells
+log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_ctl"], normalize = TRUE)))
 ```
 
 </details>
@@ -922,15 +945,18 @@ from the results metadata.
 metadata(res)$filterThreshold
 ```
 
-This means that genes whith basemean < `r round(metadata(res)$filterThreshold,2)` have been
-filtered. This represents `r round(as.numeric(sub("%", "", names(metadata(res)$filterThreshold))), 1)` of all tested genes!
+This means that genes whith basemean < `r round(metadata(res)$filterThreshold,2)` 
+have been filtered. This represents 
+`r round(as.numeric(sub("%", "", names(metadata(res)$filterThreshold))), 1)` of 
+all tested genes!
 
 Remember that the filtering threshold has been fixed in a way that maximizes the
 number of genes which will have a significant padjusted value.
 
 We can plot the number of rejections over the basemean quantiles.
-The threshold chosen (red vertical line) is the lowest quantile for which the number of
-rejections is within 1 residual standard deviation to the peak of the curve.
+The threshold chosen (red vertical line) is the lowest quantile for which the 
+number of rejections is within 1 residual standard deviation to the peak of the 
+curve.
 
 ```{r}
 as_tibble(metadata(res)$filterNumRej) |>
@@ -960,7 +986,7 @@ as_tibble(metadata(res)$filterNumRej) |>
 
 ```{r}
 res_no_IF <- results(dds,
-                     name = "group_Epithelial_KD_vs_Epithelial_mock",
+                     name = "group_Epithelial_KD_vs_Epithelial_ctl",
                      independentFiltering = FALSE)
 
 res_no_IF_tbl <- as_tibble(res_no_IF, rownames = "gene")
@@ -990,7 +1016,7 @@ dds_bis <- DESeq(dds[keep, ])
 dim(dds_bis)
 
 res_bis <- results(dds_bis,
-                   name = "group_Epithelial_KD_vs_Epithelial_mock",
+                   name = "group_Epithelial_KD_vs_Epithelial_ctl",
                    independentFiltering = FALSE)
 res_bis_tbl <- as_tibble(res_bis, rownames = "gene")
 
@@ -1005,10 +1031,11 @@ res_bis_tbl |> filter(padj < 0.05) |> nrow()
 #### p-values distribution
 
 Another useful diagnostic plot is the histogram of pvalues.
-It can give you an immediate idea of the proportion of genes differentially expressed,
-(the taller the is the left peak, the more p-values are close to 0 and therefore
-significant). Furthermore, it gives an idea of how the test behaved across all your
-hypotheses, and immediately diagnoses some potential problems.
+It can give you an immediate idea of the proportion of genes differentially 
+expressed, (the taller the is the left peak, the more p-values are close to 0 
+and therefore significant). Furthermore, it gives an idea of how the test 
+behaved across all your hypotheses, and immediately diagnoses some potential 
+problems.
 
 ```{r}
 res_tbl |>
@@ -1025,7 +1052,7 @@ scatter plot of log2FC versus the mean of normalised counts. Genes
 with a padjusted value lower than 0.05 are colored. The plot
 highlights the fact that genes with low read counts show substantially
 higher variability than highly expressed genes, resulting in a strong
-log2FC even though are likely not really differentially expressed.  In
+log2FC even though are likely not really differentially expressed. In
 the MA-plot, we hope to observe some genes located in the upper/lower
 right quadrant of the plots (the most interesting candidates).
 
@@ -1154,7 +1181,7 @@ describing thedefault shrinkage estimator for more details [@Zhu:2019]
 This procedure improves interpretability of the fold-changes estimates.
 
 ```{r, warning = FALSE, message = FALSE}
-res_shr <- lfcShrink(dds, coef = "group_Epithelial_KD_vs_Epithelial_mock")
+res_shr <- lfcShrink(dds, coef = "group_Epithelial_KD_vs_Epithelial_ctl")
 res_shr_tbl <- as_tibble(res_shr, rownames = "gene") |> 
   filter(!is.na(padj))
 
@@ -1191,7 +1218,7 @@ write_csv(res_tbl, file = "data/deseq_result_table.csv")
 ### Question1 {-}
 
 Re-run the analysis to compare fibroblast and epithelial cells 
-(in mock condition)
+(in control condition)
 
 ### Question2 {-}
 
