@@ -458,8 +458,8 @@ Test a different threshold to define the group of 'DE genes'.
 
 ```{r}
 # Define our DE genes
-padj_thr <- 0.05
-log2FC_thr <- 0
+padj_thr <- 1e-10
+log2FC_thr <- 1
 
 geneList <- res_tbl$gene
 genes_DE <- res_tbl$gene[res_tbl$padj <= padj_thr &
@@ -472,6 +472,7 @@ res_tbl %>%
   theme_bw() +
   theme(legend.position = "none") +
   geom_hline(yintercept = -log10(padj_thr)) +
+  geom_vline(xintercept = -log2FC_thr) +
   geom_vline(xintercept = log2FC_thr) +
   ggtitle(paste0(length(genes_DE), " DE selected (padj < ", padj_thr, ")"))
 
