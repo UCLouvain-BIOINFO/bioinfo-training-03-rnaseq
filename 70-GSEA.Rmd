@@ -484,7 +484,8 @@ ORA_res_GO_new_thr <- as_tibble(ORA_res_new_thr) |>
 ORA_res_GO_new_thr |>
   select(ID, GeneRatio, BgRatio, pvalue, p.adjust)
 
-library(Vennerable)
+if (!require(Vennerable))
+    BiocManager::install("js229/Vennerable")
 geneset_list <- list(prev_thr = ORA_res_tbl_GO$ID,
                      new_thr = ORA_res_GO_new_thr$ID)
 plot(Venn(geneset_list))

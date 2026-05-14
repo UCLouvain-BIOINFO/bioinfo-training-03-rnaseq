@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 3 Linear Models | RNA-Seq analysis with R and Bioconductor</title>
+  <meta name="description" content="Chapter 3 Linear Models | RNA-Seq analysis with R and Bioconductor" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 3 Linear Models | RNA-Seq analysis with R and Bioconductor" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 3 Linear Models | RNA-Seq analysis with R and Bioconductor" />
+  
+  
+  
+
+<meta name="author" content="Laurent Gatto and Axelle Loriot" />
+
+
+<meta name="date" content="2026-05-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-se.html"/>
+<link rel="next" href="sec-FDR.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-hts.html"><a href="sec-hts.html#stranded-versus-unstranded-libraries"><i class="fa fa-check"></i><b>1.1.1</b> Stranded versus unstranded libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-hts.html"><a href="sec-hts.html#sequencing"><i class="fa fa-check"></i><b>1.2</b> Sequencing</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="sec-hts.html"><a href="sec-hts.html#se-vs-pe-sequencing"><i class="fa fa-check"></i><b>1.2.1</b> SE vs PE sequencing</a></li>
+<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> cluster amplification</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="sec-hts.html"><a href="sec-hts.html#fastq-files"><i class="fa fa-check"></i><b>1.3</b> fastq files</a></li>
+<li class="chapter" data-level="1.4" data-path="sec-hts.html"><a href="sec-hts.html#processing-pipeline"><i class="fa fa-check"></i><b>1.4</b> Processing pipeline</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-hts.html"><a href="sec-hts.html#quality-control"><i class="fa fa-check"></i><b>1.4.1</b> Quality control</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-hts.html"><a href="sec-hts.html#alignment"><i class="fa fa-check"></i><b>1.5</b> Alignment</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-hts.html"><a href="sec-hts.html#counting"><i class="fa fa-check"></i><b>1.6</b> Counting</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-hts.html"><a href="sec-hts.html#sec-counts"><i class="fa fa-check"></i><b>1.7</b> Preparing the count matrix</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-hts.html"><a href="sec-hts.html#questions"><i class="fa fa-check"></i>Questions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sec-se.html"><a href="sec-se.html"><i class="fa fa-check"></i><b>2</b> SummarizedExperiments</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sec-se.html"><a href="sec-se.html#summarizedexperiment"><i class="fa fa-check"></i><b>2.1</b> SummarizedExperiment</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-se.html"><a href="sec-se.html#creating-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.1</b> Creating a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-se.html"><a href="sec-se.html#subsetting-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.2</b> Subsetting a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-se.html"><a href="sec-se.html#adding-variables-to-the-sample-metadata"><i class="fa fa-check"></i><b>2.1.3</b> Adding variables to the sample metadata</a></li>
+<li class="chapter" data-level="2.1.4" data-path="sec-se.html"><a href="sec-se.html#adding-gene-annotations-to-the-feature-metadata"><i class="fa fa-check"></i><b>2.1.4</b> Adding gene annotations to the feature metadata</a></li>
+<li class="chapter" data-level="2.1.5" data-path="sec-se.html"><a href="sec-se.html#save-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.5</b> Save a SummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-se.html"><a href="sec-se.html#rangedsummarizedexperiment"><i class="fa fa-check"></i><b>2.2</b> RangedSummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sec-lm.html"><a href="sec-lm.html"><i class="fa fa-check"></i><b>3</b> Linear Models</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sec-lm.html"><a href="sec-lm.html#multifactorial-design-and-linear-models"><i class="fa fa-check"></i><b>3.1</b> Multifactorial design and linear models</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-lm.html"><a href="sec-lm.html#single-factor-design"><i class="fa fa-check"></i><b>3.2</b> Single-factor design</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-lm.html"><a href="sec-lm.html#example"><i class="fa fa-check"></i><b>3.2.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-lm.html"><a href="sec-lm.html#two-factor-design"><i class="fa fa-check"></i><b>3.3</b> Two-factor design</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-lm.html"><a href="sec-lm.html#example-1"><i class="fa fa-check"></i><b>3.3.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-lm.html"><a href="sec-lm.html#design-with-interaction"><i class="fa fa-check"></i><b>3.4</b> Design with interaction</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-lm.html"><a href="sec-lm.html#examples"><i class="fa fa-check"></i><b>3.4.1</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> FDR</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-FDR.html"><a href="sec-FDR.html#multiple-testing"><i class="fa fa-check"></i><b>4.1</b> Multiple testing</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-FDR.html"><a href="sec-FDR.html#adjustment-for-multiple-testing"><i class="fa fa-check"></i><b>4.2</b> Adjustment for multiple testing</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-FDR.html"><a href="sec-FDR.html#question-13"><i class="fa fa-check"></i>Question</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> PCA</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sec-pca.html"><a href="sec-pca.html#introduction-to-pca"><i class="fa fa-check"></i><b>5.1</b> Introduction to PCA</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="sec-pca.html"><a href="sec-pca.html#lower-dimensional-projections"><i class="fa fa-check"></i><b>5.1.1</b> Lower-dimensional projections</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html"><i class="fa fa-check"></i><b>6</b> Differential expression analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#theory-behind-deseq2"><i class="fa fa-check"></i><b>6.1</b> Theory behind DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#size-factor-estimation"><i class="fa fa-check"></i><b>6.1.1</b> Size factor estimation</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#count-modeling"><i class="fa fa-check"></i><b>6.1.2</b> Count modeling</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#dispersion-estimation"><i class="fa fa-check"></i><b>6.1.3</b> Dispersion estimation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#generalized-linear-model"><i class="fa fa-check"></i><b>6.1.4</b> Generalized linear model</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#hypothesis-testing"><i class="fa fa-check"></i><b>6.1.5</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="6.1.6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#multiple-testing-correction"><i class="fa fa-check"></i><b>6.1.6</b> Multiple testing correction</a></li>
+<li class="chapter" data-level="6.1.7" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#independent-filtering"><i class="fa fa-check"></i><b>6.1.7</b> Independent filtering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#running-deseq2"><i class="fa fa-check"></i><b>6.2</b> Running DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseqdataset-object"><i class="fa fa-check"></i><b>6.2.1</b> DESeqDataSet object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#run-deseq2"><i class="fa fa-check"></i><b>6.2.2</b> Run DESeq2</a></li>
+<li class="chapter" data-level="6.2.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#exploring-data"><i class="fa fa-check"></i><b>6.2.3</b> Exploring data</a></li>
+<li class="chapter" data-level="6.2.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseq2-results"><i class="fa fa-check"></i><b>6.2.4</b> DESeq2 results</a></li>
+<li class="chapter" data-level="6.2.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#saving-the-result-table"><i class="fa fa-check"></i><b>6.2.5</b> Saving the result table</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#additional-exercices"><i class="fa fa-check"></i><b>6.3</b> Additional exercices</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question1"><i class="fa fa-check"></i>Question1</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question2"><i class="fa fa-check"></i>Question2</a></li>
+<li class="chapter" data-level="6.3.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#further-links"><i class="fa fa-check"></i><b>6.3.1</b> Further links</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sec-gsea.html"><a href="sec-gsea.html"><i class="fa fa-check"></i><b>7</b> Enrichment analyses</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sec-gsea.html"><a href="sec-gsea.html#objectives-of-an-enrichment-analysis"><i class="fa fa-check"></i><b>7.1</b> Objectives of an enrichment analysis</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-gsea.html"><a href="sec-gsea.html#genesets"><i class="fa fa-check"></i><b>7.2</b> GeneSets</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#ora"><i class="fa fa-check"></i><b>7.4</b> ORA</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
+<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
+<li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gsea"><i class="fa fa-check"></i><b>7.5</b> GSEA</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with <code>clusterProfiler</code> package</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">RNA-Seq analysis with R and Bioconductor</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-lm" class="section level1 hasAnchor" number="3">
+<h1><span class="header-section-number">Chapter 3</span> Linear Models<a href="sec-lm.html#sec-lm" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Objectives</strong></p>
+<ul>
+<li><p>Explore linear models</p></li>
+<li><p>Learn how to interpret coefficients</p></li>
+</ul>
+<div id="multifactorial-design-and-linear-models" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Multifactorial design and linear models<a href="sec-lm.html#multifactorial-design-and-linear-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The outcome of an experiment, such as a gene expression level in the case of an RNA-seq, can
+be seen as the sum of several factors:</p>
+<ul>
+<li>the treatments effects (these are be the effects you actually want
+to study)</li>
+<li>biological effects (representing natural biological differences
+between samples that you might also have to consider)</li>
+<li>technical effects (that come from the experimental process itself
+and that could potentially influence the measurements)</li>
+<li>and lastly, outcome will also reflect an error, which represent the
+random variability (or experiment noise) that cannot be explain be
+any of the known factors.</li>
+</ul>
+<p><img src="figs/factors-affecting-measurements.png" alt="" width="100%" style="display: block; margin: auto;" /></p>
+<p>(figure from <a href="https://www.amazon.com/Experimental-Design-Laboratory-Biologists-Reproducibility/dp/1107424887">Lazic (2017)</a>).</p>
+</div>
+<div id="single-factor-design" class="section level2 hasAnchor" number="3.2">
+<h2><span class="header-section-number">3.2</span> Single-factor design<a href="sec-lm.html#single-factor-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s start by a simple design, and let’s say we have the gene expression values
+of 3 control samples and 3 samples treated with a drug, assuming that there is
+no other biological effect or batch effect to consider.</p>
+<p>We can use the following linear model to modelise the expression values:</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1 . x\]</span></p>
+<p>In this equation,</p>
+<ul>
+<li><p><span class="math inline">\(y\)</span> would be the measured expression level of a gene</p></li>
+<li><p>the design factor <span class="math inline">\(x\)</span> is a binary indicator variable representing the two
+groups of our experiment. It will take the value of 0 if we are considering the
+control samples, and a value of 1 when considering treated samples.</p></li>
+</ul>
+<p><strong>When considering a control sample, the <span class="math inline">\(x\)</span> factor is set to 0</strong>.</p>
+<p>The <span class="math inline">\(\beta_1 . x\)</span> term is hence equal to 0, so the equation can be written:</p>
+<p><span class="math display">\[y = \beta_0\]</span></p>
+<p>This means that the <span class="math inline">\(\beta_0\)</span> term represents the expression level of the gene
+in the control samples, this coefficient is usually called the <code>intercept</code>.</p>
+<p><strong>When considering a treated sample, the <span class="math inline">\(x\)</span> factor is set to 1</strong>.</p>
+<p>The equation becomes:</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1\]</span></p>
+<p>Assuming our expression values are in a log scale then</p>
+<p><span class="math display">\[\beta_1 = y - \beta_0 \]</span>
+<span class="math display">\[\beta_1 = log(expression_{Treated\_cells}) - log(expression_{Control\_cells})\]</span></p>
+<p><span class="math display">\[\beta_1 = log(\frac{expression_{Treated\_cells}}{expression_{Control\_cells}})\]</span></p>
+<p>The <span class="math inline">\(\beta_1\)</span> term represents hence the <code>logFoldchange</code> between the treated
+and the control samples (the treatment effect).</p>
+<p><strong>The goal is now to estimate the coefficients and test their significance</strong></p>
+<p>The <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> coefficients can be estimated from the data using
+the expression values in the control and in the treated samples.</p>
+<p>A statistical test can then be applied, to test if the <span class="math inline">\(\beta_1\)</span> coefficient
+(the logFC due to the treatment effect) is significantly different from 0.</p>
+<p>The null hypothesis is that there is no difference across the sample groups,
+which is the same as saying that the <span class="math inline">\(\beta_1\)</span> = 0.</p>
+<ul>
+<li><span class="math inline">\(H_0\)</span>: <span class="math inline">\(\beta_1 = 0\)</span> (the logFC = 0)</li>
+<li><span class="math inline">\(H_1\)</span>: <span class="math inline">\(\beta_1 \neq 0\)</span> (the logFC <span class="math inline">\(\neq\)</span> 0)</li>
+</ul>
+<div id="example" class="section level3 hasAnchor" number="3.2.1">
+<h3><span class="header-section-number">3.2.1</span> Example<a href="sec-lm.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>We are going to use a subset of our previous dataset as a toy example.
+Let’s focus only on the gene <em>ZBED2</em> in <em>Epithelial</em> cell type, and use the
+log-transformed expression values.</p>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="sec-lm.html#cb98-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/se.rds&quot;</span>)</span>
+<span id="cb98-2"><a href="sec-lm.html#cb98-2" tabindex="-1"></a></span>
+<span id="cb98-3"><a href="sec-lm.html#cb98-3" tabindex="-1"></a>gene_count <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">assay</span>(se[<span class="st">&quot;ZBED2&quot;</span>, se<span class="sc">$</span>Type <span class="sc">==</span> <span class="st">&quot;Epithelial&quot;</span>]),</span>
+<span id="cb98-4"><a href="sec-lm.html#cb98-4" tabindex="-1"></a>                        <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb98-5"><a href="sec-lm.html#cb98-5" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>,</span>
+<span id="cb98-6"><a href="sec-lm.html#cb98-6" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>,</span>
+<span id="cb98-7"><a href="sec-lm.html#cb98-7" tabindex="-1"></a>               <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
+<span id="cb98-8"><a href="sec-lm.html#cb98-8" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span> </span>
+<span id="cb98-9"><a href="sec-lm.html#cb98-9" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(se)))</span>
+<span id="cb98-10"><a href="sec-lm.html#cb98-10" tabindex="-1"></a></span>
+<span id="cb98-11"><a href="sec-lm.html#cb98-11" tabindex="-1"></a>gene_count</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 7
+##   gene  sample   count Type       Condition university group         
+##   &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;         
+## 1 ZBED2 Epi_ctl1  2.40 Epithelial ctl       UCLouvain  Epithelial_ctl
+## 2 ZBED2 Epi_ctl2  1.79 Epithelial ctl       UCLouvain  Epithelial_ctl
+## 3 ZBED2 Epi_ctl3  2.08 Epithelial ctl       UCLouvain  Epithelial_ctl
+## 4 ZBED2 Epi_KD1   6.29 Epithelial KD        UCLouvain  Epithelial_KD 
+## 5 ZBED2 Epi_KD2   6.30 Epithelial KD        UCLouvain  Epithelial_KD 
+## 6 ZBED2 Epi_KD3   6.34 Epithelial KD        UCLouvain  Epithelial_KD</code></pre>
+<p>Assuming the expression values follow a normal distribution (even though,
+as we’ll see later, this isn’t actually true for RNAseq data!), let’s use the
+<code>lm()</code> function to fit a linear model to compare KD to control cells.</p>
+<p>In this case the design of our experiment would be :</p>
+<p><span class="math display">\[design \sim  Condition\]</span></p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="sec-lm.html#cb100-1" tabindex="-1"></a>mod1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> Condition, <span class="at">data =</span> gene_count)</span>
+<span id="cb100-2"><a href="sec-lm.html#cb100-2" tabindex="-1"></a>mod1</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = count ~ Condition, data = gene_count)
+## 
+## Coefficients:
+## (Intercept)  ConditionKD  
+##       2.090        4.221</code></pre>
+<p>The lm() function has estimated the coefficients of the linear model:</p>
+<ul>
+<li><p>The estimate for the <span class="math inline">\(\beta_0\)</span> coefficient (the <code>Intercept</code>) is 2.09</p></li>
+<li><p>The estimate for the <span class="math inline">\(\beta_1\)</span> coefficient (annotated as the <code>ConditionKD</code> coefficient)
+is 4.221</p></li>
+</ul>
+<p>We can visualise this linear model with:</p>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="sec-lm.html#cb102-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
+<span id="cb102-2"><a href="sec-lm.html#cb102-2" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb102-3"><a href="sec-lm.html#cb102-3" tabindex="-1"></a>    <span class="fu">geom_jitter</span>() <span class="sc">+</span></span>
+<span id="cb102-4"><a href="sec-lm.html#cb102-4" tabindex="-1"></a>    <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb102-5"><a href="sec-lm.html#cb102-5" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;ctl&quot;</span>, <span class="at">y =</span> <span class="fu">coefficients</span>(mod1)[<span class="dv">1</span>]),</span>
+<span id="cb102-6"><a href="sec-lm.html#cb102-6" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>) <span class="sc">+</span></span>
+<span id="cb102-7"><a href="sec-lm.html#cb102-7" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="st">&quot;KD&quot;</span>, <span class="at">y =</span> <span class="fu">coefficients</span>(mod1)[<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coefficients</span>(mod1)[<span class="dv">2</span>]),</span>
+<span id="cb102-8"><a href="sec-lm.html#cb102-8" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;red&quot;</span>, <span class="at">size =</span> <span class="dv">4</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-64-1.png" alt="" width="480" /></p>
+<p>And indeed, we see that</p>
+<ul>
+<li>the intercept (the <span class="math inline">\(\beta_0\)</span> coefficient) corresponds to the mean
+level of the gene in the <code>ctl</code> group (the blue dot)</li>
+<li>the sum of <span class="math inline">\(\beta_0\)</span> and <span class="math inline">\(\beta_1\)</span> coefficients (the intercept + the
+logFC) corresponds to the mean expression level of the gene in the
+<code>KD</code> group (the red dot)</li>
+</ul>
+<p>We can also extract the p-value associated with the <code>ConditionKD</code>
+coefficient:</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="sec-lm.html#cb103-1" tabindex="-1"></a><span class="fu">summary</span>(mod1)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = count ~ Condition, data = gene_count)
+## 
+## Residuals:
+##         1         2         3         4         5         6 
+##  0.308197 -0.297939 -0.010257 -0.024834 -0.008214  0.033048 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   2.0897     0.1244    16.8 7.36e-05 ***
+## ConditionKD   4.2211     0.1759    24.0 1.79e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2154 on 4 degrees of freedom
+## Multiple R-squared:  0.9931, Adjusted R-squared:  0.9914 
+## F-statistic: 575.9 on 1 and 4 DF,  p-value: 1.788e-05</code></pre>
+<p>We can see that the coefficient <code>ConditionKD</code> is highly significant.</p>
+</div>
+</div>
+<div id="two-factor-design" class="section level2 hasAnchor" number="3.3">
+<h2><span class="header-section-number">3.3</span> Two-factor design<a href="sec-lm.html#two-factor-design" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s consider a slightly more complex design. We now have the gene
+expression values of 6 control and 6 treated samples, but the
+experiment was conducted in two different cell types (with 3 control and 3
+treated samples in each cell type).</p>
+<p>To take into account the treatment effect while controlling the cell type
+effect, we should use the following design: <span class="math display">\[design \sim Treatment +
+cellType\]</span></p>
+<p>In the following linear model:</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2\]</span></p>
+<p>we could rewrite this equation as:</p>
+<p><span class="math display">\[y = \beta_0 + Treatment. x_1 + cellType . x_2\]</span></p>
+<p>In this equation:
+- The <span class="math inline">\(\beta_0\)</span> term represents the <code>intercept</code>, i.e, the <strong>expression
+level of the gene in the reference cell type</strong>, for instance the
+untreated cellType1.</p>
+<ul>
+<li><p>The design factor <span class="math inline">\(x_1\)</span> is a binary indicator variable representing
+the two treatment conditions of our experiment. It will take the
+value of 0 if we are considering the untreated samples, and a value
+of 1 when considering treated samples.</p></li>
+<li><p>The <code>Treatment</code> term represents the <strong>logFoldchange due to
+treatment</strong>.</p></li>
+<li><p>The design factor <span class="math inline">\(x_2\)</span> is another binary indicator variable
+representing the two cell types of our experiment. It will take the
+value of 0 if we are considering cellType1, and a value of 1 when
+considering cellType2.</p></li>
+<li><p>The <code>cellType</code> term represents the <strong>logFoldchange associated with the
+cell type effect</strong>.</p></li>
+</ul>
+<p>The following figure (generated with the <code>ExploreModelMatrix</code> package)
+illustrates the value of the linear predictor of a linear model for
+each combination of input variables.</p>
+<pre><code>## [[1]]</code></pre>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-66-1.png" alt="" width="576" /></p>
+<p>From this figure, we can see how the genes log expression values are
+modelised in the different samples:</p>
+<ul>
+<li>In <code>untreated cellType1</code>:
+         <span class="math inline">\(y\)</span> =
+<span class="math inline">\(\beta_0\)</span></li>
+<li>In <code>treated cellType1</code>:
+             <span class="math inline">\(y\)</span>
+= <span class="math inline">\(\beta_0\)</span> + <em>Treatment</em></li>
+<li>In <code>untreated cellType2</code>:
+         <span class="math inline">\(y\)</span> =
+<span class="math inline">\(\beta_0\)</span> + <em>cellType</em></li>
+<li>In <code>treated cellType2</code>:
+             <span class="math inline">\(y\)</span>
+= <span class="math inline">\(\beta_0\)</span> + <em>Treatment</em> + <em>cellType</em></li>
+</ul>
+<div id="example-1" class="section level3 hasAnchor" number="3.3.1">
+<h3><span class="header-section-number">3.3.1</span> Example<a href="sec-lm.html#example-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Let’s subset the original dataset as below to keep only on the gene <em>DRAM1</em>.</p>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="sec-lm.html#cb106-1" tabindex="-1"></a>gene_count <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">assay</span>(se[<span class="st">&quot;DRAM1&quot;</span>]), <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb106-2"><a href="sec-lm.html#cb106-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
+<span id="cb106-3"><a href="sec-lm.html#cb106-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span></span>
+<span id="cb106-4"><a href="sec-lm.html#cb106-4" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(se)))</span></code></pre></div>
+<pre><code>## Joining with `by = join_by(sample)`</code></pre>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="sec-lm.html#cb108-1" tabindex="-1"></a>gene_count</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 7
+##    gene  sample   count Type       Condition university group         
+##    &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;         
+##  1 DRAM1 Epi_ctl1  4.63 Epithelial ctl       UCLouvain  Epithelial_ctl
+##  2 DRAM1 Epi_ctl2  5.00 Epithelial ctl       UCLouvain  Epithelial_ctl
+##  3 DRAM1 Epi_ctl3  5.04 Epithelial ctl       UCLouvain  Epithelial_ctl
+##  4 DRAM1 Epi_KD1   5.99 Epithelial KD        UCLouvain  Epithelial_KD 
+##  5 DRAM1 Epi_KD2   6.19 Epithelial KD        UCLouvain  Epithelial_KD 
+##  6 DRAM1 Epi_KD3   6.05 Epithelial KD        UCLouvain  Epithelial_KD 
+##  7 DRAM1 Fib_ctl1  7.20 Fibroblast ctl       UCLouvain  Fibroblast_ctl
+##  8 DRAM1 Fib_ctl2  6.87 Fibroblast ctl       UCLouvain  Fibroblast_ctl
+##  9 DRAM1 Fib_ctl3  7.24 Fibroblast ctl       UCLouvain  Fibroblast_ctl
+## 10 DRAM1 Fib_KD1   8.04 Fibroblast KD        UCLouvain  Fibroblast_KD 
+## 11 DRAM1 Fib_KD2   7.77 Fibroblast KD        UCLouvain  Fibroblast_KD 
+## 12 DRAM1 Fib_KD3   7.95 Fibroblast KD        UCLouvain  Fibroblast_KD</code></pre>
+<p>We will start by fitting a linear model that only accounts for the <em>Condition</em> effect,
+ignoring the <em>cell type</em> effect.</p>
+<p>Our design would hence be <span class="math display">\[design \sim Condition\]</span></p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="sec-lm.html#cb110-1" tabindex="-1"></a>mod2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> Condition, <span class="at">data =</span> gene_count)</span>
+<span id="cb110-2"><a href="sec-lm.html#cb110-2" tabindex="-1"></a><span class="fu">summary</span>(mod2)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = count ~ Condition, data = gene_count)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -1.36396 -0.96514 -0.01872  0.97227  1.24625 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   5.9987     0.4595  13.055 1.32e-07 ***
+## ConditionKD   0.9991     0.6498   1.538    0.155    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 1.126 on 10 degrees of freedom
+## Multiple R-squared:  0.1912, Adjusted R-squared:  0.1103 
+## F-statistic: 2.364 on 1 and 10 DF,  p-value: 0.1552</code></pre>
+<p>The <em>Condition Effect</em> is not significant.</p>
+<div id="question-6" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-lm.html#question-6" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Try to figure our what is wrong with this model</p>
+<details>
+<summary>
+Solution
+</summary>
+<p>The model only accounts for the <em>Condition</em> effect. It ignores the
+<em>cell type</em> effect.</p>
+<p>Epithelial and Fibroblasts count values are mixed, even though they
+clearly don’t start at the same baseline.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="sec-lm.html#cb112-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
+<span id="cb112-2"><a href="sec-lm.html#cb112-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb112-3"><a href="sec-lm.html#cb112-3" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="fu">aes</span>(<span class="at">color =</span> Type)) <span class="sc">+</span></span>
+<span id="cb112-4"><a href="sec-lm.html#cb112-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb112-5"><a href="sec-lm.html#cb112-5" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-69-1.png" alt="" width="288" /></p>
+</details>
+</div>
+<div id="question-7" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-lm.html#question-7" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Use the <code>lm()</code> function to fit a linear model that would now account
+for Condition and cell type.</p>
+<p>Interprete the results.</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="sec-lm.html#cb113-1" tabindex="-1"></a>mod3 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> Condition <span class="sc">+</span> Type, <span class="at">data =</span> gene_count)</span>
+<span id="cb113-2"><a href="sec-lm.html#cb113-2" tabindex="-1"></a><span class="fu">summary</span>(mod3)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = count ~ Condition + Type, data = gene_count)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.35059 -0.08495  0.02444  0.09905  0.23288 
+## 
+## Coefficients:
+##                Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)     4.98532    0.09783  50.957 2.17e-12 ***
+## ConditionKD     0.99909    0.11297   8.844 9.85e-06 ***
+## TypeFibroblast  2.02674    0.11297  17.941 2.36e-08 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.1957 on 9 degrees of freedom
+## Multiple R-squared:  0.978,  Adjusted R-squared:  0.9731 
+## F-statistic:   200 on 2 and 9 DF,  p-value: 3.475e-08</code></pre>
+<p>The coefficients <code>ConditionKD</code> (representing the <em>KD Effect</em>) and the
+coefficient <code>TypeFibroblast</code>, representing the <em>cell type Effect</em>, are
+both significant.</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="sec-lm.html#cb115-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
+<span id="cb115-2"><a href="sec-lm.html#cb115-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb115-3"><a href="sec-lm.html#cb115-3" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="fu">aes</span>(<span class="at">color =</span> Type)) <span class="sc">+</span></span>
+<span id="cb115-4"><a href="sec-lm.html#cb115-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb115-5"><a href="sec-lm.html#cb115-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Type)<span class="sc">+</span></span>
+<span id="cb115-6"><a href="sec-lm.html#cb115-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-71-1.png" alt="" width="480" /></p>
+<p>The model now adjusts for the baseline difference between epithelial
+and fibroblast cell types. It prevents cell type differences from biasing the
+condition effect.</p>
+</details>
+</div>
+</div>
+</div>
+<div id="design-with-interaction" class="section level2 hasAnchor" number="3.4">
+<h2><span class="header-section-number">3.4</span> Design with interaction<a href="sec-lm.html#design-with-interaction" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Coming back to the previous experimental design were we considered 3
+controls and 3 treated samples across 2 different cell types.<br />
+An interaction term could be added to the linear model, to
+modelise a treatment effect that would differ across cell types.</p>
+<p>Our design would hence be: <span class="math display">\[design \sim Treatment*cellType\]</span></p>
+<p>The linear model could be written</p>
+<p><span class="math display">\[y = \beta_0 + \beta_1 . x_1 + \beta_2 . x_2 + \beta_{12}.x_1.x_2.\]</span></p>
+<p>We could rewrite this equation as:</p>
+<p><span class="math display">\[y = \beta_0 + Treatment. x_1 + cellType . x_2 + Treatment.cellType.x_1.x_2\]</span></p>
+<p>In this equation:</p>
+<ul>
+<li>Rhe <span class="math inline">\(\beta_0\)</span> term represents the <code>intercept</code>, i.e, the <strong>expression
+level of the gene in the reference cell type</strong>, for instance the
+untreated cells in cellType1.</li>
+<li>The design factor <span class="math inline">\(x_1\)</span> will take the value of 0 if we are
+considering untreated samples, and a value of 1 when considering
+treated samples.</li>
+<li>The <code>Treatment</code> term represents the
+<strong>treatment effect in the reference cell type</strong>. In this case it would
+represent the logFoldchange between treated cellType1 and untreated cellType1.</li>
+<li>The design factor <span class="math inline">\(x_2\)</span> will take the value of 0 if we are
+considering cellType1, and a value of 1 when considering cellType2.</li>
+<li>The <code>cellType</code> term represents the
+<strong>logFoldchange associated with the cell type effect in the reference treatment</strong>.<br />
+In this case it would represent the cell type effect in untreated cells.</li>
+<li>The <code>Treatment.cellType</code> term represents the
+<strong>treatment effect that would be different in cellType2 compared to cellType1</strong>.<br />
+This term will only be considered in the equation when we are referring to treated
+cells from cellType2 (i.e. when <span class="math inline">\(x_1\)</span> = 1 and <span class="math inline">\(x_2\)</span> = 1)</li>
+</ul>
+<p>The following figure (generated with the <code>ExploreModelMatrix</code> package)
+illustrates the value of the linear predictor of a linear model for
+each combination of input variables.</p>
+<pre><code>## [[1]]</code></pre>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-72-1.png" alt="" width="768" /></p>
+<p>From this figure, we can see how the genes log expression values are
+modelised in the different samples:</p>
+<ul>
+<li>In <code>Untreated cellType1</code>:
+         <span class="math inline">\(y\)</span> =
+<span class="math inline">\(\beta_0\)</span></li>
+<li>In <code>Treated cellType1</code>:
+             <span class="math inline">\(y\)</span>
+= <span class="math inline">\(\beta_0\)</span> + <em>Treatment</em></li>
+<li>In <code>Untreated cellType2</code>:
+         <span class="math inline">\(y\)</span> =
+<span class="math inline">\(\beta_0\)</span> + <em>cellType</em></li>
+<li>In <code>Treated cellType2</code>:
+             <span class="math inline">\(y\)</span>
+= <span class="math inline">\(\beta_0\)</span> + <em>Treatment</em> + <em>cellType</em> + <em>Treatment.cellType1</em></li>
+</ul>
+<div id="examples" class="section level3 hasAnchor" number="3.4.1">
+<h3><span class="header-section-number">3.4.1</span> Examples<a href="sec-lm.html#examples" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="question-8" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-lm.html#question-8" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let’s subset the original dataset to keep only on the gene <em>ZBED2</em>.</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="sec-lm.html#cb117-1" tabindex="-1"></a>gene_count <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">assay</span>(se[<span class="st">&quot;ZBED2&quot;</span>]), <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb117-2"><a href="sec-lm.html#cb117-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
+<span id="cb117-3"><a href="sec-lm.html#cb117-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span> </span>
+<span id="cb117-4"><a href="sec-lm.html#cb117-4" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(se)))</span>
+<span id="cb117-5"><a href="sec-lm.html#cb117-5" tabindex="-1"></a>gene_count</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 7
+##    gene  sample   count Type       Condition university group         
+##    &lt;chr&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;         
+##  1 ZBED2 Epi_ctl1 2.40  Epithelial ctl       UCLouvain  Epithelial_ctl
+##  2 ZBED2 Epi_ctl2 1.79  Epithelial ctl       UCLouvain  Epithelial_ctl
+##  3 ZBED2 Epi_ctl3 2.08  Epithelial ctl       UCLouvain  Epithelial_ctl
+##  4 ZBED2 Epi_KD1  6.29  Epithelial KD        UCLouvain  Epithelial_KD 
+##  5 ZBED2 Epi_KD2  6.30  Epithelial KD        UCLouvain  Epithelial_KD 
+##  6 ZBED2 Epi_KD3  6.34  Epithelial KD        UCLouvain  Epithelial_KD 
+##  7 ZBED2 Fib_ctl1 2.40  Fibroblast ctl       UCLouvain  Fibroblast_ctl
+##  8 ZBED2 Fib_ctl2 1.39  Fibroblast ctl       UCLouvain  Fibroblast_ctl
+##  9 ZBED2 Fib_ctl3 1.79  Fibroblast ctl       UCLouvain  Fibroblast_ctl
+## 10 ZBED2 Fib_KD1  2.08  Fibroblast KD        UCLouvain  Fibroblast_KD 
+## 11 ZBED2 Fib_KD2  0.693 Fibroblast KD        UCLouvain  Fibroblast_KD 
+## 12 ZBED2 Fib_KD3  1.79  Fibroblast KD        UCLouvain  Fibroblast_KD</code></pre>
+<p>Fit a linear model with an interaction between condition and type.</p>
+<p>Interprete the results.</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="sec-lm.html#cb119-1" tabindex="-1"></a>mod4 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> Condition <span class="sc">*</span> Type, <span class="at">data =</span> gene_count)</span>
+<span id="cb119-2"><a href="sec-lm.html#cb119-2" tabindex="-1"></a><span class="fu">summary</span>(mod4)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = count ~ Condition * Type, data = gene_count)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.82830 -0.12465 -0.00924  0.27978  0.55799 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                  2.0897     0.2719   7.685 5.82e-05 ***
+## ConditionKD                  4.2211     0.3845  10.977 4.22e-06 ***
+## TypeFibroblast              -0.2310     0.3845  -0.601    0.565    
+## ConditionKD:TypeFibroblast  -4.5583     0.5438  -8.382 3.12e-05 ***
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.471 on 8 degrees of freedom
+## Multiple R-squared:  0.9627, Adjusted R-squared:  0.9487 
+## F-statistic: 68.83 on 3 and 8 DF,  p-value: 4.691e-06</code></pre>
+<p>The interaction term is significant. This indicates that the
+<strong>KD effect is significantly different</strong> in epithelial cells and
+fibroblasts.</p>
+<p>And indeed looking at the count values, we can see that the KD
+increases the gene expression level in epithelial cells, but it has no
+effect in fibroblasts.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="sec-lm.html#cb121-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
+<span id="cb121-2"><a href="sec-lm.html#cb121-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb121-3"><a href="sec-lm.html#cb121-3" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="fu">aes</span>(<span class="at">color =</span> Type)) <span class="sc">+</span></span>
+<span id="cb121-4"><a href="sec-lm.html#cb121-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb121-5"><a href="sec-lm.html#cb121-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Type)<span class="sc">+</span></span>
+<span id="cb121-6"><a href="sec-lm.html#cb121-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-75-1.png" alt="" width="672" /></p>
+</details>
+</div>
+<div id="question-9" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-lm.html#question-9" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>As before, subset the original dataset to keep this time only on the
+gene <em>GOLGA4</em>.</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="sec-lm.html#cb122-1" tabindex="-1"></a>gene_count <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">assay</span>(se[<span class="st">&quot;GOLGA4&quot;</span>]), <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb122-2"><a href="sec-lm.html#cb122-2" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
+<span id="cb122-3"><a href="sec-lm.html#cb122-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">count =</span> <span class="fu">log1p</span>(count)) <span class="sc">|&gt;</span></span>
+<span id="cb122-4"><a href="sec-lm.html#cb122-4" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(se)))</span></code></pre></div>
+<pre><code>## Joining with `by = join_by(sample)`</code></pre>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="sec-lm.html#cb124-1" tabindex="-1"></a>gene_count</span></code></pre></div>
+<pre><code>## # A tibble: 12 × 7
+##    gene   sample   count Type       Condition university group         
+##    &lt;chr&gt;  &lt;chr&gt;    &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;     &lt;chr&gt;      &lt;chr&gt;         
+##  1 GOLGA4 Epi_ctl1  7.13 Epithelial ctl       UCLouvain  Epithelial_ctl
+##  2 GOLGA4 Epi_ctl2  7.68 Epithelial ctl       UCLouvain  Epithelial_ctl
+##  3 GOLGA4 Epi_ctl3  7.58 Epithelial ctl       UCLouvain  Epithelial_ctl
+##  4 GOLGA4 Epi_KD1   8.13 Epithelial KD        UCLouvain  Epithelial_KD 
+##  5 GOLGA4 Epi_KD2   8.25 Epithelial KD        UCLouvain  Epithelial_KD 
+##  6 GOLGA4 Epi_KD3   8.40 Epithelial KD        UCLouvain  Epithelial_KD 
+##  7 GOLGA4 Fib_ctl1  7.47 Fibroblast ctl       UCLouvain  Fibroblast_ctl
+##  8 GOLGA4 Fib_ctl2  7.20 Fibroblast ctl       UCLouvain  Fibroblast_ctl
+##  9 GOLGA4 Fib_ctl3  7.69 Fibroblast ctl       UCLouvain  Fibroblast_ctl
+## 10 GOLGA4 Fib_KD1   8.15 Fibroblast KD        UCLouvain  Fibroblast_KD 
+## 11 GOLGA4 Fib_KD2   8.30 Fibroblast KD        UCLouvain  Fibroblast_KD 
+## 12 GOLGA4 Fib_KD3   8.18 Fibroblast KD        UCLouvain  Fibroblast_KD</code></pre>
+<p>Fit a linear model with an interaction between condition and type.</p>
+<p>Interprete the results.</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="sec-lm.html#cb126-1" tabindex="-1"></a>mod5 <span class="ot">&lt;-</span> <span class="fu">lm</span>(count <span class="sc">~</span> Condition <span class="sc">*</span> Type, <span class="at">data =</span> gene_count)</span>
+<span id="cb126-2"><a href="sec-lm.html#cb126-2" tabindex="-1"></a><span class="fu">summary</span>(mod5)</span></code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = count ~ Condition * Type, data = gene_count)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.33199 -0.07562  0.00322  0.12283  0.23399 
+## 
+## Coefficients:
+##                            Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)                 7.46449    0.11839  63.048 4.45e-12 ***
+## ConditionKD                 0.79677    0.16744   4.759  0.00143 ** 
+## TypeFibroblast             -0.01094    0.16744  -0.065  0.94950    
+## ConditionKD:TypeFibroblast -0.03899    0.23679  -0.165  0.87331    
+## ---
+## Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+## 
+## Residual standard error: 0.2051 on 8 degrees of freedom
+## Multiple R-squared:  0.8437, Adjusted R-squared:  0.7851 
+## F-statistic:  14.4 on 3 and 8 DF,  p-value: 0.001373</code></pre>
+<p>The coefficients <code>ConditionKD</code> (representing the <em>KD Effect</em>) is
+significant, but the interaction term is not. This indicates that the
+<strong>KD Effect is not significantly different</strong> between fibroblasts and
+epithelial cells.</p>
+<p>This is not surprising because the effect is consistent in both cell
+types</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="sec-lm.html#cb128-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
+<span id="cb128-2"><a href="sec-lm.html#cb128-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> count)) <span class="sc">+</span></span>
+<span id="cb128-3"><a href="sec-lm.html#cb128-3" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="fu">aes</span>(<span class="at">color =</span> Type)) <span class="sc">+</span></span>
+<span id="cb128-4"><a href="sec-lm.html#cb128-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb128-5"><a href="sec-lm.html#cb128-5" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Type)<span class="sc">+</span></span>
+<span id="cb128-6"><a href="sec-lm.html#cb128-6" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-78-1.png" alt="" width="672" /></p>
+</details>
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-se.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-FDR.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

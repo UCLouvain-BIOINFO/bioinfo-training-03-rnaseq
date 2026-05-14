@@ -6,8 +6,8 @@ library("tidyverse")
 
 **Objectives**
 
-- Present the `SummarizedExperiment` class, extensively used in omics
-  analyses.
+- Present the `SummarizedExperiment` class, dedicated to store and
+  manipulate quantiative omics data.
 - Show how to build `SummarizedExperiment` objects.
 
 Data in bioinformatics is often more complex than the basic data types
@@ -31,7 +31,6 @@ programming language, and is open source and open development.
 
 To illustrate such an omics data container, we'll present the
 `SummarizedExperiment` class.
-
 
 ## SummarizedExperiment
 
@@ -342,7 +341,7 @@ feature metadata slot of our SummarizedExperiment se.
 2. How many genes from each biotype do we have?
 
 <details>
-<summary>Solutions</summary>
+<summary>Solution</summary>
 
 1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object) to the
 feature metadata slot of our SummarizedExperiment se.
@@ -362,9 +361,6 @@ table(rowData(se)$gene_biotype == "protein-coding", useNA = "ifany")
 ```
 
 </details>
-
-
-
 
 ### Save a SummarizedExperiment
 

@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 4 FDR | RNA-Seq analysis with R and Bioconductor</title>
+  <meta name="description" content="Chapter 4 FDR | RNA-Seq analysis with R and Bioconductor" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 4 FDR | RNA-Seq analysis with R and Bioconductor" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 4 FDR | RNA-Seq analysis with R and Bioconductor" />
+  
+  
+  
+
+<meta name="author" content="Laurent Gatto and Axelle Loriot" />
+
+
+<meta name="date" content="2026-05-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-lm.html"/>
+<link rel="next" href="sec-pca.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-hts.html"><a href="sec-hts.html#stranded-versus-unstranded-libraries"><i class="fa fa-check"></i><b>1.1.1</b> Stranded versus unstranded libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-hts.html"><a href="sec-hts.html#sequencing"><i class="fa fa-check"></i><b>1.2</b> Sequencing</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="sec-hts.html"><a href="sec-hts.html#se-vs-pe-sequencing"><i class="fa fa-check"></i><b>1.2.1</b> SE vs PE sequencing</a></li>
+<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> cluster amplification</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="sec-hts.html"><a href="sec-hts.html#fastq-files"><i class="fa fa-check"></i><b>1.3</b> fastq files</a></li>
+<li class="chapter" data-level="1.4" data-path="sec-hts.html"><a href="sec-hts.html#processing-pipeline"><i class="fa fa-check"></i><b>1.4</b> Processing pipeline</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-hts.html"><a href="sec-hts.html#quality-control"><i class="fa fa-check"></i><b>1.4.1</b> Quality control</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-hts.html"><a href="sec-hts.html#alignment"><i class="fa fa-check"></i><b>1.5</b> Alignment</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-hts.html"><a href="sec-hts.html#counting"><i class="fa fa-check"></i><b>1.6</b> Counting</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-hts.html"><a href="sec-hts.html#sec-counts"><i class="fa fa-check"></i><b>1.7</b> Preparing the count matrix</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-hts.html"><a href="sec-hts.html#questions"><i class="fa fa-check"></i>Questions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sec-se.html"><a href="sec-se.html"><i class="fa fa-check"></i><b>2</b> SummarizedExperiments</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sec-se.html"><a href="sec-se.html#summarizedexperiment"><i class="fa fa-check"></i><b>2.1</b> SummarizedExperiment</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-se.html"><a href="sec-se.html#creating-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.1</b> Creating a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-se.html"><a href="sec-se.html#subsetting-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.2</b> Subsetting a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-se.html"><a href="sec-se.html#adding-variables-to-the-sample-metadata"><i class="fa fa-check"></i><b>2.1.3</b> Adding variables to the sample metadata</a></li>
+<li class="chapter" data-level="2.1.4" data-path="sec-se.html"><a href="sec-se.html#adding-gene-annotations-to-the-feature-metadata"><i class="fa fa-check"></i><b>2.1.4</b> Adding gene annotations to the feature metadata</a></li>
+<li class="chapter" data-level="2.1.5" data-path="sec-se.html"><a href="sec-se.html#save-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.5</b> Save a SummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-se.html"><a href="sec-se.html#rangedsummarizedexperiment"><i class="fa fa-check"></i><b>2.2</b> RangedSummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sec-lm.html"><a href="sec-lm.html"><i class="fa fa-check"></i><b>3</b> Linear Models</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sec-lm.html"><a href="sec-lm.html#multifactorial-design-and-linear-models"><i class="fa fa-check"></i><b>3.1</b> Multifactorial design and linear models</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-lm.html"><a href="sec-lm.html#single-factor-design"><i class="fa fa-check"></i><b>3.2</b> Single-factor design</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-lm.html"><a href="sec-lm.html#example"><i class="fa fa-check"></i><b>3.2.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-lm.html"><a href="sec-lm.html#two-factor-design"><i class="fa fa-check"></i><b>3.3</b> Two-factor design</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-lm.html"><a href="sec-lm.html#example-1"><i class="fa fa-check"></i><b>3.3.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-lm.html"><a href="sec-lm.html#design-with-interaction"><i class="fa fa-check"></i><b>3.4</b> Design with interaction</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-lm.html"><a href="sec-lm.html#examples"><i class="fa fa-check"></i><b>3.4.1</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> FDR</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-FDR.html"><a href="sec-FDR.html#multiple-testing"><i class="fa fa-check"></i><b>4.1</b> Multiple testing</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-FDR.html"><a href="sec-FDR.html#adjustment-for-multiple-testing"><i class="fa fa-check"></i><b>4.2</b> Adjustment for multiple testing</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-FDR.html"><a href="sec-FDR.html#question-13"><i class="fa fa-check"></i>Question</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> PCA</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sec-pca.html"><a href="sec-pca.html#introduction-to-pca"><i class="fa fa-check"></i><b>5.1</b> Introduction to PCA</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="sec-pca.html"><a href="sec-pca.html#lower-dimensional-projections"><i class="fa fa-check"></i><b>5.1.1</b> Lower-dimensional projections</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html"><i class="fa fa-check"></i><b>6</b> Differential expression analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#theory-behind-deseq2"><i class="fa fa-check"></i><b>6.1</b> Theory behind DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#size-factor-estimation"><i class="fa fa-check"></i><b>6.1.1</b> Size factor estimation</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#count-modeling"><i class="fa fa-check"></i><b>6.1.2</b> Count modeling</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#dispersion-estimation"><i class="fa fa-check"></i><b>6.1.3</b> Dispersion estimation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#generalized-linear-model"><i class="fa fa-check"></i><b>6.1.4</b> Generalized linear model</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#hypothesis-testing"><i class="fa fa-check"></i><b>6.1.5</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="6.1.6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#multiple-testing-correction"><i class="fa fa-check"></i><b>6.1.6</b> Multiple testing correction</a></li>
+<li class="chapter" data-level="6.1.7" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#independent-filtering"><i class="fa fa-check"></i><b>6.1.7</b> Independent filtering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#running-deseq2"><i class="fa fa-check"></i><b>6.2</b> Running DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseqdataset-object"><i class="fa fa-check"></i><b>6.2.1</b> DESeqDataSet object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#run-deseq2"><i class="fa fa-check"></i><b>6.2.2</b> Run DESeq2</a></li>
+<li class="chapter" data-level="6.2.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#exploring-data"><i class="fa fa-check"></i><b>6.2.3</b> Exploring data</a></li>
+<li class="chapter" data-level="6.2.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseq2-results"><i class="fa fa-check"></i><b>6.2.4</b> DESeq2 results</a></li>
+<li class="chapter" data-level="6.2.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#saving-the-result-table"><i class="fa fa-check"></i><b>6.2.5</b> Saving the result table</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#additional-exercices"><i class="fa fa-check"></i><b>6.3</b> Additional exercices</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question1"><i class="fa fa-check"></i>Question1</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question2"><i class="fa fa-check"></i>Question2</a></li>
+<li class="chapter" data-level="6.3.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#further-links"><i class="fa fa-check"></i><b>6.3.1</b> Further links</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sec-gsea.html"><a href="sec-gsea.html"><i class="fa fa-check"></i><b>7</b> Enrichment analyses</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sec-gsea.html"><a href="sec-gsea.html#objectives-of-an-enrichment-analysis"><i class="fa fa-check"></i><b>7.1</b> Objectives of an enrichment analysis</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-gsea.html"><a href="sec-gsea.html#genesets"><i class="fa fa-check"></i><b>7.2</b> GeneSets</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#ora"><i class="fa fa-check"></i><b>7.4</b> ORA</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
+<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
+<li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gsea"><i class="fa fa-check"></i><b>7.5</b> GSEA</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with <code>clusterProfiler</code> package</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">RNA-Seq analysis with R and Bioconductor</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-FDR" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">Chapter 4</span> FDR<a href="sec-FDR.html#sec-FDR" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Objective</strong></p>
+<p>Address the multiple testing issue</p>
+<div id="multiple-testing" class="section level2 hasAnchor" number="4.1">
+<h2><span class="header-section-number">4.1</span> Multiple testing<a href="sec-FDR.html#multiple-testing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In the few examples of linear model that we have seen in the previous
+section, the <code>lm()</code> function was always applied to a single gene. In a
+real RNA-seq experiment, we will have a few thousand tests to perform,
+as each gene is going to be tested.</p>
+<p>Let’s use the <code>exp</code> dataset that provides log expression values for 20,000 genes
+in 6 samples, three in groupA and three in groupB. You can download it
+<a href="https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/exp.rda">here</a>.</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="sec-FDR.html#cb129-1" tabindex="-1"></a><span class="fu">load</span>(<span class="st">&quot;data/exp.rda&quot;</span>)</span>
+<span id="cb129-2"><a href="sec-FDR.html#cb129-2" tabindex="-1"></a>exp</span></code></pre></div>
+<pre><code>## # A tibble: 20,000 × 7
+##    Gene      A1    A2    A3    B1    B2    B3
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Gene1   4.72  4.89  4.51  4.00  4.66  4.67
+##  2 Gene2   4.61  4.96  4.58  4.53  4.21  4.78
+##  3 Gene3   4.75  4.70  4.75  4.55  4.89  4.31
+##  4 Gene4   4.83  4.83  4.43  4.53  4.38  4.55
+##  5 Gene5   4.68  4.33  4.84  4.58  4.64  4.92
+##  6 Gene6   4.57  4.74  4.68  4.84  4.42  4.96
+##  7 Gene7   4.68  4.47  4.50  4.55  4.23  4.67
+##  8 Gene8   4.59  4.81  4.44  4.45  4.20  4.61
+##  9 Gene9   4.53  4.84  4.51  4.53  4.61  4.59
+## 10 Gene10  4.74  4.09  4.61  4.33  4.72  4.61
+## # ℹ 19,990 more rows</code></pre>
+<p>Let’s apply a t.test on all these genes:</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="sec-FDR.html#cb131-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> exp <span class="sc">|&gt;</span></span>
+<span id="cb131-2"><a href="sec-FDR.html#cb131-2" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
+<span id="cb131-3"><a href="sec-FDR.html#cb131-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pval =</span> <span class="fu">t.test</span>(<span class="fu">c</span>(A1, A2, A3), <span class="fu">c</span>(B1,B2,B3))<span class="sc">$</span>p.value) <span class="sc">|&gt;</span></span>
+<span id="cb131-4"><a href="sec-FDR.html#cb131-4" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="do">## to revert the rowwise()</span></span>
+<span id="cb131-5"><a href="sec-FDR.html#cb131-5" tabindex="-1"></a>res</span></code></pre></div>
+<pre><code>## # A tibble: 20,000 × 8
+##    Gene      A1    A2    A3    B1    B2    B3  pval
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Gene1   4.72  4.89  4.51  4.00  4.66  4.67 0.367
+##  2 Gene2   4.61  4.96  4.58  4.53  4.21  4.78 0.362
+##  3 Gene3   4.75  4.70  4.75  4.55  4.89  4.31 0.474
+##  4 Gene4   4.83  4.83  4.43  4.53  4.38  4.55 0.249
+##  5 Gene5   4.68  4.33  4.84  4.58  4.64  4.92 0.632
+##  6 Gene6   4.57  4.74  4.68  4.84  4.42  4.96 0.679
+##  7 Gene7   4.68  4.47  4.50  4.55  4.23  4.67 0.682
+##  8 Gene8   4.59  4.81  4.44  4.45  4.20  4.61 0.286
+##  9 Gene9   4.53  4.84  4.51  4.53  4.61  4.59 0.689
+## 10 Gene10  4.74  4.09  4.61  4.33  4.72  4.61 0.773
+## # ℹ 19,990 more rows</code></pre>
+<div id="question-10" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-FDR.html#question-10" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>How many significant genes did we obtained ? Which genes are of possible
+biological interest?</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="sec-FDR.html#cb133-1" tabindex="-1"></a><span class="fu">table</span>(res<span class="sc">$</span>pval <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+## 19324   676</code></pre>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="sec-FDR.html#cb135-1" tabindex="-1"></a>res <span class="sc">|&gt;</span> <span class="fu">filter</span>(pval <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span></span>
+<span id="cb135-2"><a href="sec-FDR.html#cb135-2" tabindex="-1"></a>  <span class="fu">arrange</span>(pval)</span></code></pre></div>
+<pre><code>## # A tibble: 676 × 8
+##    Gene         A1    A2    A3    B1    B2    B3      pval
+##    &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;
+##  1 Gene13793  4.41  4.38  4.42  4.75  4.74  4.73 0.0000613
+##  2 Gene35     4.47  4.45  4.42  4.79  4.75  4.79 0.000104 
+##  3 Gene5006   4.79  4.78  4.75  4.56  4.59  4.57 0.000194 
+##  4 Gene8102   4.31  4.30  4.35  4.60  4.67  4.64 0.000258 
+##  5 Gene11686  4.58  4.60  4.61  4.77  4.74  4.75 0.000266 
+##  6 Gene18641  4.35  4.42  4.35  4.78  4.70  4.78 0.000432 
+##  7 Gene1936   4.47  4.54  4.49  4.79  4.86  4.86 0.000437 
+##  8 Gene14972  4.07  4.15  4.20  4.67  4.55  4.68 0.000963 
+##  9 Gene3211   4.74  4.81  4.75  4.38  4.30  4.42 0.00122  
+## 10 Gene10421  4.44  4.48  4.47  4.56  4.59  4.57 0.00153  
+## # ℹ 666 more rows</code></pre>
+</details>
+<p>The data above have been generated with the <code>rnorm()</code> function for all samples.</p>
+<p>This is the code that generated the data:</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sec-FDR.html#cb137-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
+<span id="cb137-2"><a href="sec-FDR.html#cb137-2" tabindex="-1"></a>exp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">20000</span><span class="sc">*</span><span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">20</span>), <span class="at">ncol =</span> <span class="dv">6</span>)</span>
+<span id="cb137-3"><a href="sec-FDR.html#cb137-3" tabindex="-1"></a><span class="fu">rownames</span>(exp) <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;Gene&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">20000</span>)</span>
+<span id="cb137-4"><a href="sec-FDR.html#cb137-4" tabindex="-1"></a><span class="fu">colnames</span>(exp) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">paste0</span>(<span class="st">&quot;A&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>), <span class="fu">paste0</span>(<span class="st">&quot;B&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>))</span>
+<span id="cb137-5"><a href="sec-FDR.html#cb137-5" tabindex="-1"></a>exp <span class="ot">&lt;-</span> <span class="fu">log</span>(exp)</span>
+<span id="cb137-6"><a href="sec-FDR.html#cb137-6" tabindex="-1"></a>exp <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(exp, <span class="at">rownames =</span> <span class="st">&quot;Gene&quot;</span>)</span></code></pre></div>
+</div>
+<div id="question-11" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-FDR.html#question-11" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<ul>
+<li><p>Do you still think any of the features show significant differences?</p></li>
+<li><p>Why do we obtain genes with a p-value &lt; 0.05?</p></li>
+</ul>
+<details>
+<summary>
+Solution
+</summary>
+<p>A pvalue of 0.05 means that there is only 5% chance of getting this data if no
+real difference existed (if the null hypothesis was really true).</p>
+<p>In other words, choosing a cut off of 0.05 means there is 5% chance that the
+wrong decision is made (resulting in a false positive).</p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-84-1.png" alt="" width="672" /></p>
+</details>
+</div>
+<div id="question-12" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-FDR.html#question-12" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>If you were to visualize the p-value distribution using a histogram,
+how would you expect it to look like?</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="sec-FDR.html#cb138-1" tabindex="-1"></a>res <span class="sc">|&gt;</span></span>
+<span id="cb138-2"><a href="sec-FDR.html#cb138-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pval)) <span class="sc">+</span></span>
+<span id="cb138-3"><a href="sec-FDR.html#cb138-3" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">boundary =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;gray&quot;</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-85-1.png" alt="" width="672" /></p>
+</details>
+</div>
+</div>
+<div id="adjustment-for-multiple-testing" class="section level2 hasAnchor" number="4.2">
+<h2><span class="header-section-number">4.2</span> Adjustment for multiple testing<a href="sec-FDR.html#adjustment-for-multiple-testing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In a typical RNA-seq experiment, we may test around 20,000 genes, but
+only a fraction of them are expected to be truly affected by the drug.
+Imagine a drug treatment that modifies the expression of about 1000 genes,
+but that has no impact on the other ones.</p>
+<p>The first histogram bellow shows how the distribution of
+pvalues for truly modified genes (<span class="math inline">\(H_0\)</span> is false) would look like:
+most of the pvalues would be very small. Using a pvalue cutoff of 0.05
+should permit to identify most of these differentially expressed
+genes.</p>
+<p>The second histogram shows the distribution of pvalues for
+unmodified genes (<span class="math inline">\(H_0\)</span> is true). Here the p-values are uniformly
+distributed between 0 and 1, and we can see that 5% of these genes
+appear to be significant even though this is only by chance as the
+drug had no real effect on them.</p>
+<p>The third histogram illustrates the principle behind the
+<strong>False discovery rate (FDR)</strong> adjustment. As the statistical test is done on
+the whole set of genes, the resulting pvalues will
+have a distribution corresponding to the combination of both
+histograms. Most of the p-values are uniformly distributed between 0
+and 1 but there is a spike to the left close to zero, due to those
+p-values for which <span class="math inline">\(H_0\)</span> is false.</p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-87-1.png" alt="" width="768" /></p>
+<p>The False discovery rate (FDR) computes the expected fraction of false
+positives among all discoveries. It allows us to choose n results with a given
+FDR.</p>
+<p>Widely used examples are Benjamini-Hochberg or q-values.</p>
+<p>Let’s use the <code>p.adjust()</code> function to adjust the pvalues calculated previously
+(from the t.test we did on data generated with the rnorm() function)</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="sec-FDR.html#cb139-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> res <span class="sc">|&gt;</span></span>
+<span id="cb139-2"><a href="sec-FDR.html#cb139-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">padj =</span> <span class="fu">p.adjust</span>(pval, <span class="at">method =</span> <span class="st">&quot;BH&quot;</span>))</span>
+<span id="cb139-3"><a href="sec-FDR.html#cb139-3" tabindex="-1"></a></span>
+<span id="cb139-4"><a href="sec-FDR.html#cb139-4" tabindex="-1"></a>res</span></code></pre></div>
+<pre><code>## # A tibble: 20,000 × 9
+##    Gene      A1    A2    A3    B1    B2    B3  pval  padj
+##    &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+##  1 Gene1   4.72  4.89  4.51  4.00  4.66  4.67 0.367 0.993
+##  2 Gene2   4.61  4.96  4.58  4.53  4.21  4.78 0.362 0.993
+##  3 Gene3   4.75  4.70  4.75  4.55  4.89  4.31 0.474 0.993
+##  4 Gene4   4.83  4.83  4.43  4.53  4.38  4.55 0.249 0.993
+##  5 Gene5   4.68  4.33  4.84  4.58  4.64  4.92 0.632 0.993
+##  6 Gene6   4.57  4.74  4.68  4.84  4.42  4.96 0.679 0.993
+##  7 Gene7   4.68  4.47  4.50  4.55  4.23  4.67 0.682 0.993
+##  8 Gene8   4.59  4.81  4.44  4.45  4.20  4.61 0.286 0.993
+##  9 Gene9   4.53  4.84  4.51  4.53  4.61  4.59 0.689 0.993
+## 10 Gene10  4.74  4.09  4.61  4.33  4.72  4.61 0.773 0.993
+## # ℹ 19,990 more rows</code></pre>
+<div id="question-13" class="section level3 unnumbered hasAnchor">
+<h3>Question<a href="sec-FDR.html#question-13" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>How many significant padjusted values do you expect to have?</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="sec-FDR.html#cb141-1" tabindex="-1"></a><span class="fu">table</span>(res<span class="sc">$</span>pval <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## 
+## FALSE  TRUE 
+## 19324   676</code></pre>
+<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="sec-FDR.html#cb143-1" tabindex="-1"></a><span class="fu">table</span>(res<span class="sc">$</span>padj <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span></code></pre></div>
+<pre><code>## 
+## FALSE 
+## 20000</code></pre>
+</details>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-lm.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="sec-pca.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

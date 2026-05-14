@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 7 Enrichment analyses | RNA-Seq analysis with R and Bioconductor</title>
+  <meta name="description" content="Chapter 7 Enrichment analyses | RNA-Seq analysis with R and Bioconductor" />
+  <meta name="generator" content="bookdown 0.46 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 7 Enrichment analyses | RNA-Seq analysis with R and Bioconductor" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 7 Enrichment analyses | RNA-Seq analysis with R and Bioconductor" />
+  
+  
+  
+
+<meta name="author" content="Laurent Gatto and Axelle Loriot" />
+
+
+<meta name="date" content="2026-05-14" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="sec-rnaseq.html"/>
+
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+<style type="text/css">
+/* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
+<ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
+</ul></li>
+<li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
+<ul>
+<li class="chapter" data-level="1.1.1" data-path="sec-hts.html"><a href="sec-hts.html#stranded-versus-unstranded-libraries"><i class="fa fa-check"></i><b>1.1.1</b> Stranded versus unstranded libraries</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="sec-hts.html"><a href="sec-hts.html#sequencing"><i class="fa fa-check"></i><b>1.2</b> Sequencing</a>
+<ul>
+<li class="chapter" data-level="1.2.1" data-path="sec-hts.html"><a href="sec-hts.html#se-vs-pe-sequencing"><i class="fa fa-check"></i><b>1.2.1</b> SE vs PE sequencing</a></li>
+<li class="chapter" data-level="1.2.2" data-path="sec-hts.html"><a href="sec-hts.html#cluster-amplification"><i class="fa fa-check"></i><b>1.2.2</b> cluster amplification</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="sec-hts.html"><a href="sec-hts.html#fastq-files"><i class="fa fa-check"></i><b>1.3</b> fastq files</a></li>
+<li class="chapter" data-level="1.4" data-path="sec-hts.html"><a href="sec-hts.html#processing-pipeline"><i class="fa fa-check"></i><b>1.4</b> Processing pipeline</a>
+<ul>
+<li class="chapter" data-level="1.4.1" data-path="sec-hts.html"><a href="sec-hts.html#quality-control"><i class="fa fa-check"></i><b>1.4.1</b> Quality control</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="sec-hts.html"><a href="sec-hts.html#alignment"><i class="fa fa-check"></i><b>1.5</b> Alignment</a></li>
+<li class="chapter" data-level="1.6" data-path="sec-hts.html"><a href="sec-hts.html#counting"><i class="fa fa-check"></i><b>1.6</b> Counting</a></li>
+<li class="chapter" data-level="1.7" data-path="sec-hts.html"><a href="sec-hts.html#sec-counts"><i class="fa fa-check"></i><b>1.7</b> Preparing the count matrix</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-hts.html"><a href="sec-hts.html#questions"><i class="fa fa-check"></i>Questions</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="sec-se.html"><a href="sec-se.html"><i class="fa fa-check"></i><b>2</b> SummarizedExperiments</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="sec-se.html"><a href="sec-se.html#summarizedexperiment"><i class="fa fa-check"></i><b>2.1</b> SummarizedExperiment</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="sec-se.html"><a href="sec-se.html#creating-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.1</b> Creating a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.2" data-path="sec-se.html"><a href="sec-se.html#subsetting-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.2</b> Subsetting a SummarizedExperiment</a></li>
+<li class="chapter" data-level="2.1.3" data-path="sec-se.html"><a href="sec-se.html#adding-variables-to-the-sample-metadata"><i class="fa fa-check"></i><b>2.1.3</b> Adding variables to the sample metadata</a></li>
+<li class="chapter" data-level="2.1.4" data-path="sec-se.html"><a href="sec-se.html#adding-gene-annotations-to-the-feature-metadata"><i class="fa fa-check"></i><b>2.1.4</b> Adding gene annotations to the feature metadata</a></li>
+<li class="chapter" data-level="2.1.5" data-path="sec-se.html"><a href="sec-se.html#save-a-summarizedexperiment"><i class="fa fa-check"></i><b>2.1.5</b> Save a SummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="sec-se.html"><a href="sec-se.html#rangedsummarizedexperiment"><i class="fa fa-check"></i><b>2.2</b> RangedSummarizedExperiment</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="sec-lm.html"><a href="sec-lm.html"><i class="fa fa-check"></i><b>3</b> Linear Models</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="sec-lm.html"><a href="sec-lm.html#multifactorial-design-and-linear-models"><i class="fa fa-check"></i><b>3.1</b> Multifactorial design and linear models</a></li>
+<li class="chapter" data-level="3.2" data-path="sec-lm.html"><a href="sec-lm.html#single-factor-design"><i class="fa fa-check"></i><b>3.2</b> Single-factor design</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="sec-lm.html"><a href="sec-lm.html#example"><i class="fa fa-check"></i><b>3.2.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="sec-lm.html"><a href="sec-lm.html#two-factor-design"><i class="fa fa-check"></i><b>3.3</b> Two-factor design</a>
+<ul>
+<li class="chapter" data-level="3.3.1" data-path="sec-lm.html"><a href="sec-lm.html#example-1"><i class="fa fa-check"></i><b>3.3.1</b> Example</a></li>
+</ul></li>
+<li class="chapter" data-level="3.4" data-path="sec-lm.html"><a href="sec-lm.html#design-with-interaction"><i class="fa fa-check"></i><b>3.4</b> Design with interaction</a>
+<ul>
+<li class="chapter" data-level="3.4.1" data-path="sec-lm.html"><a href="sec-lm.html#examples"><i class="fa fa-check"></i><b>3.4.1</b> Examples</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="sec-FDR.html"><a href="sec-FDR.html"><i class="fa fa-check"></i><b>4</b> FDR</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="sec-FDR.html"><a href="sec-FDR.html#multiple-testing"><i class="fa fa-check"></i><b>4.1</b> Multiple testing</a></li>
+<li class="chapter" data-level="4.2" data-path="sec-FDR.html"><a href="sec-FDR.html#adjustment-for-multiple-testing"><i class="fa fa-check"></i><b>4.2</b> Adjustment for multiple testing</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-FDR.html"><a href="sec-FDR.html#question-13"><i class="fa fa-check"></i>Question</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="sec-pca.html"><a href="sec-pca.html"><i class="fa fa-check"></i><b>5</b> PCA</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="sec-pca.html"><a href="sec-pca.html#introduction-to-pca"><i class="fa fa-check"></i><b>5.1</b> Introduction to PCA</a>
+<ul>
+<li class="chapter" data-level="5.1.1" data-path="sec-pca.html"><a href="sec-pca.html#lower-dimensional-projections"><i class="fa fa-check"></i><b>5.1.1</b> Lower-dimensional projections</a></li>
+</ul></li>
+<li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html"><i class="fa fa-check"></i><b>6</b> Differential expression analysis</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#theory-behind-deseq2"><i class="fa fa-check"></i><b>6.1</b> Theory behind DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#size-factor-estimation"><i class="fa fa-check"></i><b>6.1.1</b> Size factor estimation</a></li>
+<li class="chapter" data-level="6.1.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#count-modeling"><i class="fa fa-check"></i><b>6.1.2</b> Count modeling</a></li>
+<li class="chapter" data-level="6.1.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#dispersion-estimation"><i class="fa fa-check"></i><b>6.1.3</b> Dispersion estimation</a></li>
+<li class="chapter" data-level="6.1.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#generalized-linear-model"><i class="fa fa-check"></i><b>6.1.4</b> Generalized linear model</a></li>
+<li class="chapter" data-level="6.1.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#hypothesis-testing"><i class="fa fa-check"></i><b>6.1.5</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="6.1.6" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#multiple-testing-correction"><i class="fa fa-check"></i><b>6.1.6</b> Multiple testing correction</a></li>
+<li class="chapter" data-level="6.1.7" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#independent-filtering"><i class="fa fa-check"></i><b>6.1.7</b> Independent filtering</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#running-deseq2"><i class="fa fa-check"></i><b>6.2</b> Running DESeq2</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseqdataset-object"><i class="fa fa-check"></i><b>6.2.1</b> DESeqDataSet object</a></li>
+<li class="chapter" data-level="6.2.2" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#run-deseq2"><i class="fa fa-check"></i><b>6.2.2</b> Run DESeq2</a></li>
+<li class="chapter" data-level="6.2.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#exploring-data"><i class="fa fa-check"></i><b>6.2.3</b> Exploring data</a></li>
+<li class="chapter" data-level="6.2.4" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#deseq2-results"><i class="fa fa-check"></i><b>6.2.4</b> DESeq2 results</a></li>
+<li class="chapter" data-level="6.2.5" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#saving-the-result-table"><i class="fa fa-check"></i><b>6.2.5</b> Saving the result table</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#additional-exercices"><i class="fa fa-check"></i><b>6.3</b> Additional exercices</a>
+<ul>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question1"><i class="fa fa-check"></i>Question1</a></li>
+<li class="chapter" data-level="" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#question2"><i class="fa fa-check"></i>Question2</a></li>
+<li class="chapter" data-level="6.3.1" data-path="sec-rnaseq.html"><a href="sec-rnaseq.html#further-links"><i class="fa fa-check"></i><b>6.3.1</b> Further links</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="sec-gsea.html"><a href="sec-gsea.html"><i class="fa fa-check"></i><b>7</b> Enrichment analyses</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="sec-gsea.html"><a href="sec-gsea.html#objectives-of-an-enrichment-analysis"><i class="fa fa-check"></i><b>7.1</b> Objectives of an enrichment analysis</a></li>
+<li class="chapter" data-level="7.2" data-path="sec-gsea.html"><a href="sec-gsea.html#genesets"><i class="fa fa-check"></i><b>7.2</b> GeneSets</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#ora"><i class="fa fa-check"></i><b>7.4</b> ORA</a>
+<ul>
+<li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
+<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
+<li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
+</ul></li>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gsea"><i class="fa fa-check"></i><b>7.5</b> GSEA</a>
+<ul>
+<li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with <code>clusterProfiler</code> package</a></li>
+</ul></li>
+</ul></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">RNA-Seq analysis with R and Bioconductor</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="sec-gsea" class="section level1 hasAnchor" number="7">
+<h1><span class="header-section-number">Chapter 7</span> Enrichment analyses<a href="sec-gsea.html#sec-gsea" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p><strong>Objectives</strong></p>
+<ul>
+<li>What is the aim of performing gene set enrichment analysis?</li>
+<li>What are the commonly-used gene set databases?</li>
+<li>Learn how to perform ORA and GSEA analyses</li>
+</ul>
+<div id="objectives-of-an-enrichment-analysis" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Objectives of an enrichment analysis<a href="sec-gsea.html#objectives-of-an-enrichment-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Once we have obtained a list of differentially expressed (DE) genes,
+the next question naturally to ask is what biological functions these
+DE genes may affect.</p>
+<p>Gene set enrichment analyses (GSEA) evaluate the associations of a
+list of DE genes to a collection of pre-defined gene sets, where each
+gene set has a specific biological meaning. A geneset significantly
+enrichiched among DE genes could suggest that the corresponding
+biological process or pathway is significantly affected.</p>
+<p>There are a huge amount of methods available for GSEA analysis. In
+this episode, we will focus on two widely used methods: the
+over-representation analysis (ORA) and the Gene set enrichment
+analysis (GSEA).</p>
+</div>
+<div id="genesets" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> GeneSets<a href="sec-gsea.html#genesets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The definition of a gene set is very flexible and the construction of gene
+sets is straightforward. In most cases, gene sets are from public databases
+where huge efforts from scientific curators have already been made to
+carefully categorize genes into gene sets with clear biological meanings.
+For example, in a “cell cycle” gene set, all the genes are involved in the cell
+cycle process. Thus, if DE genes are significantly enriched in the “cell cycle”
+gene set, which means there are significantly more cell cycle genes differentially
+expressed than expected, we can conclude that the normal function of cell cycle
+process may be affected.</p>
+<p>Nevertheless, gene sets can also be self-defined from individual studies, such
+as a set of genes in a network module from a co-expression network analysis,
+or a set of genes that are up-regulated in a certain disease.</p>
+<p>The <a href="https://www.gsea-msigdb.org/gsea/msigdb">MSigDB database</a> contains a collection
+of annotated gene sets such as</p>
+<ul>
+<li><strong><code>Gene Ontology (GO)</code></strong></li>
+</ul>
+<p>Gene Ontology defines concepts/classes used to describe gene function,
+and relationships between these concepts. GO terms are organized in a
+directed acyclic graph, where edges between terms represent parent-child relationship.
+It classifies functions along three aspects:</p>
+<ul>
+<li><strong>MF: Molecular Function</strong>: molecular activities of gene products</li>
+<li><strong>CC: Cellular Component</strong>: where gene products are active</li>
+<li><strong>BP: Biological Process</strong> pathways and larger processes made up of
+the activities of multiple gene products.</li>
+<li><strong>Hallmark gene sets</strong> are curated gene sets that represent
+well-defined biologicalstates or processes (e.g. “Apoptosis”, “KRAS
+signaling”, “DNA repair”).</li>
+<li><strong>Kyoto Encyclopedia of Genes and Genomes (KEGG)</strong>: KEGG is a
+collection of manually drawn pathway maps representing molecular
+interaction and reaction networks. These pathways cover a wide range
+of biochemical processes.</li>
+<li><strong>Other gene sets</strong>: Other gene sets include but are not limited to
+Positional gene sets, wikiPathways, Oncogenic signatures,
+Immunologic signatures …</li>
+</ul>
+<div id="access-the-gene-sets-from-msigdb" class="section level3 hasAnchor" number="7.2.1">
+<h3><span class="header-section-number">7.2.1</span> Access the gene sets from MSigDB<a href="sec-gsea.html#access-the-gene-sets-from-msigdb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The
+<a href="https://cran.r-project.org/web/packages/msigdbr/index.html">msigdbr</a>
+CRAN package provides the MSigDB gene sets in a standard R data frame
+with key-value pairs.</p>
+<p>One can use msigdbr_collections() to see the available collections</p>
+<div class="sourceCode" id="cb265"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb265-1"><a href="sec-gsea.html#cb265-1" tabindex="-1"></a><span class="fu">msigdbr_collections</span>()</span></code></pre></div>
+<pre><code>##    db_version gs_collection gs_subcollection
+## 1   2026.1.Hs            C1                 
+## 2   2026.1.Hs            C2              CGP
+## 3   2026.1.Hs            C2               CP
+## 4   2026.1.Hs            C2      CP:BIOCARTA
+## 5   2026.1.Hs            C2   CP:KEGG_LEGACY
+## 6   2026.1.Hs            C2  CP:KEGG_MEDICUS
+## 7   2026.1.Hs            C2           CP:PID
+## 8   2026.1.Hs            C2      CP:REACTOME
+## 9   2026.1.Hs            C2  CP:WIKIPATHWAYS
+## 10  2026.1.Hs            C3        MIR:MIRDB
+## 11  2026.1.Hs            C3   MIR:MIR_LEGACY
+## 12  2026.1.Hs            C3         TFT:GTRD
+## 13  2026.1.Hs            C3   TFT:TFT_LEGACY
+## 14  2026.1.Hs            C4              3CA
+## 15  2026.1.Hs            C4              CGN
+## 16  2026.1.Hs            C4               CM
+## 17  2026.1.Hs            C5            GO:BP
+## 18  2026.1.Hs            C5            GO:CC
+## 19  2026.1.Hs            C5            GO:MF
+## 20  2026.1.Hs            C5              HPO
+##                      gs_collection_name num_genesets
+## 1                            Positional          302
+## 2    Chemical and Genetic Perturbations         3555
+## 3                    Canonical Pathways           19
+## 4                     BioCarta Pathways          292
+## 5                  KEGG Legacy Pathways          186
+## 6                 KEGG Medicus Pathways          658
+## 7                          PID Pathways          196
+## 8                     Reactome Pathways         1839
+## 9                          WikiPathways          925
+## 10                                miRDB         2377
+## 11                           MIR_Legacy          221
+## 12                                 GTRD          506
+## 13                           TFT_Legacy          610
+## 14 Curated Cancer Cell Atlas gene sets           148
+## 15            Cancer Gene Neighborhoods          427
+## 16                       Cancer Modules          431
+## 17                GO Biological Process         7538
+## 18                GO Cellular Component         1080
+## 19                GO Molecular Function         1872
+## 20             Human Phenotype Ontology         5793
+##  [ reached &#39;max&#39; / getOption(&quot;max.print&quot;) -- omitted 6 rows ]</code></pre>
+<div class="sourceCode" id="cb267"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb267-1"><a href="sec-gsea.html#cb267-1" tabindex="-1"></a>GO_BP <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>,</span>
+<span id="cb267-2"><a href="sec-gsea.html#cb267-2" tabindex="-1"></a>                 <span class="at">collection =</span> <span class="st">&quot;C5&quot;</span>,</span>
+<span id="cb267-3"><a href="sec-gsea.html#cb267-3" tabindex="-1"></a>                 <span class="at">subcollection =</span> <span class="st">&quot;BP&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb267-4"><a href="sec-gsea.html#cb267-4" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gs_name, gene_symbol)</span></code></pre></div>
+<div id="question-21" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-gsea.html#question-21" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>How many genes belong to the <code>GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION</code>
+geneset?</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="sec-gsea.html#cb268-1" tabindex="-1"></a>GO_BP <span class="sc">|&gt;</span></span>
+<span id="cb268-2"><a href="sec-gsea.html#cb268-2" tabindex="-1"></a>  <span class="fu">filter</span>(gs_name <span class="sc">==</span> <span class="st">&quot;GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION&quot;</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 71 × 2
+##    gs_name                                 gene_symbol
+##    &lt;chr&gt;                                   &lt;chr&gt;      
+##  1 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION ABL1       
+##  2 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION ABL2       
+##  3 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION ADAM10     
+##  4 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION ADAM17     
+##  5 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION ADAM8      
+##  6 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION ADTRP      
+##  7 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION AIF1       
+##  8 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION AIRE       
+##  9 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION AKT1       
+## 10 GOBP_REGULATION_OF_LYMPHOCYTE_MIGRATION APOD       
+## # ℹ 61 more rows</code></pre>
+</details>
+</div>
+<div id="question-22" class="section level4 unnumbered hasAnchor">
+<h4>Question<a href="sec-gsea.html#question-22" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Retrieve <code>Hallmarks</code> genesets</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb270"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb270-1"><a href="sec-gsea.html#cb270-1" tabindex="-1"></a>hallmarks <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">collection =</span> <span class="st">&quot;H&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb270-2"><a href="sec-gsea.html#cb270-2" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">select</span>(gs_name, gene_symbol)</span>
+<span id="cb270-3"><a href="sec-gsea.html#cb270-3" tabindex="-1"></a></span>
+<span id="cb270-4"><a href="sec-gsea.html#cb270-4" tabindex="-1"></a>hallmarks</span></code></pre></div>
+<pre><code>## # A tibble: 7,331 × 2
+##    gs_name               gene_symbol
+##    &lt;chr&gt;                 &lt;chr&gt;      
+##  1 HALLMARK_ADIPOGENESIS ABCA1      
+##  2 HALLMARK_ADIPOGENESIS ABCB8      
+##  3 HALLMARK_ADIPOGENESIS ACAA2      
+##  4 HALLMARK_ADIPOGENESIS ACADL      
+##  5 HALLMARK_ADIPOGENESIS ACADM      
+##  6 HALLMARK_ADIPOGENESIS ACADS      
+##  7 HALLMARK_ADIPOGENESIS ACLY       
+##  8 HALLMARK_ADIPOGENESIS ACO2       
+##  9 HALLMARK_ADIPOGENESIS ACOX1      
+## 10 HALLMARK_ADIPOGENESIS ADCY6      
+## # ℹ 7,321 more rows</code></pre>
+</details>
+</div>
+</div>
+</div>
+<div id="input-data" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Input data<a href="sec-gsea.html#input-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We will use the results of the differential expression analysis
+comparing KD to mock epithelial cells. The following code summarizes
+the full DESeq2 analysis that you should already have learned about in
+the previous episode. We will focus on the genes that have an
+adjusted p-value (those that have been tested).</p>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb272-1"><a href="sec-gsea.html#cb272-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/se.rds&quot;</span>)</span>
+<span id="cb272-2"><a href="sec-gsea.html#cb272-2" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSet</span>(se, <span class="at">design =</span> <span class="sc">~</span> group)</span>
+<span id="cb272-3"><a href="sec-gsea.html#cb272-3" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
+<span id="cb272-4"><a href="sec-gsea.html#cb272-4" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">results</span>(dds, <span class="at">name =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>)</span>
+<span id="cb272-5"><a href="sec-gsea.html#cb272-5" tabindex="-1"></a>res_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>)</span>
+<span id="cb272-6"><a href="sec-gsea.html#cb272-6" tabindex="-1"></a>res_tbl <span class="ot">&lt;-</span> res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(padj))</span></code></pre></div>
+</div>
+<div id="ora" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> ORA<a href="sec-gsea.html#ora" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="principle" class="section level3 hasAnchor" number="7.4.1">
+<h3><span class="header-section-number">7.4.1</span> Principle<a href="sec-gsea.html#principle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The idea behind the ORA is to test whether your list of differentially
+expressed genes (DE) is enriched in certain biological categories
+(such as genesets from Gene Ontology terms, KEGG pathways, or Reactome
+pathways), i.e, if it contains more genes from these categories than
+would be expected by chance.</p>
+<div id="step-1-selection-of-de-genes" class="section level4 hasAnchor" number="7.4.1.1">
+<h4><span class="header-section-number">7.4.1.1</span> Step 1: selection of DE genes<a href="sec-gsea.html#step-1-selection-of-de-genes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To perform an over representation analysis, we first need to define
+the genes we will consider as differentially expressed (DE).</p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-164-1.png" alt="" width="1440" /></p>
+<p>We could consider all genes that have a p-adjusted value &lt; 0.05 (left
+volcano), in this case we would select 4747
+genes. This number is probably too large, so we should probably be
+more restrictive and select a smaller set of genes, using a more
+stringent filtering on the p-adjusted value. We could also consider
+filtering using the logFC, which could also make biological sense.</p>
+<p>Whatever thresholds are used, the idea here is to start from a
+selection of genes that we will consider as our DE genes. <strong>The
+selection is a choice the user has to make.</strong></p>
+<p>Here, we will apply the selection criteria illustrated in the second volcano.
+Hence, among all the genes (called the <strong>universe</strong>), we will consider the
+333 genes with a p-adjusted value &lt; 10^{-10} as our
+<strong>genes of interest</strong> or <strong>DE genes</strong>.</p>
+</div>
+<div id="step-2-counting" class="section level4 hasAnchor" number="7.4.1.2">
+<h4><span class="header-section-number">7.4.1.2</span> Step 2: Counting<a href="sec-gsea.html#step-2-counting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For each biological category, we can count how many genes from our DE
+genes are in that category, and how many are not.</p>
+<p>Let’s say we want to test the enrichment of the <code>GOBP_ENDODERM_DEVELOPMENT</code> geneset.</p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-165-1.png" alt="" width="80%" /></p>
+<p>We will count the number of DE genes from that are in <code>GOBP_LEUKOCYTE_CHEMOTAXIS</code>
+geneset, and how many are not.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left"></th>
+<th align="right">GO</th>
+<th align="right">not_GO</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">DE</td>
+<td align="right">9</td>
+<td align="right">324</td>
+</tr>
+<tr class="even">
+<td align="left">not_DE</td>
+<td align="right">58</td>
+<td align="right">15048</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="step-3-statistical-test" class="section level4 hasAnchor" number="7.4.1.3">
+<h4><span class="header-section-number">7.4.1.3</span> Step 3: Statistical test<a href="sec-gsea.html#step-3-statistical-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We can now apply a Fisher’s exact (or hypergeometric test) that will test whether
+there is a significant enrichment of DE genes in the GO term.</p>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb273-1"><a href="sec-gsea.html#cb273-1" tabindex="-1"></a><span class="fu">fisher.test</span>(count_mat, <span class="at">alternative =</span> <span class="st">&quot;greater&quot;</span>)</span></code></pre></div>
+<pre><code>## 
+##  Fisher&#39;s Exact Test for Count Data
+## 
+## data:  count_mat
+## p-value = 1.29e-05
+## alternative hypothesis: true odds ratio is greater than 1
+## 95 percent confidence interval:
+##  3.569026      Inf
+## sample estimates:
+## odds ratio 
+##   7.203113</code></pre>
+</div>
+</div>
+<div id="running-an-ora-with-clusterprofiler-package" class="section level3 hasAnchor" number="7.4.2">
+<h3><span class="header-section-number">7.4.2</span> Running an ORA with <code>clusterProfiler</code> package<a href="sec-gsea.html#running-an-ora-with-clusterprofiler-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>In practice, the analysis presented above can be executed using any of the very
+many packages that are available.</p>
+<p>Here, we will use the
+<a href="https://yulab-smu.top/clusterProfiler-book/">clusterProfiler package</a>
+to test if any GO terms from the Biological Process is enriched among our DE genes.</p>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb275-1"><a href="sec-gsea.html#cb275-1" tabindex="-1"></a><span class="do">## Define our DE genes</span></span>
+<span id="cb275-2"><a href="sec-gsea.html#cb275-2" tabindex="-1"></a>padj_thr <span class="ot">&lt;-</span> <span class="fl">1e-10</span></span>
+<span id="cb275-3"><a href="sec-gsea.html#cb275-3" tabindex="-1"></a>log2FC_thr <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb275-4"><a href="sec-gsea.html#cb275-4" tabindex="-1"></a>geneList <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene</span>
+<span id="cb275-5"><a href="sec-gsea.html#cb275-5" tabindex="-1"></a>genes_DE <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene[res_tbl<span class="sc">$</span>padj <span class="sc">&lt;=</span> padj_thr <span class="sc">&amp;</span></span>
+<span id="cb275-6"><a href="sec-gsea.html#cb275-6" tabindex="-1"></a>                           <span class="fu">abs</span>(res_tbl<span class="sc">$</span>log2FoldChange) <span class="sc">&gt;=</span> log2FC_thr]</span>
+<span id="cb275-7"><a href="sec-gsea.html#cb275-7" tabindex="-1"></a></span>
+<span id="cb275-8"><a href="sec-gsea.html#cb275-8" tabindex="-1"></a>ORA_res <span class="ot">&lt;-</span> <span class="fu">enricher</span>(<span class="at">gene          =</span> genes_DE,</span>
+<span id="cb275-9"><a href="sec-gsea.html#cb275-9" tabindex="-1"></a>                    <span class="at">universe      =</span> geneList,</span>
+<span id="cb275-10"><a href="sec-gsea.html#cb275-10" tabindex="-1"></a>                    <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb275-11"><a href="sec-gsea.html#cb275-11" tabindex="-1"></a>                    <span class="at">qvalueCutoff  =</span> <span class="dv">1</span>,</span>
+<span id="cb275-12"><a href="sec-gsea.html#cb275-12" tabindex="-1"></a>                    <span class="at">pvalueCutoff  =</span> <span class="dv">1</span>,</span>
+<span id="cb275-13"><a href="sec-gsea.html#cb275-13" tabindex="-1"></a>                    <span class="at">TERM2GENE     =</span> GO_BP)</span>
+<span id="cb275-14"><a href="sec-gsea.html#cb275-14" tabindex="-1"></a></span>
+<span id="cb275-15"><a href="sec-gsea.html#cb275-15" tabindex="-1"></a>ORA_res_tbl_GO <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ORA_res) <span class="sc">|&gt;</span></span>
+<span id="cb275-16"><a href="sec-gsea.html#cb275-16" tabindex="-1"></a>    <span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb275-17"><a href="sec-gsea.html#cb275-17" tabindex="-1"></a></span>
+<span id="cb275-18"><a href="sec-gsea.html#cb275-18" tabindex="-1"></a>ORA_res_tbl_GO <span class="sc">|&gt;</span></span>
+<span id="cb275-19"><a href="sec-gsea.html#cb275-19" tabindex="-1"></a>  <span class="fu">select</span>(ID, GeneRatio, BgRatio, pvalue, p.adjust)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   ID                                          GeneRatio BgRatio  pvalue p.adjust
+##   &lt;chr&gt;                                       &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTO… 19/302    240/12… 8.01e-6   0.0364
+## 2 GOBP_CD4_POSITIVE_OR_CD8_POSITIVE_ALPHA_BE… 6/302     26/122… 3.30e-5   0.0423
+## 3 GOBP_FORMATION_OF_PRIMARY_GERM_LAYER        11/302    100/12… 3.52e-5   0.0423
+## 4 GOBP_ENDODERM_DEVELOPMENT                   9/302     67/122… 3.72e-5   0.0423
+## 5 GOBP_SYMBIONT_ENTRY_INTO_HOST               11/302    105/12… 5.55e-5   0.0473
+## 6 GOBP_CELL_FATE_COMMITMENT                   15/302    187/12… 6.25e-5   0.0473</code></pre>
+<p>In the output data frame, there are the following columns:</p>
+<ul>
+<li><code>ID</code>: ID of the gene set. In this example analysis, it is the GO ID.</li>
+<li><code>Description</code>: Readable description. Here it is the name of the GO term.</li>
+<li><code>GeneRatio</code>: Number of DE genes in the gene set / total number of DE genes.</li>
+<li><code>BgRatio</code>: Size of the gene set / total number of genes.</li>
+<li><code>pvalue</code>: <em>p</em>-value calculated from the hypergeometric distribution.</li>
+<li><code>p.adjust</code>: Adjusted <em>p</em>-value by the BH method.</li>
+<li><code>qvalue</code>: <em>q</em>-value which is another way for controlling false
+positives in multiple testings.</li>
+<li><code>geneID</code>: A list of DE genes in the gene set.</li>
+<li><code>Count</code>: Number of DE genes in the gene set.</li>
+</ul>
+<p>You may have noticed the total number of DE genes changes. We defined
+333 DE genes, but only
+302 DE genes are
+included in the enrichment result table (in the GeneRatio column).
+Similarly, our universe had 15439 genes, but the total number of
+tested genes was only 12215
+in the result table. The main reason is by default DE genes not annotated to any
+GO gene set are filtered out.</p>
+</div>
+<div id="visualisation" class="section level3 hasAnchor" number="7.4.3">
+<h3><span class="header-section-number">7.4.3</span> Visualisation<a href="sec-gsea.html#visualisation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The clusterProfiler documentation provides a chapter on the
+<a href="https://yulab-smu.top/clusterProfiler-book/chapter12.html">visualization of functional enrichment
+results</a> .</p>
+<p>Another useful visualisation, that links the enrichment results back
+to the whole set of results is to highlight the genes in a particular
+set of interest on the volcano plot.</p>
+<p>Let’s inspect genes from the
+<code>GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTOR_BETA</code>on the volcano</p>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb277-1"><a href="sec-gsea.html#cb277-1" tabindex="-1"></a>my_geneset <span class="ot">&lt;-</span> <span class="st">&quot;GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTOR_BETA&quot;</span></span>
+<span id="cb277-2"><a href="sec-gsea.html#cb277-2" tabindex="-1"></a></span>
+<span id="cb277-3"><a href="sec-gsea.html#cb277-3" tabindex="-1"></a>genes_from_geneset <span class="ot">&lt;-</span> GO_BP <span class="sc">|&gt;</span></span>
+<span id="cb277-4"><a href="sec-gsea.html#cb277-4" tabindex="-1"></a>  <span class="fu">filter</span>(gs_name <span class="sc">==</span> my_geneset) <span class="sc">|&gt;</span></span>
+<span id="cb277-5"><a href="sec-gsea.html#cb277-5" tabindex="-1"></a>  <span class="fu">pull</span>(gene_symbol)</span>
+<span id="cb277-6"><a href="sec-gsea.html#cb277-6" tabindex="-1"></a></span>
+<span id="cb277-7"><a href="sec-gsea.html#cb277-7" tabindex="-1"></a>padj_thr <span class="ot">&lt;-</span> <span class="fl">1e-10</span></span>
+<span id="cb277-8"><a href="sec-gsea.html#cb277-8" tabindex="-1"></a>log2FC_thr <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb277-9"><a href="sec-gsea.html#cb277-9" tabindex="-1"></a></span>
+<span id="cb277-10"><a href="sec-gsea.html#cb277-10" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb277-11"><a href="sec-gsea.html#cb277-11" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj))) <span class="sc">+</span></span>
+<span id="cb277-12"><a href="sec-gsea.html#cb277-12" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;gray80&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb277-13"><a href="sec-gsea.html#cb277-13" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb277-14"><a href="sec-gsea.html#cb277-14" tabindex="-1"></a>                   <span class="fu">filter</span>(gene <span class="sc">%in%</span> genes_from_geneset),</span>
+<span id="cb277-15"><a href="sec-gsea.html#cb277-15" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb277-16"><a href="sec-gsea.html#cb277-16" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb277-17"><a href="sec-gsea.html#cb277-17" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(padj_thr)) <span class="sc">+</span></span>
+<span id="cb277-18"><a href="sec-gsea.html#cb277-18" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> log2FC_thr) <span class="sc">+</span></span>
+<span id="cb277-19"><a href="sec-gsea.html#cb277-19" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span>log2FC_thr) <span class="sc">+</span></span>
+<span id="cb277-20"><a href="sec-gsea.html#cb277-20" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="fu">length</span>(genes_DE2), <span class="st">&quot; DE selected (padj &lt; &quot;</span>, padj_thr, <span class="st">&quot;)&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb277-21"><a href="sec-gsea.html#cb277-21" tabindex="-1"></a>  <span class="fu">ggtitle</span>(my_geneset) <span class="sc">+</span></span>
+<span id="cb277-22"><a href="sec-gsea.html#cb277-22" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb277-23"><a href="sec-gsea.html#cb277-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;purple&quot;</span>),</span>
+<span id="cb277-24"><a href="sec-gsea.html#cb277-24" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb277-25"><a href="sec-gsea.html#cb277-25" tabindex="-1"></a>        <span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-169-1.png" alt="" width="672" /></p>
+</div>
+<div id="conclusion-about-ora-method" class="section level3 hasAnchor" number="7.4.4">
+<h3><span class="header-section-number">7.4.4</span> Conclusion about ORA method<a href="sec-gsea.html#conclusion-about-ora-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>This approach is straightfoward and very fast. Its major drawback
+however is that we need to define a cutoff to differentiate DE from
+non-DE genes. Setting this threshold might have an effect on the
+results.</p>
+<div id="question-1-2" class="section level4 unnumbered hasAnchor">
+<h4>Question 1<a href="sec-gsea.html#question-1-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Test a different threshold to define the group of ‘DE genes’.</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb278"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb278-1"><a href="sec-gsea.html#cb278-1" tabindex="-1"></a><span class="co"># Define our DE genes</span></span>
+<span id="cb278-2"><a href="sec-gsea.html#cb278-2" tabindex="-1"></a>padj_thr <span class="ot">&lt;-</span> <span class="fl">1e-10</span></span>
+<span id="cb278-3"><a href="sec-gsea.html#cb278-3" tabindex="-1"></a>log2FC_thr <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb278-4"><a href="sec-gsea.html#cb278-4" tabindex="-1"></a></span>
+<span id="cb278-5"><a href="sec-gsea.html#cb278-5" tabindex="-1"></a>geneList <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene</span>
+<span id="cb278-6"><a href="sec-gsea.html#cb278-6" tabindex="-1"></a>genes_DE <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene[res_tbl<span class="sc">$</span>padj <span class="sc">&lt;=</span> padj_thr <span class="sc">&amp;</span></span>
+<span id="cb278-7"><a href="sec-gsea.html#cb278-7" tabindex="-1"></a>                           <span class="fu">abs</span>(res_tbl<span class="sc">$</span>log2FoldChange) <span class="sc">&gt;=</span> log2FC_thr]</span>
+<span id="cb278-8"><a href="sec-gsea.html#cb278-8" tabindex="-1"></a></span>
+<span id="cb278-9"><a href="sec-gsea.html#cb278-9" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb278-10"><a href="sec-gsea.html#cb278-10" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj))) <span class="sc">+</span></span>
+<span id="cb278-11"><a href="sec-gsea.html#cb278-11" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">color =</span> gene <span class="sc">%in%</span> genes_DE), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb278-12"><a href="sec-gsea.html#cb278-12" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;gray&quot;</span>, <span class="st">&quot;red&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb278-13"><a href="sec-gsea.html#cb278-13" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb278-14"><a href="sec-gsea.html#cb278-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb278-15"><a href="sec-gsea.html#cb278-15" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(padj_thr)) <span class="sc">+</span></span>
+<span id="cb278-16"><a href="sec-gsea.html#cb278-16" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span>log2FC_thr) <span class="sc">+</span></span>
+<span id="cb278-17"><a href="sec-gsea.html#cb278-17" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> log2FC_thr) <span class="sc">+</span></span>
+<span id="cb278-18"><a href="sec-gsea.html#cb278-18" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="fu">length</span>(genes_DE), <span class="st">&quot; DE selected (padj &lt; &quot;</span>, padj_thr, <span class="st">&quot;)&quot;</span>))</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-170-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb279-1"><a href="sec-gsea.html#cb279-1" tabindex="-1"></a>ORA_res_new_thr <span class="ot">&lt;-</span> <span class="fu">enricher</span>(<span class="at">gene          =</span> genes_DE,</span>
+<span id="cb279-2"><a href="sec-gsea.html#cb279-2" tabindex="-1"></a>                            <span class="at">universe      =</span> geneList,</span>
+<span id="cb279-3"><a href="sec-gsea.html#cb279-3" tabindex="-1"></a>                            <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb279-4"><a href="sec-gsea.html#cb279-4" tabindex="-1"></a>                            <span class="at">qvalueCutoff  =</span> <span class="dv">1</span>,</span>
+<span id="cb279-5"><a href="sec-gsea.html#cb279-5" tabindex="-1"></a>                            <span class="at">pvalueCutoff  =</span> <span class="dv">1</span>,</span>
+<span id="cb279-6"><a href="sec-gsea.html#cb279-6" tabindex="-1"></a>                            <span class="at">TERM2GENE     =</span> GO_BP)</span>
+<span id="cb279-7"><a href="sec-gsea.html#cb279-7" tabindex="-1"></a></span>
+<span id="cb279-8"><a href="sec-gsea.html#cb279-8" tabindex="-1"></a>ORA_res_GO_new_thr <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ORA_res_new_thr) <span class="sc">|&gt;</span></span>
+<span id="cb279-9"><a href="sec-gsea.html#cb279-9" tabindex="-1"></a>    <span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.1</span>)</span>
+<span id="cb279-10"><a href="sec-gsea.html#cb279-10" tabindex="-1"></a></span>
+<span id="cb279-11"><a href="sec-gsea.html#cb279-11" tabindex="-1"></a>ORA_res_GO_new_thr <span class="sc">|&gt;</span></span>
+<span id="cb279-12"><a href="sec-gsea.html#cb279-12" tabindex="-1"></a>  <span class="fu">select</span>(ID, GeneRatio, BgRatio, pvalue, p.adjust)</span></code></pre></div>
+<pre><code>## # A tibble: 63 × 5
+##    ID                                         GeneRatio BgRatio  pvalue p.adjust
+##    &lt;chr&gt;                                      &lt;chr&gt;     &lt;chr&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1 GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACT… 16/248    240/12… 3.12e-5   0.0695
+##  2 GOBP_SYMBIONT_ENTRY_INTO_HOST              10/248    105/12… 5.28e-5   0.0695
+##  3 GOBP_POSITIVE_REGULATION_OF_MAPK_CASCADE   19/248    337/12… 5.80e-5   0.0695
+##  4 GOBP_GLYCOPROTEIN_BIOSYNTHETIC_PROCESS     16/248    260/12… 8.14e-5   0.0695
+##  5 GOBP_PROTEIN_O_LINKED_GLYCOSYLATION        11/248    134/12… 8.83e-5   0.0695
+##  6 GOBP_RESPONSE_TO_FIBROBLAST_GROWTH_FACTOR  9/248     91/122… 9.33e-5   0.0695
+##  7 GOBP_CELL_FATE_COMMITMENT                  13/248    187/12… 1.14e-4   0.0695
+##  8 GOBP_RESPONSE_TO_WOUNDING                  22/248    449/12… 1.22e-4   0.0695
+##  9 GOBP_CD4_POSITIVE_OR_CD8_POSITIVE_ALPHA_B… 5/248     26/122… 1.54e-4   0.0702
+## 10 GOBP_POSITIVE_REGULATION_OF_CELL_DEVELOPM… 18/248    334/12… 1.61e-4   0.0702
+## # ℹ 53 more rows</code></pre>
+<div class="sourceCode" id="cb281"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb281-1"><a href="sec-gsea.html#cb281-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(Vennerable))</span>
+<span id="cb281-2"><a href="sec-gsea.html#cb281-2" tabindex="-1"></a>    BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;js229/Vennerable&quot;</span>)</span></code></pre></div>
+<pre><code>## Loading required package: Vennerable</code></pre>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb283-1"><a href="sec-gsea.html#cb283-1" tabindex="-1"></a>geneset_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">prev_thr =</span> ORA_res_tbl_GO<span class="sc">$</span>ID,</span>
+<span id="cb283-2"><a href="sec-gsea.html#cb283-2" tabindex="-1"></a>                     <span class="at">new_thr =</span> ORA_res_GO_new_thr<span class="sc">$</span>ID)</span>
+<span id="cb283-3"><a href="sec-gsea.html#cb283-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">Venn</span>(geneset_list))</span></code></pre></div>
+<pre><code>## Warning in seq.default(1, length = numberOfSets): partial argument match of
+## &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(1, length = numberOfSets): partial argument match of
+## &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(length = fromix - 1): partial argument match of &#39;length&#39;
+## to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(length = fromix - 1): partial argument match of &#39;length&#39;
+## to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(length = fromix - 1): partial argument match of &#39;length&#39;
+## to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-170-2.png" alt="" width="672" /></p>
+<details>
+</div>
+<div id="question-2-2" class="section level4 unnumbered hasAnchor">
+<h4>Question 2<a href="sec-gsea.html#question-2-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Repeat the ORA analysis using this time the Hallmarks genesets.</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb291-1"><a href="sec-gsea.html#cb291-1" tabindex="-1"></a><span class="co"># Define our DE genes</span></span>
+<span id="cb291-2"><a href="sec-gsea.html#cb291-2" tabindex="-1"></a>padj_thr <span class="ot">&lt;-</span> <span class="fl">1e-10</span></span>
+<span id="cb291-3"><a href="sec-gsea.html#cb291-3" tabindex="-1"></a>log2FC_thr <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb291-4"><a href="sec-gsea.html#cb291-4" tabindex="-1"></a></span>
+<span id="cb291-5"><a href="sec-gsea.html#cb291-5" tabindex="-1"></a>geneList <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene</span>
+<span id="cb291-6"><a href="sec-gsea.html#cb291-6" tabindex="-1"></a>genes_DE <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene[res_tbl<span class="sc">$</span>padj <span class="sc">&lt;=</span> padj_thr <span class="sc">&amp;</span></span>
+<span id="cb291-7"><a href="sec-gsea.html#cb291-7" tabindex="-1"></a>                           <span class="fu">abs</span>(res_tbl<span class="sc">$</span>log2FoldChange) <span class="sc">&gt;=</span> log2FC_thr]</span>
+<span id="cb291-8"><a href="sec-gsea.html#cb291-8" tabindex="-1"></a></span>
+<span id="cb291-9"><a href="sec-gsea.html#cb291-9" tabindex="-1"></a></span>
+<span id="cb291-10"><a href="sec-gsea.html#cb291-10" tabindex="-1"></a>hallmarks <span class="ot">&lt;-</span> <span class="fu">msigdbr</span>(<span class="at">species =</span> <span class="st">&quot;Homo sapiens&quot;</span>, <span class="at">collection =</span> <span class="st">&quot;H&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb291-11"><a href="sec-gsea.html#cb291-11" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(gs_name, gene_symbol)</span>
+<span id="cb291-12"><a href="sec-gsea.html#cb291-12" tabindex="-1"></a></span>
+<span id="cb291-13"><a href="sec-gsea.html#cb291-13" tabindex="-1"></a>ORA_hallmarks <span class="ot">&lt;-</span> <span class="fu">enricher</span>(<span class="at">gene          =</span> genes_DE,</span>
+<span id="cb291-14"><a href="sec-gsea.html#cb291-14" tabindex="-1"></a>                          <span class="at">universe      =</span> geneList,</span>
+<span id="cb291-15"><a href="sec-gsea.html#cb291-15" tabindex="-1"></a>                          <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb291-16"><a href="sec-gsea.html#cb291-16" tabindex="-1"></a>                          <span class="at">qvalueCutoff =</span> <span class="dv">1</span>,</span>
+<span id="cb291-17"><a href="sec-gsea.html#cb291-17" tabindex="-1"></a>                          <span class="at">pvalueCutoff =</span> <span class="dv">1</span>,</span>
+<span id="cb291-18"><a href="sec-gsea.html#cb291-18" tabindex="-1"></a>                          <span class="at">TERM2GENE     =</span> hallmarks)</span>
+<span id="cb291-19"><a href="sec-gsea.html#cb291-19" tabindex="-1"></a></span>
+<span id="cb291-20"><a href="sec-gsea.html#cb291-20" tabindex="-1"></a>ORA_hallmarks_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(ORA_hallmarks) <span class="sc">|&gt;</span> <span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb291-21"><a href="sec-gsea.html#cb291-21" tabindex="-1"></a>ORA_hallmarks_tbl <span class="sc">|&gt;</span></span>
+<span id="cb291-22"><a href="sec-gsea.html#cb291-22" tabindex="-1"></a>  <span class="fu">select</span>(ID, GeneRatio, BgRatio, pvalue, p.adjust)</span></code></pre></div>
+<pre><code>## # A tibble: 1 × 5
+##   ID                                         GeneRatio BgRatio   pvalue p.adjust
+##   &lt;chr&gt;                                      &lt;chr&gt;     &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+## 1 HALLMARK_EPITHELIAL_MESENCHYMAL_TRANSITION 15/117    188/3666 7.87e-4   0.0393</code></pre>
+<details>
+</div>
+</div>
+</div>
+<div id="gsea" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> GSEA<a href="sec-gsea.html#gsea" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="principle-1" class="section level3 hasAnchor" number="7.5.1">
+<h3><span class="header-section-number">7.5.1</span> Principle<a href="sec-gsea.html#principle-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Gene set enrichment analysis refers to a broad family of tests. Here, we will
+define the principles based on <a href="https://pubmed.ncbi.nlm.nih.gov/16199517/">Subramanian et al. 2005</a>
+keeping in mind that the exact implementation will differ in different tools.</p>
+<p>Gene Set Enrichment Analysis (GSEA) is a statistical method used to determine
+whether predefined sets of genes (for example, genes belonging to a GO term) show
+systematic differences in expression between two biological conditions.
+Instead of focusing only on individual genes, GSEA evaluates
+the <strong>collective behavior of gene groups</strong>.</p>
+<p>The major advantage of GSEA approaches is that they don’t rely on defining DE genes.</p>
+<div id="step-1-gene-ranking" class="section level4 hasAnchor" number="7.5.1.1">
+<h4><span class="header-section-number">7.5.1.1</span> Step 1: Gene ranking<a href="sec-gsea.html#step-1-gene-ranking" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The first step is to order the genes of interest. Genes could be ranked for example
+by the value of the test statistic or by their p-value.</p>
+<p>Depending on the metric used for the ranking, genes will be ordered from the
+most up-regulated to the most down-regulated (if the test statistic is used for
+instance) or by the most significantly DE (no matter if they are up or down-regulated)
+to genes not differentially expressed.</p>
+</div>
+<div id="step-2-check-where-the-genes-of-a-specific-geneset-appear" class="section level4 hasAnchor" number="7.5.1.2">
+<h4><span class="header-section-number">7.5.1.2</span> Step 2: Check where the genes of a specific geneset appear<a href="sec-gsea.html#step-2-check-where-the-genes-of-a-specific-geneset-appear" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>For a given gene set (a GO-term, or a KEGG pathaway for example),
+The idea is to check if these genes tend to appear toward the top or bottom of
+the ranked list, rather than being randomly scattered.</p>
+</div>
+<div id="step-3-compute-an-enrichment-score-es" class="section level4 hasAnchor" number="7.5.1.3">
+<h4><span class="header-section-number">7.5.1.3</span> Step 3: Compute an Enrichment Score (ES)<a href="sec-gsea.html#step-3-compute-an-enrichment-score-es" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The algorithm walks down the ranked list, increasing a running-sum statistic
+when it encounters a gene from the set, and decreasing it otherwise.</p>
+<p>The positive score is defined by <span class="math inline">\(\frac{n_{genes} - n_{genes~in~set}}{n_{genes~in~set}}\)</span>, and the decreasing score by -1, so that
+the sum of all genes in the set and those not in the set becomes zero.</p>
+<p>The maximum deviation from zero is the Enrichment Score (ES), reflecting how
+strongly the gene set is enriched at either end of the ranking.</p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-172-1.png" alt="" width="768" /></p>
+</div>
+<div id="step-4-assess-significance-by-permutation" class="section level4 hasAnchor" number="7.5.1.4">
+<h4><span class="header-section-number">7.5.1.4</span> Step 4: Assess significance by permutation<a href="sec-gsea.html#step-4-assess-significance-by-permutation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>To evaluate whether the observed ES is greater than expected by chance,
+GSEA performs permutations (of either gene labels or sample labels).
+This generates a null distribution to compute a p-value.</p>
+<p>An Enrichment score is recomputed for each permutation.
+The p-value is given by the proportion of permutations where the permuted ES is at
+least as extreme as the observed ES:</p>
+<p><span class="math display">\[p = \frac{\#\{ ES_{\text{permuted}} \ge ES_{\text{observed}} \}}{\text{total number of permutations}}\]</span></p>
+</div>
+</div>
+<div id="running-a-gsea-with-clusterprofiler-package" class="section level3 hasAnchor" number="7.5.2">
+<h3><span class="header-section-number">7.5.2</span> Running a GSEA with <code>clusterProfiler</code> package<a href="sec-gsea.html#running-a-gsea-with-clusterprofiler-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Here, we will re-use the
+<a href="https://yulab-smu.top/clusterProfiler-book/">clusterProfiler package</a> to run a
+GSEA this time, using <code>hallmark genesets</code>.</p>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb293-1"><a href="sec-gsea.html#cb293-1" tabindex="-1"></a><span class="co"># Ranking our DE results by the statistic value used in DESeq2</span></span>
+<span id="cb293-2"><a href="sec-gsea.html#cb293-2" tabindex="-1"></a>geneList <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>stat</span>
+<span id="cb293-3"><a href="sec-gsea.html#cb293-3" tabindex="-1"></a><span class="fu">names</span>(geneList)<span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene</span>
+<span id="cb293-4"><a href="sec-gsea.html#cb293-4" tabindex="-1"></a>geneList <span class="ot">&lt;-</span> geneList[<span class="fu">order</span>(geneList, <span class="at">decreasing =</span> <span class="cn">TRUE</span>)]</span>
+<span id="cb293-5"><a href="sec-gsea.html#cb293-5" tabindex="-1"></a></span>
+<span id="cb293-6"><a href="sec-gsea.html#cb293-6" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
+<span id="cb293-7"><a href="sec-gsea.html#cb293-7" tabindex="-1"></a>GSEA_res <span class="ot">&lt;-</span> <span class="fu">GSEA</span>(geneList,</span>
+<span id="cb293-8"><a href="sec-gsea.html#cb293-8" tabindex="-1"></a>             <span class="at">seed =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb293-9"><a href="sec-gsea.html#cb293-9" tabindex="-1"></a>             <span class="at">TERM2GENE =</span> hallmarks,</span>
+<span id="cb293-10"><a href="sec-gsea.html#cb293-10" tabindex="-1"></a>             <span class="at">verbose =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb293-11"><a href="sec-gsea.html#cb293-11" tabindex="-1"></a>             <span class="at">by =</span> <span class="st">&quot;fgsea&quot;</span>,</span>
+<span id="cb293-12"><a href="sec-gsea.html#cb293-12" tabindex="-1"></a>             <span class="at">pvalueCutoff =</span> <span class="dv">1</span>,</span>
+<span id="cb293-13"><a href="sec-gsea.html#cb293-13" tabindex="-1"></a>             <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb293-14"><a href="sec-gsea.html#cb293-14" tabindex="-1"></a>             <span class="at">eps =</span> <span class="dv">0</span>)</span>
+<span id="cb293-15"><a href="sec-gsea.html#cb293-15" tabindex="-1"></a></span>
+<span id="cb293-16"><a href="sec-gsea.html#cb293-16" tabindex="-1"></a>GSEA_hallmarks_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(GSEA_res) <span class="sc">|&gt;</span> <span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb293-17"><a href="sec-gsea.html#cb293-17" tabindex="-1"></a>GSEA_hallmarks_tbl</span></code></pre></div>
+<pre><code>## # A tibble: 24 × 12
+##    ID       Description setSize enrichmentScore   NES   pvalue p.adjust   qvalue
+##    &lt;chr&gt;    &lt;chr&gt;         &lt;int&gt;           &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+##  1 HALLMAR… HALLMARK_M…      58           0.699  2.45 1   e-10  2.5 e-9 6.26e-10
+##  2 HALLMAR… HALLMARK_M…     199           0.525  2.16 1   e-10  2.5 e-9 6.26e-10
+##  3 HALLMAR… HALLMARK_H…     176           0.483  1.99 3.64e- 8  5.07e-7 1.27e- 7
+##  4 HALLMAR… HALLMARK_O…     199           0.475  1.95 4.05e- 8  5.07e-7 1.27e- 7
+##  5 HALLMAR… HALLMARK_E…     188           0.479  1.95 8.56e- 8  8.56e-7 2.14e- 7
+##  6 HALLMAR… HALLMARK_I…     138           0.480  1.91 4.09e- 6  2.56e-5 6.40e- 6
+##  7 HALLMAR… HALLMARK_I…      62           0.530  1.88 1.44e- 4  6.01e-4 1.50e- 4
+##  8 HALLMAR… HALLMARK_M…     198          -0.394 -1.85 1.89e- 7  1.57e-6 3.94e- 7
+##  9 HALLMAR… HALLMARK_G…     184           0.446  1.81 3.24e- 6  2.32e-5 5.80e- 6
+## 10 HALLMAR… HALLMARK_M…     146           0.452  1.78 3.06e- 5  1.53e-4 3.84e- 5
+## # ℹ 14 more rows
+## # ℹ 4 more variables: rank &lt;int&gt;, leading_edge &lt;chr&gt;, core_enrichment &lt;chr&gt;,
+## #   log2err &lt;dbl&gt;</code></pre>
+<p>In the output data frame, there are the following columns:</p>
+<ul>
+<li><code>ID</code>: ID of the gene set. In this example analysis, it is the GO ID.</li>
+<li><code>Description</code>: Readable description. Here it is the name of the GO term.</li>
+<li><code>setSize</code>: Number of genes in this gene set that are present in your universe of tested genes.</li>
+<li><code>enrichmentScore</code>: Raw enrichment score calculated from the running-sum statistic.</li>
+<li><code>NES</code>: ES normalized by gene set size. T</li>
+<li><code>pvalue</code>: <em>p</em>-value calculated from the hypergeometric distribution.</li>
+<li><code>p.adjust</code>: Adjusted <em>p</em>-value by the BH method.</li>
+<li><code>qvalue</code>: <em>q</em>-value which is another way for controlling false positives in multiple testings.</li>
+<li><code>rank</code>: Position in the ranked gene list where the running score reaches its maximum (the ES).</li>
+<li><code>leadingEdge</code>: List of genes in the set contributing most to the ES (genes before the peak), often called the core enrichment.</li>
+</ul>
+<p>The GSEA plot can be drawn with the gseaplot() function</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb295-1"><a href="sec-gsea.html#cb295-1" tabindex="-1"></a><span class="fu">gseaplot</span>(GSEA_res, GSEA_hallmarks_tbl<span class="sc">$</span>ID[<span class="dv">1</span>], <span class="at">by =</span> <span class="st">&quot;runningScore&quot;</span>, <span class="at">title =</span> GSEA_hallmarks_tbl<span class="sc">$</span>ID[<span class="dv">1</span>])</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-174-1.png" alt="" width="768" /></p>
+<div id="question-1-3" class="section level4 unnumbered hasAnchor">
+<h4>Question 1<a href="sec-gsea.html#question-1-3" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Compare the results obtained using ORA and GSEA on GO terms (BP)</p>
+<details>
+<summary>
+Solution
+</summary>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb296-1"><a href="sec-gsea.html#cb296-1" tabindex="-1"></a><span class="fu">library</span>(Vennerable)</span>
+<span id="cb296-2"><a href="sec-gsea.html#cb296-2" tabindex="-1"></a>geneset_list <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">ORA =</span> ORA_hallmarks_tbl<span class="sc">$</span>ID,</span>
+<span id="cb296-3"><a href="sec-gsea.html#cb296-3" tabindex="-1"></a>                     <span class="at">GSEA =</span> GSEA_hallmarks_tbl<span class="sc">$</span>ID)</span>
+<span id="cb296-4"><a href="sec-gsea.html#cb296-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">Venn</span>(geneset_list))</span></code></pre></div>
+<pre><code>## Warning in seq.default(1, length = numberOfSets): partial argument match of
+## &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(1, length = numberOfSets): partial argument match of
+## &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(length = fromix - 1): partial argument match of &#39;length&#39;
+## to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(length = fromix - 1): partial argument match of &#39;length&#39;
+## to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(length = fromix - 1): partial argument match of &#39;length&#39;
+## to &#39;length.out&#39;</code></pre>
+<pre><code>## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;
+## Warning in seq.default(from = thetafrom, to = thetato, length = nintervals):
+## partial argument match of &#39;length&#39; to &#39;length.out&#39;</code></pre>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-175-1.png" alt="" width="672" /></p>
+<details>
+</div>
+<div id="question-2-3" class="section level4 unnumbered hasAnchor">
+<h4>Question 2<a href="sec-gsea.html#question-2-3" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Compare GSEA and ORA methods, what are pros and cons of both methods?</p>
+</div>
+<div id="question-3-2" class="section level4 unnumbered hasAnchor">
+<h4>Question 3<a href="sec-gsea.html#question-3-2" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Think about the different ways to order the genes for the GSEA analysis.
+What impact could the ranking method have on the GSEA analysis?</p>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div class="csl-entry">
+Anders, S, and W Huber. 2010. <span>“Differential Expression Analysis for Sequence Count Data.”</span> <em>Genome Biology</em> 11 (27): 10. <a href="https://doi.org/10.1186/gb-2010-11-10-r106">https://doi.org/10.1186/gb-2010-11-10-r106</a>.
+</div>
+<div class="csl-entry">
+Giacomo, B, K E Hayer, E J Kim, B Di Camillo, G A FitzGerald, and G R Grant. 2017. <span>“Simulation-Based Comprehensive Benchmarking of RNA-Seq Aligners.”</span> <em>Nature Methods</em> 2 (14): 135. <a href="https://doi.org/10.1038/nmeth.4106">https://doi.org/10.1038/nmeth.4106</a>.
+</div>
+<div class="csl-entry">
+Holmes, Susan, and Wolfgang Huber. 2019. <em>Modern Statistics for Modern Biology</em>. Cambridge Univeristy Press.
+</div>
+<div class="csl-entry">
+Love, M, W Huber, and S Anders. 2014. <span>“Moderated Estimation of Fold Change and Dispersion for RNA-Seq Data with DESeq2.”</span> <em>Genome Biology</em> 15 (5): 550–58. <a href="https://doi.org/10.1186/s13059-014-0550-8">https://doi.org/10.1186/s13059-014-0550-8</a>.
+</div>
+<div class="csl-entry">
+Seyednasrollah, F, A Laiho, and LA Elo. 2015. <span>“Comparison of Software Packages for Detecting Differential Expression in RNA-Seq Studies.”</span> <em>Brief Bioinform</em> 1 (16): 59. <a href="https://doi.org/10.1093/bib/bbt086">https://doi.org/10.1093/bib/bbt086</a>.
+</div>
+<div class="csl-entry">
+Van den Berge, Koen, Katharina Hembach, Charlotte Soneson, Simone Tiberi, Lieven Clement, Michael Love, Rob Patro, and Mark Robinson. 2019. <span>“RNA Sequencing Data: Hitchhiker’s Guide to Expression Analysis.”</span> <em>Annual Review of Biomedical Data Science</em> 2 (July): 139–73. <a href="https://doi.org/10.1146/annurev-biodatasci-072018-021255">https://doi.org/10.1146/annurev-biodatasci-072018-021255</a>.
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="sec-rnaseq.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": null,
+    "text": null
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": null,
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>
