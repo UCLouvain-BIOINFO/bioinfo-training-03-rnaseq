@@ -470,20 +470,6 @@ How would you interprete them and what impact would they have on the analysis?
 
 
 ```{r echo=FALSE, fig.height=4, fig.width=10}
-pca <- tibble(experience = c(rep(paste0("exp", 1:3), 2)),
-               group = c(rep("CTL", 3), rep("KD", 3)),
-               PC1 = c(-5, -1, 4, -4.6, -0.5, 5),
-               PC2 = c(4, -3, 2, 4.8, -2.5, 2.6))
-pca |>
-  ggplot(aes(x = PC1, y = PC2, color = group, shape = experience)) +
-  geom_point(size = 3) +
-  theme(axis.text = element_blank(),
-        axis.ticks = element_blank(),
-        aspect.ratio = 0.4)
-```
-
-
-```{r echo=FALSE, fig.height=4, fig.width=10}
 set.seed(123)
 pca <- tibble(batch = c(rep("batch1", 6), rep("batch2", 6), rep("batch3", 6)),
                group = rep(c(rep("CTL", 3), rep("Treated", 3)), 3),
@@ -499,8 +485,32 @@ pca |>
   geom_point(size = 3)+
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
-        aspect.ratio = 0.4)
+        aspect.ratio = 0.4) +
+  xlab("PC1 (60% var)") +
+  ylab("PC2 (23% var)")
 ```
+
+
+```{r echo=FALSE, fig.height=4, fig.width=10}
+set.seed(123)
+pca <- tibble(Genotype = c(rep("wt", 6), rep("KO", 6)),
+               Treatment = rep(c(rep("CTL", 3), rep("Treated", 3)), 2),
+               PC1 = c(rnorm(6, -4, .3),
+                       rnorm(6, 2, .2)),
+               PC2 = c(rnorm(3, 4, .2), rnorm(3, -3, .2),
+                       rnorm(3, 2, .3), rnorm(3, 1.5, .3)))
+
+pca |>
+  ggplot(aes(x = PC1, y = PC2, color = Treatment, shape = Genotype)) +
+  geom_point(size = 3)+
+  theme(axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        aspect.ratio = 0.4) +
+  xlab("PC1 (54% var)") +
+  ylab("PC2 (27% var)")
+```
+
+
 
 
 
@@ -517,7 +527,9 @@ pca |>
   geom_point(size = 3)+
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
-        aspect.ratio = 0.4)
+        aspect.ratio = 0.4) +
+  xlab("PC1 (67% var)") +
+  ylab("PC2 (15% var)")
 ```
 
 
@@ -533,5 +545,7 @@ pca |>
   geom_point(size = 3)+
   theme(axis.text = element_blank(),
         axis.ticks = element_blank(),
-        aspect.ratio = 0.4)
+        aspect.ratio = 0.4) +
+  xlab("PC1 (25% var)") +
+  ylab("PC2 (12% var)")
 ```
