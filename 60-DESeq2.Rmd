@@ -768,11 +768,7 @@ fibroblast cells? Try to do it in two different ways: one using the
 results(dds,
         contrast = c("group", "Fibroblast_KD", "Fibroblast_ctl"))
 ```
-<<<<<<< HEAD
-=======
 
-2. With the `name` argument: 
->>>>>>> 7109149 (minor modif)
 
 2. With the `name` argument:
 
