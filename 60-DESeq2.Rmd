@@ -441,6 +441,9 @@ previously as a SummarizedExperiment in our `se` object.  Remember
 this dataset corresponds to RNA-seq data from two different cell types
 treated or not by a siRNA.
 
+In case you forgot to save it previously, you can download it [here](https://raw.githubusercontent.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/refs/heads/main/data/se.rds).
+
+
 ```{r}
 se <- readRDS("data/se.rds")
 dim(se)
