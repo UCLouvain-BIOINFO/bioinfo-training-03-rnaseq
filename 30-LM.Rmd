@@ -50,7 +50,7 @@ no other biological effect or batch effect to consider.
 
 ### Defining the linear model
 
-We can use the following linear model to modelise the expression values:
+We can use the following linear model to model the expression values:
 
 $$y = \beta_0 + \beta_1 . x$$
 
@@ -233,7 +233,7 @@ vd$plotlist
 ```
 
 From this figure, we can see how the genes log expression values are
-modelised in the different samples:
+modeled in the different samples:
 
 - In `untreated cellType1`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$ =
@@ -284,8 +284,6 @@ Try to figure our what is wrong with this model
 The model only accounts for the *Condition* effect. It ignores the
 *cell type* effect.
 
-Epithelial and Fibroblasts count values are mixed, even though they
-clearly don’t start at the same baseline.
 
 ```{r , fig.height=5, fig.width=3}
 gene_count |>
@@ -295,7 +293,11 @@ gene_count |>
   theme(legend.position = "bottom")
 ```
 
+Epithelial and Fibroblasts count values are mixed, 
+even though they clearly don’t start at the same baseline.
+
 </details>
+
 
 #### Question {-}
 
@@ -337,7 +339,7 @@ condition effect.
 Coming back to the previous experimental design were we considered 3
 controls and 3 treated samples across 2 different cell types.
 An interaction term could be added to the linear model, to
-modelise a treatment effect that would differ across cell types.
+model a treatment effect that would differ across cell types.
 
 Our design would hence be: $$design \sim Treatment*cellType$$
 
@@ -388,7 +390,7 @@ vd$plotlist
 ```
 
 From this figure, we can see how the genes log expression values are
-modelised in the different samples:
+modeled in the different samples:
 
 - In `Untreated cellType1`:
   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$y$ =
