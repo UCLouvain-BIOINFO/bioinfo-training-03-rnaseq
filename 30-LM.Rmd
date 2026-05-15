@@ -45,6 +45,8 @@ Let's start by a simple design, and let's say we have the gene expression values
 of 3 control samples and 3 samples treated with a drug, assuming that there is
 no other biological effect or batch effect to consider.
 
+### Defining the linear model
+
 We can use the following linear model to modelise the expression values:
 
 $$y = \beta_0 + \beta_1 . x$$
@@ -82,7 +84,7 @@ $$\beta_1 = log(\frac{expression_{Treated\_cells}}{expression_{Control\_cells}})
 The $\beta_1$ term represents hence the `logFoldchange` between the treated
 and the control samples (the treatment effect).
 
-**The goal is now to estimate the coefficients and test their significance**
+### Estimating coefficients and testing their significance
 
 The $\beta_0$ and $\beta_1$ coefficients can be estimated from the data using
 the expression values in the control and in the treated samples.
