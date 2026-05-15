@@ -39,6 +39,9 @@ knitr::include_graphics("figs/factors-affecting-measurements.png")
 
 (figure from [Lazic (2017)](https://www.amazon.com/Experimental-Design-Laboratory-Biologists-Reproducibility/dp/1107424887)).
 
+A linear model provides a mathematical framework to describe and quantify the 
+contribution of these different factors to the observed outcome.
+
 ## Single-factor design
 
 Let's start by a simple design, and let's say we have the gene expression values
@@ -65,8 +68,8 @@ The $\beta_1 . x$ term is hence equal to 0, so the equation can be written:
 
 $$y = \beta_0$$
 
-This means that the $\beta_0$ term represents the expression level of the gene
-in the control samples, this coefficient is usually called the `intercept`.
+This means that the $\beta_0$ term represents the expression level of the gene 
+in control samples, this coefficient is usually called the `intercept`.
 
 **When considering a treated sample, the $x$ factor is set to 1**.
 
@@ -81,16 +84,16 @@ $$\beta_1 = log(expression_{Treated\_cells}) - log(expression_{Control\_cells})$
 
 $$\beta_1 = log(\frac{expression_{Treated\_cells}}{expression_{Control\_cells}})$$
 
-The $\beta_1$ term represents hence the `logFoldchange` between the treated
-and the control samples (the treatment effect).
+The $\beta_1$ term represents hence the logFoldchange between the treated
+and the control samples (the `treatment effect`).
 
 ### Estimating coefficients and testing their significance
 
-The $\beta_0$ and $\beta_1$ coefficients can be estimated from the data using
+$\beta_0$ and $\beta_1$ coefficients can be estimated from the data using
 the expression values in the control and in the treated samples.
 
 A statistical test can then be applied, to test if the $\beta_1$ coefficient
-(the logFC due to the treatment effect) is significantly different from 0.
+(the `logFC due to the treatment effect`) is significantly different from 0.
 
 The null hypothesis is that there is no difference across the sample groups,
 which is the same as saying that the $\beta_1$ = 0.
