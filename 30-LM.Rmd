@@ -23,7 +23,7 @@ suppressPackageStartupMessages({
 The outcome of an experiment, such as a gene expression level in the case of an RNA-seq, can
 be seen as the sum of several factors:
 
-- the treatments effects (these are likely the effects you actually want
+- treatments effects (these are likely the effects you actually want
   to study)
 - biological effects (representing natural biological differences
   between samples that you might also have to consider)
