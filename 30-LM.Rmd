@@ -256,7 +256,7 @@ Let's subset the original dataset as below to keep only on the gene *DRAM1*.
 gene_count <- as_tibble(assay(se["DRAM1"]), rownames = "gene") |>
   pivot_longer(names_to = "sample", values_to = "count", -gene) |>
   mutate(count = log1p(count)) |>
-  left_join(as_tibble(colData(se)))
+  full_join(as_tibble(colData(se)))
 
 gene_count
 ```
@@ -413,7 +413,7 @@ Let's subset the original dataset to keep only on the gene *ZBED2*.
 gene_count <- as_tibble(assay(se["ZBED2"]), rownames = "gene") |>
   pivot_longer(names_to = "sample", values_to = "count", -gene) |>
   mutate(count = log1p(count)) |>
-  left_join(as_tibble(colData(se)))
+  full_join(as_tibble(colData(se)))
 gene_count
 ```
 
@@ -457,7 +457,7 @@ gene *GOLGA4*.
 gene_count <- as_tibble(assay(se["GOLGA4"]), rownames = "gene") |>
   pivot_longer(names_to = "sample", values_to = "count", -gene) |>
   mutate(count = log1p(count)) |>
-  left_join(as_tibble(colData(se)))
+  full_join(as_tibble(colData(se)))
 gene_count
 ```
 
