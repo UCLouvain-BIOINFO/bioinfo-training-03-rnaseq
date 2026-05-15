@@ -59,7 +59,7 @@ In this equation,
 - $y$ would be the measured expression level of a gene
 
 - the design factor $x$ is a binary indicator variable representing the two
-groups of our experiment. It will take the value of 0 if we are considering the
+groups of our experiment. It will take the value of 0 when considering the
 control samples, and a value of 1 when considering treated samples.
 
 **When considering a control sample, the $x$ factor is set to 0**.
@@ -118,14 +118,15 @@ gene_count <- as_tibble(assay(se["ZBED2", se$Type == "Epithelial"]),
                values_to = "count",
                -gene) |>
   mutate(count = log1p(count)) |>
-  left_join(as_tibble(colData(se)))
+  full_join(as_tibble(colData(se[, se$Type == "Epithelial"])))
 
 gene_count
 ```
 
 Assuming the expression values follow a normal distribution (even though,
 as we’ll see later, this isn’t actually true for RNAseq data!), let's use the
-`lm()` function to fit a linear model to compare KD to control cells.
+`lm()` function to fit a linear model to compare KD to control cells. We want to 
+model the counts as a function of the `Condition` factor.
 
 In this case the design of our experiment would be :
 
