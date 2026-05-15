@@ -293,8 +293,8 @@ What do you think a PCA based on this small dataset should look like?
 Now let's use the `prcomp()` function to do a PCA on this dataset.
 The output of prcomp is an object of class prcomp.
 
-```{r pca2}
-pca <- prcomp(tiny_dataset, center = TRUE, scale = TRUE)
+```{r prcomp-tiny-dataset}
+pca <- prcomp(tiny_dataset, center = TRUE, scale. = TRUE)
 str(pca)
 ```
 
@@ -337,15 +337,16 @@ as_tibble(pca$x, rownames = "sample") |>
 ```
 
 
-This PCA is a representation in 2 dimensions (PC1 and PC2) of our 5-dimensions
-dataset.
+Interpretation
 
-The new axes (PC1 and PC2) captured `r round(pve[1] * 100 + pve[2] * 100, 2)` %
-of the total variability of the data).
-
-This PCA plot shows that the samples cluster into two distinct groups along PC1.
-This separation indicates that the “CTL” and “Treated” samples have different
-overall expression profiles.
+- This PCA is a representation in 2 dimensions (PC1 and PC2) of our
+  5-dimensions dataset.
+- The new axes (PC1 and PC2) captured
+  `r round(pve[1] * 100 + pve[2] * 100, 2)` %
+  of the total variability of the data).
+- This PCA plot shows that the samples cluster into two distinct
+  groups along PC1. This separation indicates that the “CTL” and
+  “Treated” samples have different overall expression profiles.
 
 
 ### The Loadings

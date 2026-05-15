@@ -23,7 +23,7 @@
 <meta name="author" content="Laurent Gatto and Axelle Loriot" />
 
 
-<meta name="date" content="2026-05-14" />
+<meta name="date" content="2026-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -160,6 +160,7 @@ div.csl-indent {
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisits"><i class="fa fa-check"></i>Prerequisits</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
@@ -412,10 +413,8 @@ and GeneE but has little or no effect on genes GeneA and GeneD.</p>
 <p>What do you think a PCA based on this small dataset should look like?</p>
 <p>Now let’s use the <code>prcomp()</code> function to do a PCA on this dataset.
 The output of prcomp is an object of class prcomp.</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sec-pca.html#cb150-1" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tiny_dataset, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<pre><code>## Warning in prcomp.default(tiny_dataset, center = TRUE, scale = TRUE): partial
-## argument match of &#39;scale&#39; to &#39;scale.&#39;</code></pre>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sec-pca.html#cb152-1" tabindex="-1"></a><span class="fu">str</span>(pca)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sec-pca.html#cb150-1" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tiny_dataset, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb150-2"><a href="sec-pca.html#cb150-2" tabindex="-1"></a><span class="fu">str</span>(pca)</span></code></pre></div>
 <pre><code>## List of 5
 ##  $ sdev    : num [1:5] 1.8097 1.1269 0.6684 0.0903 0.012
 ##  $ rotation: num [1:5, 1:5] 0.173 -0.524 -0.542 0.329 0.542 ...
@@ -440,7 +439,7 @@ The output of prcomp is an object of class prcomp.</p>
 <li>PC2 was able to capture about 25 % of the total variability in the data.</li>
 <li>Together, PC1 and PC2 retained 90.9 % of the total variability in the data</li>
 </ul>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="sec-pca.html#cb154-1" tabindex="-1"></a><span class="fu">summary</span>(pca)</span></code></pre></div>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sec-pca.html#cb152-1" tabindex="-1"></a><span class="fu">summary</span>(pca)</span></code></pre></div>
 <pre><code>## Importance of components:
 ##                          PC1   PC2     PC3     PC4     PC5
 ## Standard deviation     1.810 1.127 0.66843 0.09027 0.01202
@@ -451,7 +450,7 @@ The output of prcomp is an object of class prcomp.</p>
 <h3><span class="header-section-number">5.2.2</span> PCA’s coordinates<a href="sec-pca.html#pcas-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The x element of the prcomp output is a table that gives the sample coordinates
 in the new space of components.</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sec-pca.html#cb156-1" tabindex="-1"></a>pca<span class="sc">$</span>x</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="sec-pca.html#cb154-1" tabindex="-1"></a>pca<span class="sc">$</span>x</span></code></pre></div>
 <pre><code>##                 PC1        PC2         PC3         PC4          PC5
 ## CTL_1      1.530853  0.5998082  0.03211405 -0.04333816  0.012017799
 ## CTL_2      1.101755  1.3149717  1.03361796 -0.05297607 -0.001282981
@@ -464,19 +463,23 @@ in the new space of components.</p>
 ## Treated_4 -1.972497  0.1912046  0.52074789 -0.10252219  0.008786148
 ## Treated_5 -1.947915  0.3445754  0.66634882  0.09261222 -0.021395630</code></pre>
 <p>These values can be used to draw the PCA plot</p>
-<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb158-1"><a href="sec-pca.html#cb158-1" tabindex="-1"></a><span class="fu">as_tibble</span>(pca<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb158-2"><a href="sec-pca.html#cb158-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">sub</span>(<span class="at">pattern =</span> <span class="st">&quot;_.*&quot;</span>, <span class="at">x =</span> sample, <span class="at">replacement =</span> <span class="st">&#39;&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb158-3"><a href="sec-pca.html#cb158-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> group)) <span class="sc">+</span></span>
-<span id="cb158-4"><a href="sec-pca.html#cb158-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb158-5"><a href="sec-pca.html#cb158-5" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sec-pca.html#cb156-1" tabindex="-1"></a><span class="fu">as_tibble</span>(pca<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb156-2"><a href="sec-pca.html#cb156-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">sub</span>(<span class="at">pattern =</span> <span class="st">&quot;_.*&quot;</span>, <span class="at">x =</span> sample, <span class="at">replacement =</span> <span class="st">&#39;&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb156-3"><a href="sec-pca.html#cb156-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb156-4"><a href="sec-pca.html#cb156-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb156-5"><a href="sec-pca.html#cb156-5" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> .<span class="dv">4</span>)</span></code></pre></div>
 <p><img src="rnaseq_files/figure-html/ggplot-pca-1.png" alt="" width="672" /></p>
-<p>This PCA is a representation in 2 dimensions (PC1 and PC2) of our 5-dimensions
-dataset.</p>
-<p>The new axes (PC1 and PC2) captured 90.9 %
-of the total variability of the data).</p>
-<p>This PCA plot shows that the samples cluster into two distinct groups along PC1.
-This separation indicates that the “CTL” and “Treated” samples have different
-overall expression profiles.</p>
+<p>Interpretation</p>
+<ul>
+<li>This PCA is a representation in 2 dimensions (PC1 and PC2) of our
+5-dimensions dataset.</li>
+<li>The new axes (PC1 and PC2) captured
+90.9 %
+of the total variability of the data).</li>
+<li>This PCA plot shows that the samples cluster into two distinct
+groups along PC1. This separation indicates that the “CTL” and
+“Treated” samples have different overall expression profiles.</li>
+</ul>
 </div>
 <div id="the-loadings" class="section level3 hasAnchor" number="5.2.3">
 <h3><span class="header-section-number">5.2.3</span> The Loadings<a href="sec-pca.html#the-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -489,7 +492,7 @@ represent the <strong>weight</strong> of each gene in PC1.</p>
 <p>Loadings are stored in the <code>rotation</code> slot of the prcomp output. Genes with the
 largest absolute PC1 loadings are the ones that contribute most to that component
 (GeneB, GeneC and GeneE in this case).</p>
-<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="sec-pca.html#cb159-1" tabindex="-1"></a>pca<span class="sc">$</span>rotation</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="sec-pca.html#cb157-1" tabindex="-1"></a>pca<span class="sc">$</span>rotation</span></code></pre></div>
 <pre><code>##              PC1        PC2         PC3          PC4          PC5
 ## GeneA  0.1727214 -0.7592258  0.61713747  0.113206827 -0.008310904
 ## GeneB -0.5242436 -0.2719533 -0.04021536 -0.805844662 -0.014392984

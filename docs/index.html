@@ -23,7 +23,7 @@
 <meta name="author" content="Laurent Gatto and Axelle Loriot" />
 
 
-<meta name="date" content="2026-05-14" />
+<meta name="date" content="2026-05-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -160,6 +160,7 @@ div.csl-indent {
 <ul class="summary">
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>Preamble</a>
 <ul>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#prerequisits"><i class="fa fa-check"></i>Prerequisits</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
@@ -308,28 +309,50 @@ div.csl-indent {
 <div id="header">
 <h1 class="title">RNA-Seq analysis with R and Bioconductor</h1>
 <p class="author"><em>Laurent Gatto and Axelle Loriot</em></p>
-<p class="date"><em>2026-05-14</em></p>
+<p class="date"><em>2026-05-15</em></p>
 </div>
 <div id="preamble" class="section level1 unnumbered hasAnchor">
 <h1>Preamble<a href="index.html#preamble" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>The main objective of this course is to demonstrate how to proceed
-with a complete analysis of RNA-seq data, including principal
-component analysis, identification of differentially expressed genes
-and gene set enrichment and over-representation analysis. The
-background for these analyses includes introductions to hypothesis
-testing, linear modelling and adjustment for multiple comparisons,
-principal component analysis and high throughput sequencing.</p>
-<p>This course is based on material from the
-<a href="https://uclouvain-cbio.github.io/WSBIM1322/">WSBIM1322</a> and
-<a href="https://uclouvain-cbio.github.io/WSBIM2122">WSBIM2122</a> chapters
-taught at the <a href="https://uclouvain.be/en/faculties/fasb">Faculty of Pharmacy and Biomedical
-Sciences</a> at the UCLouvain.</p>
+<p>RNA sequencing (RNA-Seq) is a powerful technology that is now commonly
+used to measure gene expression. A differential expression analysis is
+a statistical analysis that aims to identify quantitative changes in
+gene expression levels between different experimental groups. The
+course is aimed at biologists who are already familiar with the R
+language and who want to learn how to do a differential expression
+analysis on their RNA-sseq data.</p>
+<p>The course will provide:</p>
+<ul>
+<li>Overview on RNA-seq data processing, exploring the different steps
+from raw reads to the generation of a gene count matrix.</li>
+<li>Introduction to theoretical concepts behind a differential
+expression analysis: linear models, multiple testing correction,
+principal component analysis, negative binomial distribution, and
+gene set enrichment analysis.</li>
+<li>Numerous hands-on exercices.</li>
+<li>A complete real-life RNA-Seq DE analysis running the <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2
+package</a>
+step by step.</li>
+</ul>
+<div id="prerequisits" class="section level2 unnumbered hasAnchor">
+<h2>Prerequisits<a href="index.html#prerequisits" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Participants should be familiar with the basix syntax of R and ideally
+also the tidyverse. They must bring a laptop with a Mac, Linux, or
+Windows operating system (not a tablet, Chromebook, etc.) that they
+have administrative privileges on. They should have installed R
+(<a href="https://cloud.r-project.org/" class="uri">https://cloud.r-project.org/</a>) and Rstudio
+(<a href="https://rstudio.com/products/rstudio/download/#download" class="uri">https://rstudio.com/products/rstudio/download/#download</a>).</p>
+</div>
 <div id="authors" class="section level2 unnumbered hasAnchor">
 <h2>Authors<a href="index.html#authors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This material has been developed by Dr Axelle Loriot and Prof Laurent
 Gatto, both members of the <a href="https://lgatto.codeberg.page/cbio-lab/">Computional Biology and Bioinformatics
 lab</a> and the <a href="https://sites.uclouvain.be/training/bioinfo/">bioinformatics
 core facility</a>.</p>
+<p>This course is based on material from the
+<a href="https://uclouvain-cbio.github.io/WSBIM1322/">WSBIM1322</a> and
+<a href="https://uclouvain-cbio.github.io/WSBIM2122">WSBIM2122</a> chapters
+taught at the <a href="https://uclouvain.be/en/faculties/fasb">Faculty of Pharmacy and Biomedical
+Sciences</a> at the UCLouvain.</p>
 </div>
 <div id="license" class="section level2 unnumbered hasAnchor">
 <h2>License<a href="index.html#license" class="anchor-section" aria-label="Anchor link to header"></a></h2>
