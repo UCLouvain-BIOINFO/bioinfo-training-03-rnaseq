@@ -103,9 +103,10 @@ all the measurements of gene *x*.
 **The goal of dimensionality reduction is to limit this loss.**
 
 Instead of projecting the points on the x or the y axis, we could
-think about a linear regression. We could use the lm() to predict the
-value of gene_y, based on the expression on gene_x, or to predict the
-value of gene_x, based on the expression on gene_y.
+think about a linear regression. We could use a linera model and the
+`lm()` function to predict the value of gene_y, based on the
+expression on gene_x, or to predict the value of gene_x, based on the
+expression on gene_y.
 
 But the relationship differs depending on the gene we choose to be the
 predictor or the response. Regression of y onto x (left) minimisises
@@ -120,7 +121,7 @@ a1 <- reg1$coefficients[1] # intercept
 b1 <- reg1$coefficients[2] # slope
 pline1 <- p +
     geom_abline(intercept = a1, slope = b1, col = "blue", lwd = 1.5) +
-    geom_segment(aes(xend = gene_x, yend = reg1$fitted),
+    geom_segment(aes(xend = gene_x, yend = reg1$fitted.values),
                  colour = "red",
                  arrow = arrow(length = unit(0.15, "cm"))) +
   theme(plot.title = element_text(size = 12, color = "red")) +
@@ -132,7 +133,7 @@ b2 <- reg2$coefficients[2] # slope
 pline2 <- p +
     geom_abline(intercept = -a2/b2, slope = 1/b2,
                 col = "blue", lwd = 1.5) +
-    geom_segment(aes(xend = reg2$fitted, yend = gene_y),
+    geom_segment(aes(xend = reg2$fitted.values, yend = gene_y),
                  colour = "darkcyan",
                  arrow = arrow(length = unit(0.15, "cm"))) +
   theme(plot.title = element_text(size = 12, color = "darkcyan")) +
@@ -182,8 +183,8 @@ pline3 + annotate("text", x = 1.4, y = 1.2,
 #pca
 ```
 
-After rotating the plot such that PC1 becomes the horizontal axis, we obtain the PCA plot:
-
+After rotating the plot such that PC1 becomes the horizontal axis, we
+obtain the PCA plot:
 
 ```{r pxaex2, echo = FALSE, fig.height = 5.8, fig.width = 11}
 ppdf <- tibble(PC1n = svda$u[, 1] * svda$d[1],
@@ -253,13 +254,13 @@ pca_final <- ggplot(ppdf, aes(x = PC1n, y = PC2n)) +
 pca_final
 ```
 
-
 ## Starting from a (slightly) higher number of dimensions
 
-Let's know use another toy dataset, a small table called `tiny_dataset` that gives the
-expression values of 5 genes in two groups of cells (control and treated cells).
-Since we have the expression values of 5 genes (5 dimensions), we cannot represent
-them on a single plot.
+Let's know use another toy dataset, a small table called
+`tiny_dataset` that gives the expression values of 5 genes in two
+groups of cells (control and treated cells).  Since we have the
+expression values of 5 genes (5 dimensions), we cannot represent them
+on a single plot.
 
 ```{r new_data, echo=FALSE}
 set.seed(123)
@@ -281,17 +282,27 @@ tiny_dataset <- structure(list(
 tiny_dataset
 ```
 
-This table is not too big, so by quickly inspecting it by eye, we can see that
-the treatment seems to have a strong impact on the expression of GeneB, GeneC,
-and GeneE but has little or no effect on genes GeneA and GeneD.
+This table is not too big, so by quickly inspecting it by eye, we can
+see that the treatment seems to have a strong impact on the expression
+of GeneB, GeneC, and GeneE but has little or no effect on genes GeneA
+and GeneD.
+
+Note that here, the samples are along the rows and the genes along the
+columns, as opposed to the representation in a `SummarizedExperiment`.
 
 #### Question {-}
 
 What do you think a PCA based on this small dataset should look like?
 
+<details>
+<summary>Solution</summary>
+We will see exactly how the PCA will look later.
+</details>
 
 Now let's use the `prcomp()` function to do a PCA on this dataset.
-The output of prcomp is an object of class prcomp.
+The output of `prcomp()` is an object of class `prcomp` containing 5
+values. They are documented in the functions' manual page and we will
+discuss them in the next sections.
 
 ```{r prcomp-tiny-dataset}
 pca <- prcomp(tiny_dataset, center = TRUE, scale. = TRUE)
@@ -304,23 +315,26 @@ var <- pca$sdev^2
 pve <- var/sum(var)
 pve
 ```
-
+n
 ### Variance explained by each component
 
 A summary of prcomp output shows that
 
 - PC1 was able to capture about `r round(pve[1] * 100)` % of the total variability in the data,
 - PC2 was able to capture about `r round(pve[2] * 100)` % of the total variability in the data.
-- Together, PC1 and PC2 retained `r round(pve[1] * 100 + pve[2] * 100, 2)` % of the total variability in the data
+- Together, PC1 and PC2 retained `r round(pve[1] * 100 + pve[2] * 100, 2)` % of the total variability in the data.
 
 ```{r}
 summary(pca)
 ```
 
+These are computed using the object's `sdev` element, containing the
+standard deviations along the PCs.
+
 ### PCA’s coordinates
 
-The x element of the prcomp output is a table that gives the sample coordinates
-in the new space of components.
+The `x` element of the `prcomp()` output is a table that gives the
+sample coordinates in the new component space.
 
 ```{r pca-x}
 pca$x
@@ -336,8 +350,7 @@ as_tibble(pca$x, rownames = "sample") |>
   theme(aspect.ratio = .4)
 ```
 
-
-Interpretation
+The interpretation of the PCA goes as follows:
 
 - This PCA is a representation in 2 dimensions (PC1 and PC2) of our
   5-dimensions dataset.
@@ -348,11 +361,10 @@ Interpretation
   groups along PC1. This separation indicates that the “CTL” and
   “Treated” samples have different overall expression profiles.
 
-
 ### The Loadings
 
-Principal components provide a new coordinate system. They are linear combinations
-of the variables that were originally measured.
+Principal components provide a new coordinate system. They are linear
+combinations of the variables that were originally measured.
 
 PC1 in the previous example is a linear combination of the 5 genes:
 
@@ -372,7 +384,6 @@ pca$rotation
 
 Loadings can be visualised on a **biplot**, where the arrows show the contribution
 of each gene to the principal components.
-
 
 ```{r pca-biplot, echo=FALSE, fig.height=4, fig.width=10}
 scale_factor <- 1
@@ -421,7 +432,6 @@ Compare the PCA with the original dataset.
 Are principal components effectively representing the main patterns and structure
 of the dataset?
 
-
 ## PCA on a real datasets
 
 In real RNA-seq datasets, the data usually consists of tens of thousands of
@@ -450,7 +460,6 @@ as_tibble(pca$x, rownames = "sample") |>
 summary(pca)
 ```
 
-
 **What can PCA reveal from RNA-seq data?**
 
 - Which samples are similar or distinct to each other?
@@ -459,6 +468,18 @@ summary(pca)
 - Are there any batch effects or other technical confounders that
   should be included in linear model?
 - Are they any outliers which may need to be explored further?
+
+Note that PCA is an *unsupervised* approach - it is never told about
+groups (CTL and Treated in the example above). It should this not we
+used to identify differentially expressed genes between these groups.
+
+If we observe a good separation of the groups of interest on the PCA,
+it is likely that the genes with a high loading will also be
+differentially expressed, but keep in mind that these are
+fundamentally different analyses. Conversely, even if we don't see a
+good separation of our groups of interest on a PCA plot, there might
+still be genes that show a statistically significant expression
+between groups.
 
 #### Question {-}
 

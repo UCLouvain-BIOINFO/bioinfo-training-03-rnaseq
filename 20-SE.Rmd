@@ -6,9 +6,10 @@ library("tidyverse")
 
 **Objectives**
 
-- Present the `SummarizedExperiment` class, dedicated to store and
-  manipulate quantitative omics data.
+- Present the `SummarizedExperiment` class, to store and manipulate
+  quantitative omics data.
 - Show how to build `SummarizedExperiment` objects.
+- Illustrate how to manipulate `SummarizedExperiment` objects.
 
 Data in bioinformatics is often more complex. To deal with this,
 developers define specialised data containers (termed classes) that
@@ -30,7 +31,8 @@ comprehension of omics data.  Bioconductor uses the R statistical
 programming language, and is open source and open development.
 
 To illustrate such an omics data container, we'll present the
-`SummarizedExperiment` class.
+`SummarizedExperiment` class [@SE], that is used for RNA-Sequencing,
+proteomics, metabolomics, ... and essentially quantitative omics data.
 
 ## SummarizedExperiment
 
@@ -41,7 +43,7 @@ class.
 knitr::include_graphics("figs/SE.png")
 ```
 
-Objects of the class SummarizedExperiment contain :
+Objects of the class `SummarizedExperiment` contain:
 
 - **One (or more) assay(s)** containing the quantitative omics data
   (expression data), stored as a matrix-like object. Features (genes,
@@ -121,7 +123,7 @@ dim(count_matrix)
 
 
 - **A table describing the samples**, available
-  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/gene_metadata.csv).
+  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/sample_metadata.csv).
 
 ```{r sampleMetadata, message = FALSE}
 sample_metadata <- read_csv("data/sample_metadata.csv")
@@ -130,7 +132,7 @@ dim(sample_metadata)
 ```
 
 - **A table describing the genes**, available
-  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/sample_metadata.csv).
+  [here](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/gene_metadata.csv).
 
 ```{r geneMetadata, message = FALSE}
 gene_metadata <- read_csv("data/gene_metadata.csv")
@@ -150,7 +152,6 @@ To do this we can put the different parts together using the
 `SummarizedExperiment` constructor:
 
 ```{r, message = FALSE}
-## BiocManager::install("SummarizedExperiment")
 library("SummarizedExperiment")
 ```
 
@@ -261,13 +262,14 @@ colData(se)$university <- rep("UCLouvain", nrow(colData(se)))
 colData(se)
 ```
 
-This illustrates that the metadata slot can grow indefinitely without
-affecting the other structures!
-
+This illustrates that the metadata slot can grow without affecting the
+other parts of the object.
 
 #### Question {-}
 
-Create a "group" column to to the metadata (i.e "Epithelial_ctl", "Epithelial_KD", ...)
+Create a "group" column to the sample metadata concatenating the cell
+types and the experimental conditions (i.e "Epithelial_ctl",
+"Epithelial_KD", ...).
 
 <details>
 <summary>Solution</summary>
@@ -285,31 +287,30 @@ interesting to add other types of informative annotations describing genes.
 
 #### Gene annotation database
 
-`AnnotationDbi` is an R package that provides an interface for connecting
-and querying various annotation databases.
-
-There are a many organism-specific `orgDb` packages, such as `org.Hs.eg.db`
-for human and `org.Mm.eg.db` for mouse.
+`AnnotationDbi` is an R package [@AnnotationDbi] that provides an
+interface for connecting and querying various annotation databases. It
+comes with many organism-specific `orgDb` packages, such as
+`org.Hs.eg.db` for human and `org.Mm.eg.db` for mouse.
 
 ```{r message = FALSE}
-#BiocManager::install(c("AnnotationDbi", "org.Hs.eg.db"))
 library("AnnotationDbi")
 library("org.Hs.eg.db")
 ```
 
-The `keytypes()` function can help us to see what information we can extract
-from the database (ENSEMBL gene ID, gene symbol, gene name, ...)
+The `keytypes()` function can help us to see what information we can
+extract from the database (ENSEMBL gene ID, gene symbol, gene name,
+...)
 
 
 ```{r}
 keytypes(org.Hs.eg.db)
 ```
 
-We can easily extract information from this database using the `mapIds()` function.
+We can extract information from this database using the `mapIds()`
+function.
 
 For example, we can retrieve the ENTREZID references, or the chromosomal
 location of the 5 first genes as follow:
-
 
 ```{r}
 # Retrieving the ENTREZID ids
@@ -328,8 +329,8 @@ mapIds(x = org.Hs.eg.db,
 
 #### Questions {-}
 
-1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object) to the
-feature metadata slot of our SummarizedExperiment se.
+1. Add gene biotypes (stored as `GENETYPE` in `org.Hs.eg.db` object)
+   to the feature metadata slot of our `SummarizedExperiment` `se`.
 
 2. How many genes from each biotype do we have?
 
@@ -357,11 +358,12 @@ table(rowData(se)$gene_biotype == "protein-coding", useNA = "ifany")
 
 ### Save a SummarizedExperiment
 
-This was a bit of code and time to create our `SummarizedExperiment` object.
-We will need to keep using it throughout the workshop, so it can be useful to
-save it as an actual single file on our computer to read it back in to R's memory
-if we have to shut down RStudio. To save an R-specific file we can use the `saveRDS()`
-function and later read it back into R using the `readRDS()` function.
+This was a bit of code and time to create our `SummarizedExperiment`
+object.  We will need to keep using it throughout the workshop, so it
+can be useful to save it as an actual single file on our computer to
+read it back into R later. To save any variable an R-specific file we
+can use the `saveRDS()` function and later read it back into R using
+the `readRDS()` function.
 
 ```{r save-se, purl=TRUE}
 saveRDS(se, "data/se.rds")
@@ -369,15 +371,12 @@ rm(se) # remove the object!
 se <- readRDS("data/se.rds")
 ```
 
-
-
-
 ## RangedSummarizedExperiment
 
 In addition to the `SummarizedExperiment` slots we have seen above, it
 is also possible to store information about the features' genomic
-ranges. Below, we load the `airway` `RangedSummarizedExperiment` data
-to illustrate this:
+ranges/coordinates. Below, we load the `airway`
+`RangedSummarizedExperiment` data to illustrate this:
 
 
 ```{r load_airway}
@@ -390,7 +389,6 @@ airway
 rowRanges(airway)
 ```
 
-
 This `GRangesList` contains a list of 64102 range elements, one for
 each gene/feature. Each element is a `GRanges` object that contains
 the positions of the exons or the genes:
@@ -400,7 +398,7 @@ the positions of the exons or the genes:
 rowRanges(airway)[[1]]
 ```
 
-It is possible to use these row genomic ranges to subset features in
+It is possible to use these genomic ranges to subset features in
 regions of interest, defined as `GRanges` object. Below, for example,
 we subset features between bases 1M and 2M on chromosome 7:
 

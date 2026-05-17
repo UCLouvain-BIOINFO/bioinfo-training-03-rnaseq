@@ -1,4 +1,6 @@
-# Session infromation {#sec-si}
+# Session information {#sec-si}
+
+The versions used to generate this course material are shown below.
 
 ```{r si}
 sessionInfo()

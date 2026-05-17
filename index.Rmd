@@ -13,6 +13,7 @@ output:
         all: []
 documentclass: book
 link-citations: yes
+urlcolor: blue
 bibliography: [refs.bib, packages.bib]
 ---
 
@@ -102,6 +103,15 @@ material.
 
 ## Installation instructions {-}
 
+[Bioconductor](https://bioconductor.org/)[^about-bioc] packages can be
+[installed](https://bioconductor.org/install/) with the
+`BiocManager::install()` function from the `BiocManager` package, that
+can be installed from CRAN with the usual `install.packages()`
+function.
+
+[^about-bioc] We will explain more about the Bioconductor projet
+later, when learning about the `SummarizedExperiment` class.
+
 ```{r installation-instructions, eval=FALSE}
 pks <- c("tidyverse", "patchwork", "remotes",
          "SummarizedExperiment", "DESeq2",
@@ -122,7 +132,7 @@ unlink("wsbim2122_data", recursive = TRUE)
 rWSBIM2122::prepare_shell()
 ```
 
-# References {-}
+## References {-}
 
 - **Modern Statistics for Modern Biology**, by Susan Holmes and
   Wolfgang Huber [@MSMB]. A free online version of the book is

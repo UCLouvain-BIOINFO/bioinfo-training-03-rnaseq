@@ -164,8 +164,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
@@ -235,9 +235,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
-<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
-<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.1</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.2</b> The Loadings</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
 </ul></li>
@@ -289,7 +288,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session infromation</a></li>
+<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session information</a></li>
 <li class="chapter" data-level="9" data-path="sec-refs.html"><a href="sec-refs.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 </ul>
 
@@ -342,7 +341,7 @@ in 6 samples, three in groupA and three in groupB. You can download it
 <p>Let’s apply a t-test on all these genes:</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="sec-FDR.html#cb131-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> exp <span class="sc">|&gt;</span></span>
 <span id="cb131-2"><a href="sec-FDR.html#cb131-2" tabindex="-1"></a>  <span class="fu">rowwise</span>() <span class="sc">|&gt;</span></span>
-<span id="cb131-3"><a href="sec-FDR.html#cb131-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pval =</span> <span class="fu">t.test</span>(<span class="fu">c</span>(A1, A2, A3), <span class="fu">c</span>(B1,B2,B3))<span class="sc">$</span>p.value) <span class="sc">|&gt;</span></span>
+<span id="cb131-3"><a href="sec-FDR.html#cb131-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pval =</span> <span class="fu">t.test</span>(<span class="fu">c</span>(A1, A2, A3), <span class="fu">c</span>(B1, B2, B3))<span class="sc">$</span>p.value) <span class="sc">|&gt;</span></span>
 <span id="cb131-4"><a href="sec-FDR.html#cb131-4" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="do">## to revert the rowwise()</span></span>
 <span id="cb131-5"><a href="sec-FDR.html#cb131-5" tabindex="-1"></a>res</span></code></pre></div>
 <pre><code>## # A tibble: 20,000 × 8
@@ -361,8 +360,8 @@ in 6 samples, three in groupA and three in groupB. You can download it
 ## # ℹ 19,990 more rows</code></pre>
 <div id="question-10" class="section level4 unnumbered hasAnchor">
 <h4>Question<a href="sec-FDR.html#question-10" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>How many significant genes did we obtained ? Which genes are of possible
-biological interest?</p>
+<p>How many significant genes did we obtained ? Which genes are of
+possible biological interest?</p>
 <details>
 <summary>
 Solution
@@ -388,7 +387,8 @@ Solution
 ## 10 Gene10421  4.44  4.48  4.47  4.56  4.59  4.57 0.00153  
 ## # ℹ 666 more rows</code></pre>
 </details>
-<p>The data above have been generated with the <code>rnorm()</code> function for all samples.</p>
+<p>The data above have been generated with the <code>rnorm()</code> function for all
+samples.</p>
 <p>This is the code that generated the data:</p>
 <div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="sec-FDR.html#cb137-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">2025</span>)</span>
 <span id="cb137-2"><a href="sec-FDR.html#cb137-2" tabindex="-1"></a>exp <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(<span class="dv">20000</span><span class="sc">*</span><span class="dv">6</span>, <span class="at">mean =</span> <span class="dv">100</span>, <span class="at">sd =</span> <span class="dv">20</span>), <span class="at">ncol =</span> <span class="dv">6</span>)</span>
@@ -400,24 +400,26 @@ Solution
 <div id="question-11" class="section level4 unnumbered hasAnchor">
 <h4>Question<a href="sec-FDR.html#question-11" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ul>
-<li><p>Do you still think any of the features show significant differences?</p></li>
-<li><p>Why do we obtain genes with a p-value &lt; 0.05?</p></li>
+<li>Do you still think any of the features show significant differences?</li>
+<li>Why do we obtain genes with a p-value &lt; 0.05?</li>
 </ul>
 <details>
 <summary>
 Solution
 </summary>
-<p>A pvalue of 0.05 means that there is only 5% chance of getting this data if no
-real difference existed (if the null hypothesis was really true).</p>
-<p>In other words, choosing a cut off of 0.05 means there is 5% chance that the
-wrong decision is made (resulting in a false positive).</p>
+<p>A p-value of 0.05 means that we accept 5% chance of getting this data
+if no real difference existed (if the null hypothesis was really
+true).</p>
+<p>In other words, choosing a cut off of 0.05 means that we accept 5%
+chance to wrongly reject the null hypthesis (resulting in a false
+positive).</p>
 <p><img src="rnaseq_files/figure-html/fdr-fdr-fig-1.png" alt="" width="672" /></p>
 </details>
 </div>
 <div id="question-12" class="section level4 unnumbered hasAnchor">
 <h4>Question<a href="sec-FDR.html#question-12" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>If you were to visualize the p-value distribution using a histogram,
-how would you expect it to look like?</p>
+<p>Visualise the p-value distribution using a histogram. How would you
+expect it to look like for such data?</p>
 <details>
 <summary>
 Solution
@@ -433,32 +435,34 @@ Solution
 <h2><span class="header-section-number">4.2</span> Adjustment for multiple testing<a href="sec-FDR.html#adjustment-for-multiple-testing" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In a typical RNA-seq experiment, we may test around 20,000 genes, but
 only a fraction of them are expected to be truly affected by the drug.
-Imagine a drug treatment that modifies the expression of about 1000 genes,
-but that has no impact on the other ones.</p>
-<p>The first histogram bellow shows how the distribution of
-pvalues for truly modified genes (<span class="math inline">\(H_0\)</span> is false) would look like:
-most of the pvalues would be very small. Using a pvalue cutoff of 0.05
+Imagine a drug treatment that modifies the expression of about 1000
+genes, but that has no impact on the other ones.</p>
+<p>The first histogram bellow shows how the distribution of p-values for
+truly modified genes (<span class="math inline">\(H_0\)</span> is false) would look like: most, if not
+all of the p-values would be very small. Using a p-value cutoff of 0.05
 should permit to identify most of these differentially expressed
 genes.</p>
-<p>The second histogram shows the distribution of pvalues for
-unmodified genes (<span class="math inline">\(H_0\)</span> is true). Here the p-values are uniformly
-distributed between 0 and 1, and we can see that 5% of these genes
-appear to be significant even though this is only by chance as the
-drug had no real effect on them.</p>
-<p>The third histogram illustrates the principle behind the
-<strong>False discovery rate (FDR)</strong> adjustment. As the statistical test is done on
-the whole set of genes, the resulting pvalues will
-have a distribution corresponding to the combination of both
-histograms. Most of the p-values are uniformly distributed between 0
-and 1 but there is a spike to the left close to zero, due to those
-p-values for which <span class="math inline">\(H_0\)</span> is false.</p>
+<p>The second histogram shows the distribution of p-values for unmodified
+genes (<span class="math inline">\(H_0\)</span> is true). Here the p-values are uniformly distributed
+between 0 and 1, and we can see that by chance, 5% of these genes
+appear to be significant (defined by a p-value &lt; 0.05) even though
+this is only by chance as the drug had no real effect on them.</p>
+<p>The third histogram illustrates the principle behind the <strong>False
+discovery rate (FDR)</strong> adjustment. As the statistical test is done on
+the whole set of genes, the resulting p-values will have a
+distribution corresponding to the combination of both histograms.
+Most of the p-values are uniformly distributed between 0 and 1 but
+there is a spike to the left close to zero, due to those p-values for
+which <span class="math inline">\(H_0\)</span> is false.</p>
 <p><img src="rnaseq_files/figure-html/fdr-adj-fig-1.png" alt="" width="768" /></p>
 <p>The False discovery rate (FDR) computes the expected fraction of false
-positives among all discoveries. It allows us to choose n results with
-a given FDR.</p>
-<p>Widely used examples are Benjamini-Hochberg or q-values.</p>
-<p>Let’s use the <code>p.adjust()</code> function to adjust the pvalues calculated previously
-(from the t.test we did on data generated with the rnorm() function)</p>
+positives among all discoveries. It allows us to choose <span class="math inline">\(n\)</span> results
+with a given FDR.</p>
+<p>The most widely used FDR adjustment methods in omics data analysis is
+Benjamini-Hochberg <span class="citation">(<a href="#ref-Benjamini:1995">Benjamini and Hochberg 1995</a>)</span> and q-values <span class="citation">(<a href="#ref-qvalue">Storey et al. 2026</a>)</span>.</p>
+<p>Let’s use the <code>p.adjust()</code> function to adjust the p-values calculated
+previously (from the t-test we did on data generated with the
+<code>rnorm()</code> function)</p>
 <div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb139-1"><a href="sec-FDR.html#cb139-1" tabindex="-1"></a>res <span class="ot">&lt;-</span> res <span class="sc">|&gt;</span></span>
 <span id="cb139-2"><a href="sec-FDR.html#cb139-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">padj =</span> <span class="fu">p.adjust</span>(pval, <span class="at">method =</span> <span class="st">&quot;BH&quot;</span>))</span>
 <span id="cb139-3"><a href="sec-FDR.html#cb139-3" tabindex="-1"></a></span>
@@ -495,6 +499,15 @@ Solution
 </details>
 
 </div>
+</div>
+</div>
+<h3> References<a href="sec-refs.html#sec-refs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Benjamini:1995" class="csl-entry">
+Benjamini, Yoav, and Yosef Hochberg. 1995. <span>“Controlling the False Discovery Rate: A Practical and Powerful Approach to Multiple Testing.”</span> <em>J. R. Stat. Soc. Series B Stat. Methodol.</em> 57 (1): 289–300.
+</div>
+<div id="ref-qvalue" class="csl-entry">
+Storey, John D., Andrew J. Bass, Alan Dabney, and David Robinson. 2026. <em><span class="nocase">qvalue</span>: <span class="nocase">Q-value</span> Estimation for False Discovery Rate Control</em>. <a href="https://doi.org/10.18129/B9.bioc.qvalue">https://doi.org/10.18129/B9.bioc.qvalue</a>.
 </div>
 </div>
             </section>

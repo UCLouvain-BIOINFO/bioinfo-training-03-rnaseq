@@ -164,8 +164,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
@@ -235,9 +235,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
-<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
-<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.1</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.2</b> The Loadings</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
 </ul></li>
@@ -289,7 +288,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session infromation</a></li>
+<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session information</a></li>
 <li class="chapter" data-level="9" data-path="sec-refs.html"><a href="sec-refs.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 </ul>
 
@@ -312,9 +311,10 @@ div.csl-indent {
 <h1><span class="header-section-number">Chapter 2</span> SummarizedExperiments<a href="sec-se.html#sec-se" class="anchor-section" aria-label="Anchor link to header"></a></h1>
 <p><strong>Objectives</strong></p>
 <ul>
-<li>Present the <code>SummarizedExperiment</code> class, dedicated to store and
-manipulate quantitative omics data.</li>
+<li>Present the <code>SummarizedExperiment</code> class, to store and manipulate
+quantitative omics data.</li>
 <li>Show how to build <code>SummarizedExperiment</code> objects.</li>
+<li>Illustrate how to manipulate <code>SummarizedExperiment</code> objects.</li>
 </ul>
 <p>Data in bioinformatics is often more complex. To deal with this,
 developers define specialised data containers (termed classes) that
@@ -328,13 +328,14 @@ infrastructure</a>
 to provide coherence, interoperability and stability to the project as
 a whole.</p>
 <p>To illustrate such an omics data container, we’ll present the
-<code>SummarizedExperiment</code> class.</p>
+<code>SummarizedExperiment</code> class <span class="citation">(<a href="#ref-SE">Morgan et al. 2026</a>)</span>, that is used for RNA-Sequencing,
+proteomics, metabolomics, … and essentially quantitative omics data.</p>
 <div id="summarizedexperiment" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> SummarizedExperiment<a href="sec-se.html#summarizedexperiment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The figure below represents the anatomy of the <code>SummarizedExperiment</code>
 class.</p>
 <p><img src="figs/SE.png" alt="" width="80%" /></p>
-<p>Objects of the class SummarizedExperiment contain :</p>
+<p>Objects of the class <code>SummarizedExperiment</code> contain:</p>
 <ul>
 <li><p><strong>One (or more) assay(s)</strong> containing the quantitative omics data
 (expression data), stored as a matrix-like object. Features (genes,
@@ -388,7 +389,7 @@ the first columns contains row/gene names, and convert the
 <pre><code>## [1] 36223    12</code></pre>
 <ul>
 <li><strong>A table describing the samples</strong>, available
-<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/gene_metadata.csv">here</a>.</li>
+<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/sample_metadata.csv">here</a>.</li>
 </ul>
 <div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="sec-se.html#cb33-1" tabindex="-1"></a>sample_metadata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/sample_metadata.csv&quot;</span>)</span>
 <span id="cb33-2"><a href="sec-se.html#cb33-2" tabindex="-1"></a>sample_metadata</span></code></pre></div>
@@ -411,7 +412,7 @@ the first columns contains row/gene names, and convert the
 <pre><code>## [1] 12  3</code></pre>
 <ul>
 <li><strong>A table describing the genes</strong>, available
-<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/sample_metadata.csv">here</a>.</li>
+<a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/gene_metadata.csv">here</a>.</li>
 </ul>
 <div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="sec-se.html#cb37-1" tabindex="-1"></a>gene_metadata <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">&quot;data/gene_metadata.csv&quot;</span>)</span>
 <span id="cb37-2"><a href="sec-se.html#cb37-2" tabindex="-1"></a><span class="fu">head</span>(gene_metadata)</span></code></pre></div>
@@ -436,8 +437,7 @@ metadata</strong> <code>rowData</code> slot.</li>
 </ul>
 <p>To do this we can put the different parts together using the
 <code>SummarizedExperiment</code> constructor:</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="sec-se.html#cb41-1" tabindex="-1"></a><span class="do">## BiocManager::install(&quot;SummarizedExperiment&quot;)</span></span>
-<span id="cb41-2"><a href="sec-se.html#cb41-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;SummarizedExperiment&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="sec-se.html#cb41-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;SummarizedExperiment&quot;</span>)</span></code></pre></div>
 <p>First, we make sure that the samples are in the same order in the
 count matrix and the sample annotation, and the same for the genes in
 the count matrix and the gene annotation.</p>
@@ -623,11 +623,13 @@ add the center where the samples were collected …</p>
 ## Fib_KD1      Fib_KD1  Fibroblast          KD   UCLouvain
 ## Fib_KD2      Fib_KD2  Fibroblast          KD   UCLouvain
 ## Fib_KD3      Fib_KD3  Fibroblast          KD   UCLouvain</code></pre>
-<p>This illustrates that the metadata slot can grow indefinitely without
-affecting the other structures!</p>
+<p>This illustrates that the metadata slot can grow without affecting the
+other parts of the object.</p>
 <div id="question-5" class="section level4 unnumbered hasAnchor">
 <h4>Question<a href="sec-se.html#question-5" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>Create a “group” column to to the metadata (i.e “Epithelial_ctl”, “Epithelial_KD”, …)</p>
+<p>Create a “group” column to the sample metadata concatenating the cell
+types and the experimental conditions (i.e “Epithelial_ctl”,
+“Epithelial_KD”, …).</p>
 <details>
 <summary>
 Solution
@@ -642,15 +644,15 @@ Solution
 interesting to add other types of informative annotations describing genes.</p>
 <div id="gene-annotation-database" class="section level4 hasAnchor" number="2.1.4.1">
 <h4><span class="header-section-number">2.1.4.1</span> Gene annotation database<a href="sec-se.html#gene-annotation-database" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p><code>AnnotationDbi</code> is an R package that provides an interface for connecting
-and querying various annotation databases.</p>
-<p>There are a many organism-specific <code>orgDb</code> packages, such as <code>org.Hs.eg.db</code>
-for human and <code>org.Mm.eg.db</code> for mouse.</p>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="sec-se.html#cb74-1" tabindex="-1"></a><span class="co">#BiocManager::install(c(&quot;AnnotationDbi&quot;, &quot;org.Hs.eg.db&quot;))</span></span>
-<span id="cb74-2"><a href="sec-se.html#cb74-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;AnnotationDbi&quot;</span>)</span>
-<span id="cb74-3"><a href="sec-se.html#cb74-3" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;org.Hs.eg.db&quot;</span>)</span></code></pre></div>
-<p>The <code>keytypes()</code> function can help us to see what information we can extract
-from the database (ENSEMBL gene ID, gene symbol, gene name, …)</p>
+<p><code>AnnotationDbi</code> is an R package <span class="citation">(<a href="#ref-AnnotationDbi">Pagès et al. 2026</a>)</span> that provides an
+interface for connecting and querying various annotation databases. It
+comes with many organism-specific <code>orgDb</code> packages, such as
+<code>org.Hs.eg.db</code> for human and <code>org.Mm.eg.db</code> for mouse.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="sec-se.html#cb74-1" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;AnnotationDbi&quot;</span>)</span>
+<span id="cb74-2"><a href="sec-se.html#cb74-2" tabindex="-1"></a><span class="fu">library</span>(<span class="st">&quot;org.Hs.eg.db&quot;</span>)</span></code></pre></div>
+<p>The <code>keytypes()</code> function can help us to see what information we can
+extract from the database (ENSEMBL gene ID, gene symbol, gene name,
+…)</p>
 <div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="sec-se.html#cb75-1" tabindex="-1"></a><span class="fu">keytypes</span>(org.Hs.eg.db)</span></code></pre></div>
 <pre><code>##  [1] &quot;ACCNUM&quot;       &quot;ALIAS&quot;        &quot;ENSEMBL&quot;      &quot;ENSEMBLPROT&quot;  &quot;ENSEMBLTRANS&quot;
 ##  [6] &quot;ENTREZID&quot;     &quot;ENZYME&quot;       &quot;EVIDENCE&quot;     &quot;EVIDENCEALL&quot;  &quot;GENENAME&quot;    
@@ -658,7 +660,8 @@ from the database (ENSEMBL gene ID, gene symbol, gene name, …)</p>
 ## [16] &quot;OMIM&quot;         &quot;ONTOLOGY&quot;     &quot;ONTOLOGYALL&quot;  &quot;PATH&quot;         &quot;PFAM&quot;        
 ## [21] &quot;PMID&quot;         &quot;PROSITE&quot;      &quot;REFSEQ&quot;       &quot;SYMBOL&quot;       &quot;UCSCKG&quot;      
 ## [26] &quot;UNIPROT&quot;</code></pre>
-<p>We can easily extract information from this database using the <code>mapIds()</code> function.</p>
+<p>We can extract information from this database using the <code>mapIds()</code>
+function.</p>
 <p>For example, we can retrieve the ENTREZID references, or the chromosomal
 location of the 5 first genes as follow:</p>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="sec-se.html#cb77-1" tabindex="-1"></a><span class="co"># Retrieving the ENTREZID ids</span></span>
@@ -681,8 +684,8 @@ location of the 5 first genes as follow:</p>
 <div id="questions-1" class="section level4 unnumbered hasAnchor">
 <h4>Questions<a href="sec-se.html#questions-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <ol style="list-style-type: decimal">
-<li><p>Add gene biotypes (stored as <code>GENETYPE</code> in <code>org.Hs.eg.db</code> object) to the
-feature metadata slot of our SummarizedExperiment se.</p></li>
+<li><p>Add gene biotypes (stored as <code>GENETYPE</code> in <code>org.Hs.eg.db</code> object)
+to the feature metadata slot of our <code>SummarizedExperiment</code> <code>se</code>.</p></li>
 <li><p>How many genes from each biotype do we have?</p></li>
 </ol>
 <details>
@@ -719,11 +722,12 @@ feature metadata slot of our SummarizedExperiment se.</li>
 </div>
 <div id="save-a-summarizedexperiment" class="section level3 hasAnchor" number="2.1.5">
 <h3><span class="header-section-number">2.1.5</span> Save a SummarizedExperiment<a href="sec-se.html#save-a-summarizedexperiment" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>This was a bit of code and time to create our <code>SummarizedExperiment</code> object.
-We will need to keep using it throughout the workshop, so it can be useful to
-save it as an actual single file on our computer to read it back in to R’s memory
-if we have to shut down RStudio. To save an R-specific file we can use the <code>saveRDS()</code>
-function and later read it back into R using the <code>readRDS()</code> function.</p>
+<p>This was a bit of code and time to create our <code>SummarizedExperiment</code>
+object. We will need to keep using it throughout the workshop, so it
+can be useful to save it as an actual single file on our computer to
+read it back into R later. To save any variable an R-specific file we
+can use the <code>saveRDS()</code> function and later read it back into R using
+the <code>readRDS()</code> function.</p>
 <div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="sec-se.html#cb89-1" tabindex="-1"></a><span class="fu">saveRDS</span>(se, <span class="st">&quot;data/se.rds&quot;</span>)</span>
 <span id="cb89-2"><a href="sec-se.html#cb89-2" tabindex="-1"></a><span class="fu">rm</span>(se) <span class="co"># remove the object!</span></span>
 <span id="cb89-3"><a href="sec-se.html#cb89-3" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/se.rds&quot;</span>)</span></code></pre></div>
@@ -733,8 +737,8 @@ function and later read it back into R using the <code>readRDS()</code> function
 <h2><span class="header-section-number">2.2</span> RangedSummarizedExperiment<a href="sec-se.html#rangedsummarizedexperiment" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In addition to the <code>SummarizedExperiment</code> slots we have seen above, it
 is also possible to store information about the features’ genomic
-ranges. Below, we load the <code>airway</code> <code>RangedSummarizedExperiment</code> data
-to illustrate this:</p>
+ranges/coordinates. Below, we load the <code>airway</code>
+<code>RangedSummarizedExperiment</code> data to illustrate this:</p>
 <div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="sec-se.html#cb90-1" tabindex="-1"></a><span class="fu">library</span>(airway)</span>
 <span id="cb90-2"><a href="sec-se.html#cb90-2" tabindex="-1"></a><span class="fu">data</span>(airway)</span>
 <span id="cb90-3"><a href="sec-se.html#cb90-3" tabindex="-1"></a>airway</span></code></pre></div>
@@ -789,7 +793,7 @@ the positions of the exons or the genes:</p>
 ##   [17]        X 99894942-99894988      - |    667161 ENSE00001828996
 ##   -------
 ##   seqinfo: 722 sequences (1 circular) from an unspecified genome</code></pre>
-<p>It is possible to use these row genomic ranges to subset features in
+<p>It is possible to use these genomic ranges to subset features in
 regions of interest, defined as <code>GRanges</code> object. Below, for example,
 we subset features between bases 1M and 2M on chromosome 7:</p>
 <div class="sourceCode" id="cb96"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb96-1"><a href="sec-se.html#cb96-1" tabindex="-1"></a>roi <span class="ot">&lt;-</span> <span class="fu">GRanges</span>(<span class="at">seqnames =</span> <span class="st">&quot;7&quot;</span>, <span class="at">ranges =</span> <span class="fl">1e6</span><span class="sc">:</span><span class="fl">2e6</span>)</span>
@@ -804,6 +808,15 @@ we subset features between bases 1M and 2M on chromosome 7:</p>
 ## colnames(8): SRR1039508 SRR1039509 ... SRR1039520 SRR1039521
 ## colData names(9): SampleName cell ... Sample BioSample</code></pre>
 
+</div>
+</div>
+<h3> References<a href="sec-refs.html#sec-refs" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-SE" class="csl-entry">
+Morgan, Martin, Valerie Obenchain, Jim Hester, and Hervé Pagès. 2026. <em><span>SummarizedExperiment</span>: A Container (S4 Class) for Matrix-Like Assays</em>. <a href="https://doi.org/10.18129/B9.bioc.SummarizedExperiment">https://doi.org/10.18129/B9.bioc.SummarizedExperiment</a>.
+</div>
+<div id="ref-AnnotationDbi" class="csl-entry">
+Pagès, Hervé, Marc Carlson, Seth Falcon, and Nianhua Li. 2026. <em><span>AnnotationDbi</span>: Manipulation of <span>SQLite</span>-Based Annotations in <span>Bioconductor</span></em>. <a href="https://doi.org/10.18129/B9.bioc.AnnotationDbi">https://doi.org/10.18129/B9.bioc.AnnotationDbi</a>.
 </div>
 </div>
 <div class="footnotes">

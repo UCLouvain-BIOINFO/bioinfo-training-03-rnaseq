@@ -164,8 +164,8 @@ div.csl-indent {
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#authors"><i class="fa fa-check"></i>Authors</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#license"><i class="fa fa-check"></i>License</a></li>
 <li class="chapter" data-level="" data-path="index.html"><a href="index.html#installation-instructions"><i class="fa fa-check"></i>Installation instructions</a></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html#references"><i class="fa fa-check"></i>References</a></li>
 </ul></li>
-<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="chapter" data-level="1" data-path="sec-hts.html"><a href="sec-hts.html"><i class="fa fa-check"></i><b>1</b> High throughput sequencing</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="sec-hts.html"><a href="sec-hts.html#rna-seq-library-preparation"><i class="fa fa-check"></i><b>1.1</b> RNA-seq library preparation</a>
@@ -235,9 +235,8 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
-<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
-<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.1</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.2</b> The Loadings</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
 </ul></li>
@@ -289,7 +288,7 @@ div.csl-indent {
 <li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
-<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session infromation</a></li>
+<li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session information</a></li>
 <li class="chapter" data-level="9" data-path="sec-refs.html"><a href="sec-refs.html"><i class="fa fa-check"></i><b>9</b> References</a></li>
 </ul>
 
@@ -346,16 +345,15 @@ the measurements of gene <em>y</em>. In the second example (right), we lose
 all the measurements of gene <em>x</em>.</p>
 <p><strong>The goal of dimensionality reduction is to limit this loss.</strong></p>
 <p>Instead of projecting the points on the x or the y axis, we could
-think about a linear regression. We could use the lm() to predict the
-value of gene_y, based on the expression on gene_x, or to predict the
-value of gene_x, based on the expression on gene_y.</p>
+think about a linear regression. We could use a linera model and the
+<code>lm()</code> function to predict the value of gene_y, based on the
+expression on gene_x, or to predict the value of gene_x, based on the
+expression on gene_y.</p>
 <p>But the relationship differs depending on the gene we choose to be the
 predictor or the response. Regression of y onto x (left) minimisises
 the sums of squares of vertical residuals (red). Regression of x onto
 y (right) minimisises the sums of squares of horizontal residuals
 (green).</p>
-<pre><code>## Warning in reg1$fitted: partial match of &#39;fitted&#39; to &#39;fitted.values&#39;</code></pre>
-<pre><code>## Warning in reg2$fitted: partial match of &#39;fitted&#39; to &#39;fitted.values&#39;</code></pre>
 <p><img src="rnaseq_files/figure-html/linreg-1.png" alt="" width="1056" /></p>
 <p>Another option would be to put both genes on equal footing and find
 the axis that best fits the cloud of points in all directions. This
@@ -368,7 +366,8 @@ variability. This line is called <strong>first principal component (PC1)</strong
 orthogonal to the first one. In this case, there is only one
 possibility.</p>
 <p><img src="rnaseq_files/figure-html/pxaex-1.png" alt="" width="1104" /></p>
-<p>After rotating the plot such that PC1 becomes the horizontal axis, we obtain the PCA plot:</p>
+<p>After rotating the plot such that PC1 becomes the horizontal axis, we
+obtain the PCA plot:</p>
 <p><img src="rnaseq_files/figure-html/pxaex2-1.png" alt="" width="1056" /></p>
 <p>In this example the variance along the PCs are
 1.77 and 0.23 respectively. The first one explains
@@ -382,20 +381,21 @@ ratio that is illustrative of the respective variances.</p>
 </div>
 <div id="starting-from-a-slightly-higher-number-of-dimensions" class="section level2 hasAnchor" number="5.2">
 <h2><span class="header-section-number">5.2</span> Starting from a (slightly) higher number of dimensions<a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Let’s know use another toy dataset, a small table called <code>tiny_dataset</code> that gives the
-expression values of 5 genes in two groups of cells (control and treated cells).
-Since we have the expression values of 5 genes (5 dimensions), we cannot represent
-them on a single plot.</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb147-1"><a href="sec-pca.html#cb147-1" tabindex="-1"></a>tiny_dataset <span class="ot">&lt;-</span> <span class="fu">structure</span>(<span class="fu">list</span>(</span>
-<span id="cb147-2"><a href="sec-pca.html#cb147-2" tabindex="-1"></a>  <span class="at">GeneA =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">30</span>),</span>
-<span id="cb147-3"><a href="sec-pca.html#cb147-3" tabindex="-1"></a>  <span class="at">GeneB =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">1179</span>, <span class="dv">1050</span>, <span class="dv">803</span>, <span class="dv">1070</span>, <span class="dv">953</span>),</span>
-<span id="cb147-4"><a href="sec-pca.html#cb147-4" tabindex="-1"></a>  <span class="at">GeneC =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">79</span>, <span class="dv">75</span>, <span class="dv">76</span>, <span class="dv">77</span>, <span class="dv">983</span>, <span class="dv">1008</span>, <span class="dv">1002</span>, <span class="dv">989</span>, <span class="dv">1013</span>),</span>
-<span id="cb147-5"><a href="sec-pca.html#cb147-5" tabindex="-1"></a>  <span class="at">GeneD =</span> <span class="fu">c</span>(<span class="dv">504</span>, <span class="dv">497</span>, <span class="dv">509</span>, <span class="dv">509</span>, <span class="dv">508</span>, <span class="dv">507</span>, <span class="dv">506</span>, <span class="dv">499</span>, <span class="dv">497</span>, <span class="dv">496</span>),</span>
-<span id="cb147-6"><a href="sec-pca.html#cb147-6" tabindex="-1"></a>  <span class="at">GeneE =</span> <span class="fu">c</span>(<span class="dv">797</span>, <span class="dv">799</span>, <span class="dv">794</span>, <span class="dv">811</span>, <span class="dv">806</span>, <span class="dv">49</span>, <span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">51</span>, <span class="dv">50</span>)),</span>
-<span id="cb147-7"><a href="sec-pca.html#cb147-7" tabindex="-1"></a>  <span class="at">class =</span> <span class="st">&quot;data.frame&quot;</span>,</span>
-<span id="cb147-8"><a href="sec-pca.html#cb147-8" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">&quot;CTL_1&quot;</span>, <span class="st">&quot;CTL_2&quot;</span>, <span class="st">&quot;CTL_3&quot;</span>, <span class="st">&quot;CTL_4&quot;</span>, <span class="st">&quot;CTL_5&quot;</span>, <span class="st">&quot;Treated_1&quot;</span>,</span>
-<span id="cb147-9"><a href="sec-pca.html#cb147-9" tabindex="-1"></a>                <span class="st">&quot;Treated_2&quot;</span>, <span class="st">&quot;Treated_3&quot;</span>, <span class="st">&quot;Treated_4&quot;</span>, <span class="st">&quot;Treated_5&quot;</span>))</span></code></pre></div>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="sec-pca.html#cb148-1" tabindex="-1"></a>tiny_dataset</span></code></pre></div>
+<p>Let’s know use another toy dataset, a small table called
+<code>tiny_dataset</code> that gives the expression values of 5 genes in two
+groups of cells (control and treated cells). Since we have the
+expression values of 5 genes (5 dimensions), we cannot represent them
+on a single plot.</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb145-1"><a href="sec-pca.html#cb145-1" tabindex="-1"></a>tiny_dataset <span class="ot">&lt;-</span> <span class="fu">structure</span>(<span class="fu">list</span>(</span>
+<span id="cb145-2"><a href="sec-pca.html#cb145-2" tabindex="-1"></a>  <span class="at">GeneA =</span> <span class="fu">c</span>(<span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">30</span>, <span class="dv">31</span>, <span class="dv">30</span>, <span class="dv">29</span>, <span class="dv">30</span>, <span class="dv">30</span>),</span>
+<span id="cb145-3"><a href="sec-pca.html#cb145-3" tabindex="-1"></a>  <span class="at">GeneB =</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">5</span>, <span class="dv">4</span>, <span class="dv">1179</span>, <span class="dv">1050</span>, <span class="dv">803</span>, <span class="dv">1070</span>, <span class="dv">953</span>),</span>
+<span id="cb145-4"><a href="sec-pca.html#cb145-4" tabindex="-1"></a>  <span class="at">GeneC =</span> <span class="fu">c</span>(<span class="dv">75</span>, <span class="dv">79</span>, <span class="dv">75</span>, <span class="dv">76</span>, <span class="dv">77</span>, <span class="dv">983</span>, <span class="dv">1008</span>, <span class="dv">1002</span>, <span class="dv">989</span>, <span class="dv">1013</span>),</span>
+<span id="cb145-5"><a href="sec-pca.html#cb145-5" tabindex="-1"></a>  <span class="at">GeneD =</span> <span class="fu">c</span>(<span class="dv">504</span>, <span class="dv">497</span>, <span class="dv">509</span>, <span class="dv">509</span>, <span class="dv">508</span>, <span class="dv">507</span>, <span class="dv">506</span>, <span class="dv">499</span>, <span class="dv">497</span>, <span class="dv">496</span>),</span>
+<span id="cb145-6"><a href="sec-pca.html#cb145-6" tabindex="-1"></a>  <span class="at">GeneE =</span> <span class="fu">c</span>(<span class="dv">797</span>, <span class="dv">799</span>, <span class="dv">794</span>, <span class="dv">811</span>, <span class="dv">806</span>, <span class="dv">49</span>, <span class="dv">50</span>, <span class="dv">50</span>, <span class="dv">51</span>, <span class="dv">50</span>)),</span>
+<span id="cb145-7"><a href="sec-pca.html#cb145-7" tabindex="-1"></a>  <span class="at">class =</span> <span class="st">&quot;data.frame&quot;</span>,</span>
+<span id="cb145-8"><a href="sec-pca.html#cb145-8" tabindex="-1"></a>  <span class="at">row.names =</span> <span class="fu">c</span>(<span class="st">&quot;CTL_1&quot;</span>, <span class="st">&quot;CTL_2&quot;</span>, <span class="st">&quot;CTL_3&quot;</span>, <span class="st">&quot;CTL_4&quot;</span>, <span class="st">&quot;CTL_5&quot;</span>, <span class="st">&quot;Treated_1&quot;</span>,</span>
+<span id="cb145-9"><a href="sec-pca.html#cb145-9" tabindex="-1"></a>                <span class="st">&quot;Treated_2&quot;</span>, <span class="st">&quot;Treated_3&quot;</span>, <span class="st">&quot;Treated_4&quot;</span>, <span class="st">&quot;Treated_5&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="sec-pca.html#cb146-1" tabindex="-1"></a>tiny_dataset</span></code></pre></div>
 <pre><code>##           GeneA GeneB GeneC GeneD GeneE
 ## CTL_1        30     6    75   504   797
 ## CTL_2        30     5    79   497   799
@@ -407,16 +407,27 @@ them on a single plot.</p>
 ## Treated_3    29   803  1002   499    50
 ## Treated_4    30  1070   989   497    51
 ## Treated_5    30   953  1013   496    50</code></pre>
-<p>This table is not too big, so by quickly inspecting it by eye, we can see that
-the treatment seems to have a strong impact on the expression of GeneB, GeneC,
-and GeneE but has little or no effect on genes GeneA and GeneD.</p>
+<p>This table is not too big, so by quickly inspecting it by eye, we can
+see that the treatment seems to have a strong impact on the expression
+of GeneB, GeneC, and GeneE but has little or no effect on genes GeneA
+and GeneD.</p>
+<p>Note that here, the samples are along the rows and the genes along the
+columns, as opposed to the representation in a <code>SummarizedExperiment</code>.</p>
 <div id="question-14" class="section level4 unnumbered hasAnchor">
 <h4>Question<a href="sec-pca.html#question-14" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>What do you think a PCA based on this small dataset should look like?</p>
+<details>
+<summary>
+Solution
+</summary>
+We will see exactly how the PCA will look later.
+</details>
 <p>Now let’s use the <code>prcomp()</code> function to do a PCA on this dataset.
-The output of prcomp is an object of class prcomp.</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sec-pca.html#cb150-1" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tiny_dataset, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb150-2"><a href="sec-pca.html#cb150-2" tabindex="-1"></a><span class="fu">str</span>(pca)</span></code></pre></div>
+The output of <code>prcomp()</code> is an object of class <code>prcomp</code> containing 5
+values. They are documented in the functions’ manual page and we will
+discuss them in the next sections.</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="sec-pca.html#cb148-1" tabindex="-1"></a>pca <span class="ot">&lt;-</span> <span class="fu">prcomp</span>(tiny_dataset, <span class="at">center =</span> <span class="cn">TRUE</span>, <span class="at">scale. =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb148-2"><a href="sec-pca.html#cb148-2" tabindex="-1"></a><span class="fu">str</span>(pca)</span></code></pre></div>
 <pre><code>## List of 5
 ##  $ sdev    : num [1:5] 1.8097 1.1269 0.6684 0.0903 0.012
 ##  $ rotation: num [1:5, 1:5] 0.173 -0.524 -0.542 0.329 0.542 ...
@@ -432,27 +443,28 @@ The output of prcomp is an object of class prcomp.</p>
 ##   .. ..$ : chr [1:10] &quot;CTL_1&quot; &quot;CTL_2&quot; &quot;CTL_3&quot; &quot;CTL_4&quot; ...
 ##   .. ..$ : chr [1:5] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
 ##  - attr(*, &quot;class&quot;)= chr &quot;prcomp&quot;</code></pre>
-</div>
-<div id="variance-explained-by-each-component" class="section level3 hasAnchor" number="5.2.1">
-<h3><span class="header-section-number">5.2.1</span> Variance explained by each component<a href="sec-pca.html#variance-explained-by-each-component" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>n
+### Variance explained by each component</p>
 <p>A summary of prcomp output shows that</p>
 <ul>
 <li>PC1 was able to capture about 65 % of the total variability in the data,</li>
 <li>PC2 was able to capture about 25 % of the total variability in the data.</li>
-<li>Together, PC1 and PC2 retained 90.9 % of the total variability in the data</li>
+<li>Together, PC1 and PC2 retained 90.9 % of the total variability in the data.</li>
 </ul>
-<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sec-pca.html#cb152-1" tabindex="-1"></a><span class="fu">summary</span>(pca)</span></code></pre></div>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="sec-pca.html#cb150-1" tabindex="-1"></a><span class="fu">summary</span>(pca)</span></code></pre></div>
 <pre><code>## Importance of components:
 ##                          PC1   PC2     PC3     PC4     PC5
 ## Standard deviation     1.810 1.127 0.66843 0.09027 0.01202
 ## Proportion of Variance 0.655 0.254 0.08936 0.00163 0.00003
 ## Cumulative Proportion  0.655 0.909 0.99834 0.99997 1.00000</code></pre>
+<p>These are computed using the object’s <code>sdev</code> element, containing the
+standard deviations along the PCs.</p>
 </div>
-<div id="pcas-coordinates" class="section level3 hasAnchor" number="5.2.2">
-<h3><span class="header-section-number">5.2.2</span> PCA’s coordinates<a href="sec-pca.html#pcas-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>The x element of the prcomp output is a table that gives the sample coordinates
-in the new space of components.</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="sec-pca.html#cb154-1" tabindex="-1"></a>pca<span class="sc">$</span>x</span></code></pre></div>
+<div id="pcas-coordinates" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> PCA’s coordinates<a href="sec-pca.html#pcas-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <code>x</code> element of the <code>prcomp()</code> output is a table that gives the
+sample coordinates in the new component space.</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sec-pca.html#cb152-1" tabindex="-1"></a>pca<span class="sc">$</span>x</span></code></pre></div>
 <pre><code>##                 PC1        PC2         PC3         PC4          PC5
 ## CTL_1      1.530853  0.5998082  0.03211405 -0.04333816  0.012017799
 ## CTL_2      1.101755  1.3149717  1.03361796 -0.05297607 -0.001282981
@@ -465,13 +477,13 @@ in the new space of components.</p>
 ## Treated_4 -1.972497  0.1912046  0.52074789 -0.10252219  0.008786148
 ## Treated_5 -1.947915  0.3445754  0.66634882  0.09261222 -0.021395630</code></pre>
 <p>These values can be used to draw the PCA plot</p>
-<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb156-1"><a href="sec-pca.html#cb156-1" tabindex="-1"></a><span class="fu">as_tibble</span>(pca<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb156-2"><a href="sec-pca.html#cb156-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">sub</span>(<span class="at">pattern =</span> <span class="st">&quot;_.*&quot;</span>, <span class="at">x =</span> sample, <span class="at">replacement =</span> <span class="st">&#39;&#39;</span>)) <span class="sc">|&gt;</span></span>
-<span id="cb156-3"><a href="sec-pca.html#cb156-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> group)) <span class="sc">+</span></span>
-<span id="cb156-4"><a href="sec-pca.html#cb156-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb156-5"><a href="sec-pca.html#cb156-5" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> .<span class="dv">4</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="sec-pca.html#cb154-1" tabindex="-1"></a><span class="fu">as_tibble</span>(pca<span class="sc">$</span>x, <span class="at">rownames =</span> <span class="st">&quot;sample&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb154-2"><a href="sec-pca.html#cb154-2" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">group =</span> <span class="fu">sub</span>(<span class="at">pattern =</span> <span class="st">&quot;_.*&quot;</span>, <span class="at">x =</span> sample, <span class="at">replacement =</span> <span class="st">&#39;&#39;</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb154-3"><a href="sec-pca.html#cb154-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> PC1, <span class="at">y =</span> PC2, <span class="at">color =</span> group)) <span class="sc">+</span></span>
+<span id="cb154-4"><a href="sec-pca.html#cb154-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb154-5"><a href="sec-pca.html#cb154-5" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">aspect.ratio =</span> .<span class="dv">4</span>)</span></code></pre></div>
 <p><img src="rnaseq_files/figure-html/ggplot-pca-1.png" alt="" width="672" /></p>
-<p>Interpretation</p>
+<p>The interpretation of the PCA goes as follows:</p>
 <ul>
 <li>This PCA is a representation in 2 dimensions (PC1 and PC2) of our
 5-dimensions dataset.</li>
@@ -483,10 +495,10 @@ groups along PC1. This separation indicates that the “CTL” and
 “Treated” samples have different overall expression profiles.</li>
 </ul>
 </div>
-<div id="the-loadings" class="section level3 hasAnchor" number="5.2.3">
-<h3><span class="header-section-number">5.2.3</span> The Loadings<a href="sec-pca.html#the-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Principal components provide a new coordinate system. They are linear combinations
-of the variables that were originally measured.</p>
+<div id="the-loadings" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> The Loadings<a href="sec-pca.html#the-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Principal components provide a new coordinate system. They are linear
+combinations of the variables that were originally measured.</p>
 <p>PC1 in the previous example is a linear combination of the 5 genes:</p>
 <p><span class="math display">\[ PC1 = c_{1}.Gene_{A} + c_{2}.Gene_{B} + c_{3}.Gene_{C} + c_{4}.Gene_{D} + c_{5}.Gene_{E}\]</span></p>
 <p>The coefficients <span class="math inline">\(c_1\)</span>, <span class="math inline">\(c_2\)</span>, <span class="math inline">\(c_3\)</span>, <span class="math inline">\(c_4\)</span>, and <span class="math inline">\(c_5\)</span>, also called <strong>loadings</strong>,
@@ -494,7 +506,7 @@ represent the <strong>weight</strong> of each gene in PC1.</p>
 <p>Loadings are stored in the <code>rotation</code> slot of the prcomp output. Genes with the
 largest absolute PC1 loadings are the ones that contribute most to that component
 (GeneB, GeneC and GeneE in this case).</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="sec-pca.html#cb157-1" tabindex="-1"></a>pca<span class="sc">$</span>rotation</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="sec-pca.html#cb155-1" tabindex="-1"></a>pca<span class="sc">$</span>rotation</span></code></pre></div>
 <pre><code>##              PC1        PC2         PC3          PC4          PC5
 ## GeneA  0.1727214 -0.7592258  0.61713747  0.113206827 -0.008310904
 ## GeneB -0.5242436 -0.2719533 -0.04021536 -0.805844662 -0.014392984
@@ -540,6 +552,16 @@ dimensions, making it easier to explore.</p>
 should be included in linear model?</li>
 <li>Are they any outliers which may need to be explored further?</li>
 </ul>
+<p>Note that PCA is an <em>unsupervised</em> approach - it is never told about
+groups (CTL and Treated in the example above). It should this not we
+used to identify differentially expressed genes between these groups.</p>
+<p>If we observe a good separation of the groups of interest on the PCA,
+it is likely that the genes with a high loading will also be
+differentially expressed, but keep in mind that these are
+fundamentally different analyses. Conversely, even if we don’t see a
+good separation of our groups of interest on a PCA plot, there might
+still be genes that show a statistically significant expression
+between groups.</p>
 <div id="question-16" class="section level4 unnumbered hasAnchor">
 <h4>Question<a href="sec-pca.html#question-16" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Here are a few examples of PCAs corresponding to different experimental designs.
