@@ -23,7 +23,7 @@
 <meta name="author" content="Laurent Gatto and Axelle Loriot" />
 
 
-<meta name="date" content="2026-05-15" />
+<meta name="date" content="2026-05-17" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -206,7 +206,9 @@ div.csl-indent {
 <li class="chapter" data-level="3.1" data-path="sec-lm.html"><a href="sec-lm.html#multifactorial-design-and-linear-models"><i class="fa fa-check"></i><b>3.1</b> Multifactorial design and linear models</a></li>
 <li class="chapter" data-level="3.2" data-path="sec-lm.html"><a href="sec-lm.html#single-factor-design"><i class="fa fa-check"></i><b>3.2</b> Single-factor design</a>
 <ul>
-<li class="chapter" data-level="3.2.1" data-path="sec-lm.html"><a href="sec-lm.html#example"><i class="fa fa-check"></i><b>3.2.1</b> Example</a></li>
+<li class="chapter" data-level="3.2.1" data-path="sec-lm.html"><a href="sec-lm.html#defining-the-linear-model"><i class="fa fa-check"></i><b>3.2.1</b> Defining the linear model</a></li>
+<li class="chapter" data-level="3.2.2" data-path="sec-lm.html"><a href="sec-lm.html#estimating-coefficients-and-testing-their-significance"><i class="fa fa-check"></i><b>3.2.2</b> Estimating coefficients and testing their significance</a></li>
+<li class="chapter" data-level="3.2.3" data-path="sec-lm.html"><a href="sec-lm.html#example"><i class="fa fa-check"></i><b>3.2.3</b> Example</a></li>
 </ul></li>
 <li class="chapter" data-level="3.3" data-path="sec-lm.html"><a href="sec-lm.html#two-factor-design"><i class="fa fa-check"></i><b>3.3</b> Two-factor design</a>
 <ul>
@@ -308,7 +310,7 @@ div.csl-indent {
             <section class="normal" id="section-">
 <div id="sec-si" class="section level1 hasAnchor" number="8">
 <h1><span class="header-section-number">Chapter 8</span> Session infromation<a href="sec-si.html#sec-si" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="sec-si.html#cb294-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb286"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb286-1"><a href="sec-si.html#cb286-1" tabindex="-1"></a><span class="fu">sessionInfo</span>()</span></code></pre></div>
 <pre><code>## R version 4.6.0 (2026-04-24)
 ## Platform: x86_64-pc-linux-gnu
 ## Running under: Ubuntu 24.04.4 LTS
@@ -334,21 +336,20 @@ div.csl-indent {
 ## 
 ## other attached packages:
 ##  [1] Vennerable_3.1.0.9000       clusterProfiler_4.20.0     
-##  [3] msigdb_1.20.0               msigdbr_26.1.0             
-##  [5] org.Mm.eg.db_3.23.0         DESeq2_1.52.0              
-##  [7] ExploreModelMatrix_1.24.0   patchwork_1.3.2            
-##  [9] airway_1.32.0               org.Hs.eg.db_3.23.1        
-## [11] AnnotationDbi_1.74.0        SummarizedExperiment_1.42.0
-## [13] Biobase_2.72.0              GenomicRanges_1.64.0       
-## [15] Seqinfo_1.2.0               IRanges_2.46.0             
-## [17] S4Vectors_0.50.0            BiocGenerics_0.58.0        
-## [19] generics_0.1.4              MatrixGenerics_1.24.0      
-## [21] matrixStats_1.5.0           DT_0.34.0                  
-## [23] lubridate_1.9.5             forcats_1.0.1              
-## [25] stringr_1.6.0               dplyr_1.2.1                
-## [27] purrr_1.2.2                 readr_2.2.0                
-## [29] tidyr_1.3.2                 tibble_3.3.1               
-## [31] ggplot2_4.0.3               tidyverse_2.0.0            
+##  [3] msigdbr_26.1.0              DESeq2_1.52.0              
+##  [5] ExploreModelMatrix_1.24.0   patchwork_1.3.2            
+##  [7] airway_1.32.0               org.Hs.eg.db_3.23.1        
+##  [9] AnnotationDbi_1.74.0        SummarizedExperiment_1.42.0
+## [11] Biobase_2.72.0              GenomicRanges_1.64.0       
+## [13] Seqinfo_1.2.0               IRanges_2.46.0             
+## [15] S4Vectors_0.50.0            BiocGenerics_0.58.0        
+## [17] generics_0.1.4              MatrixGenerics_1.24.0      
+## [19] matrixStats_1.5.0           DT_0.34.0                  
+## [21] lubridate_1.9.5             forcats_1.0.1              
+## [23] stringr_1.6.0               dplyr_1.2.1                
+## [25] purrr_1.2.2                 readr_2.2.0                
+## [27] tidyr_1.3.2                 tibble_3.3.1               
+## [29] ggplot2_4.0.3               tidyverse_2.0.0            
 ## 
 ## loaded via a namespace (and not attached):
 ##   [1] splines_4.6.0           later_1.4.8             ggplotify_0.1.3        
