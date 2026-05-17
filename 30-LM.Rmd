@@ -289,8 +289,7 @@ The model only accounts for the *Condition* effect. It ignores the
 gene_count |>
   ggplot(aes(x = Condition, y = count)) +
   geom_jitter(size = 3, aes(color = Type)) +
-  geom_boxplot(alpha = 0) +
-  theme(legend.position = "bottom")
+  geom_boxplot(alpha = 0) 
 ```
 
 Epithelial and Fibroblasts count values are mixed, 
@@ -324,8 +323,7 @@ gene_count |>
   ggplot(aes(x = Condition, y = count)) +
   geom_jitter(size = 3, aes(color = Type)) +
   geom_boxplot(alpha = 0) +
-  facet_wrap(~ Type)+
-  theme(legend.position = "bottom")
+  facet_wrap(~ Type)
 ```
 
 The model now adjusts for the baseline difference between epithelial
@@ -342,6 +340,8 @@ An interaction term could be added to the linear model, to
 model a treatment effect that would differ across cell types.
 
 Our design would hence be: $$design \sim Treatment*cellType$$
+
+which is equivalent to $$design \sim Treatment + cellType + Treatment*cellType$$
 
 The linear model could be written
 
@@ -444,8 +444,7 @@ gene_count |>
   ggplot(aes(x = Condition, y = count)) +
   geom_jitter(size = 3, aes(color = Type)) +
   geom_boxplot(alpha = 0) +
-  facet_wrap(~ Type)+
-  theme(legend.position = "bottom")
+  facet_wrap(~ Type)
 ```
 
 </details>
@@ -488,8 +487,7 @@ gene_count |>
   ggplot(aes(x = Condition, y = count)) +
   geom_jitter(size = 3, aes(color = Type)) +
   geom_boxplot(alpha = 0) +
-  facet_wrap(~ Type)+
-  theme(legend.position = "bottom")
+  facet_wrap(~ Type)
 ```
 
 </details>
