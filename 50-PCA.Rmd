@@ -315,7 +315,7 @@ var <- pca$sdev^2
 pve <- var/sum(var)
 pve
 ```
-n
+
 ### Variance explained by each component
 
 A summary of prcomp output shows that

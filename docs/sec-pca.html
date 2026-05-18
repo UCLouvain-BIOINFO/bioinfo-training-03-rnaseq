@@ -235,8 +235,9 @@ div.csl-indent {
 </ul></li>
 <li class="chapter" data-level="5.2" data-path="sec-pca.html"><a href="sec-pca.html#starting-from-a-slightly-higher-number-of-dimensions"><i class="fa fa-check"></i><b>5.2</b> Starting from a (slightly) higher number of dimensions</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.1</b> PCA’s coordinates</a></li>
-<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.2</b> The Loadings</a></li>
+<li class="chapter" data-level="5.2.1" data-path="sec-pca.html"><a href="sec-pca.html#variance-explained-by-each-component"><i class="fa fa-check"></i><b>5.2.1</b> Variance explained by each component</a></li>
+<li class="chapter" data-level="5.2.2" data-path="sec-pca.html"><a href="sec-pca.html#pcas-coordinates"><i class="fa fa-check"></i><b>5.2.2</b> PCA’s coordinates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="sec-pca.html"><a href="sec-pca.html#the-loadings"><i class="fa fa-check"></i><b>5.2.3</b> The Loadings</a></li>
 </ul></li>
 <li class="chapter" data-level="5.3" data-path="sec-pca.html"><a href="sec-pca.html#pca-on-a-real-datasets"><i class="fa fa-check"></i><b>5.3</b> PCA on a real datasets</a></li>
 </ul></li>
@@ -443,8 +444,9 @@ discuss them in the next sections.</p>
 ##   .. ..$ : chr [1:10] &quot;CTL_1&quot; &quot;CTL_2&quot; &quot;CTL_3&quot; &quot;CTL_4&quot; ...
 ##   .. ..$ : chr [1:5] &quot;PC1&quot; &quot;PC2&quot; &quot;PC3&quot; &quot;PC4&quot; ...
 ##  - attr(*, &quot;class&quot;)= chr &quot;prcomp&quot;</code></pre>
-<p>n
-### Variance explained by each component</p>
+</div>
+<div id="variance-explained-by-each-component" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> Variance explained by each component<a href="sec-pca.html#variance-explained-by-each-component" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>A summary of prcomp output shows that</p>
 <ul>
 <li>PC1 was able to capture about 65 % of the total variability in the data,</li>
@@ -460,8 +462,8 @@ discuss them in the next sections.</p>
 <p>These are computed using the object’s <code>sdev</code> element, containing the
 standard deviations along the PCs.</p>
 </div>
-<div id="pcas-coordinates" class="section level3 hasAnchor" number="5.2.1">
-<h3><span class="header-section-number">5.2.1</span> PCA’s coordinates<a href="sec-pca.html#pcas-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="pcas-coordinates" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> PCA’s coordinates<a href="sec-pca.html#pcas-coordinates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The <code>x</code> element of the <code>prcomp()</code> output is a table that gives the
 sample coordinates in the new component space.</p>
 <div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb152-1"><a href="sec-pca.html#cb152-1" tabindex="-1"></a>pca<span class="sc">$</span>x</span></code></pre></div>
@@ -495,8 +497,8 @@ groups along PC1. This separation indicates that the “CTL” and
 “Treated” samples have different overall expression profiles.</li>
 </ul>
 </div>
-<div id="the-loadings" class="section level3 hasAnchor" number="5.2.2">
-<h3><span class="header-section-number">5.2.2</span> The Loadings<a href="sec-pca.html#the-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="the-loadings" class="section level3 hasAnchor" number="5.2.3">
+<h3><span class="header-section-number">5.2.3</span> The Loadings<a href="sec-pca.html#the-loadings" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Principal components provide a new coordinate system. They are linear
 combinations of the variables that were originally measured.</p>
 <p>PC1 in the previous example is a linear combination of the 5 genes:</p>
