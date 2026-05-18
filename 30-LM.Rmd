@@ -39,7 +39,7 @@ knitr::include_graphics("figs/factors-affecting-measurements.png")
 
 (figure from [Lazic (2017)](https://www.amazon.com/Experimental-Design-Laboratory-Biologists-Reproducibility/dp/1107424887)).
 
-A linear model provides a mathematical framework to describe and quantify the 
+A linear model provides a mathematical framework to describe and quantify the
 contribution of these different factors to the observed outcome.
 
 ## Single-factor design
@@ -68,7 +68,7 @@ The $\beta_1 . x$ term is hence equal to 0, so the equation can be written:
 
 $$y = \beta_0$$
 
-This means that the $\beta_0$ term represents the expression level of the gene 
+This means that the $\beta_0$ term represents the expression level of the gene
 in control samples, this coefficient is usually called the `intercept`.
 
 **When considering a treated sample, the $x$ factor is set to 1**.
@@ -104,9 +104,10 @@ which is the same as saying that the $\beta_1$ = 0.
 
 ### Example
 
-We are going to use a subset of our previous dataset as a toy example.
-Let's focus only on the gene *ZBED2* in *Epithelial* cell type, and use the
-log-transformed expression values.
+We are going to use a subset of our [previous
+dataset](https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/se.rds)
+as a toy example.  Let's focus only on the gene *ZBED2* in
+*Epithelial* cell type, and use the log-transformed expression values.
 
 
 ```{r ln-ZBED2, eval=TRUE, purl=TRUE, message=FALSE, warning = F}
@@ -125,7 +126,7 @@ gene_count
 
 Assuming the expression values follow a normal distribution (even though,
 as we’ll see later, this isn’t actually true for RNAseq data!), let's use the
-`lm()` function to fit a linear model to compare KD to control cells. We want to 
+`lm()` function to fit a linear model to compare KD to control cells. We want to
 model the counts as a function of the `Condition` factor.
 
 In this case the design of our experiment would be :
@@ -289,10 +290,10 @@ The model only accounts for the *Condition* effect. It ignores the
 gene_count |>
   ggplot(aes(x = Condition, y = count)) +
   geom_jitter(size = 3, aes(color = Type)) +
-  geom_boxplot(alpha = 0) 
+  geom_boxplot(alpha = 0)
 ```
 
-Epithelial and Fibroblasts count values are mixed, 
+Epithelial and Fibroblasts count values are mixed,
 even though they clearly don’t start at the same baseline.
 
 </details>

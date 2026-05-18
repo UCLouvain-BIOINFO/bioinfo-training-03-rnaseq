@@ -23,7 +23,7 @@
 <meta name="author" content="Laurent Gatto and Axelle Loriot" />
 
 
-<meta name="date" content="2026-05-17" />
+<meta name="date" content="2026-05-18" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -381,9 +381,10 @@ which is the same as saying that the <span class="math inline">\(\beta_1\)</span
 </div>
 <div id="example" class="section level3 hasAnchor" number="3.2.3">
 <h3><span class="header-section-number">3.2.3</span> Example<a href="sec-lm.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>We are going to use a subset of our previous dataset as a toy example.
-Let’s focus only on the gene <em>ZBED2</em> in <em>Epithelial</em> cell type, and use the
-log-transformed expression values.</p>
+<p>We are going to use a subset of our <a href="https://github.com/UCLouvain-BIOINFO/bioinfo-training-03-rnaseq/raw/refs/heads/main/data/se.rds">previous
+dataset</a>
+as a toy example. Let’s focus only on the gene <em>ZBED2</em> in
+<em>Epithelial</em> cell type, and use the log-transformed expression values.</p>
 <div class="sourceCode" id="cb98"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb98-1"><a href="sec-lm.html#cb98-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/se.rds&quot;</span>)</span>
 <span id="cb98-2"><a href="sec-lm.html#cb98-2" tabindex="-1"></a></span>
 <span id="cb98-3"><a href="sec-lm.html#cb98-3" tabindex="-1"></a>gene_count <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(<span class="fu">assay</span>(se[<span class="st">&quot;ZBED2&quot;</span>, se<span class="sc">$</span>Type <span class="sc">==</span> <span class="st">&quot;Epithelial&quot;</span>]),</span>
@@ -580,7 +581,7 @@ Solution
 <div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="sec-lm.html#cb112-1" tabindex="-1"></a>gene_count <span class="sc">|&gt;</span></span>
 <span id="cb112-2"><a href="sec-lm.html#cb112-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Condition, <span class="at">y =</span> count)) <span class="sc">+</span></span>
 <span id="cb112-3"><a href="sec-lm.html#cb112-3" tabindex="-1"></a>  <span class="fu">geom_jitter</span>(<span class="at">size =</span> <span class="dv">3</span>, <span class="fu">aes</span>(<span class="at">color =</span> Type)) <span class="sc">+</span></span>
-<span id="cb112-4"><a href="sec-lm.html#cb112-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>) </span></code></pre></div>
+<span id="cb112-4"><a href="sec-lm.html#cb112-4" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha =</span> <span class="dv">0</span>)</span></code></pre></div>
 <p><img src="rnaseq_files/figure-html/unnamed-chunk-66-1.png" alt="" width="288" /></p>
 <p>Epithelial and Fibroblasts count values are mixed,
 even though they clearly don’t start at the same baseline.</p>
