@@ -58,9 +58,13 @@ core facility](https://sites.uclouvain.be/training/bioinfo/).
 
 This course is based on material from the
 [WSBIM1322](https://uclouvain-cbio.github.io/WSBIM1322/) and
-[WSBIM2122](https://uclouvain-cbio.github.io/WSBIM2122) chapters
-taught at the [Faculty of Pharmacy and Biomedical
-Sciences](https://uclouvain.be/en/faculties/fasb) at the UCLouvain.
+[WSBIM2122](https://uclouvain-cbio.github.io/WSBIM2122) courses taught
+at the [Faculty of Pharmacy and Biomedical
+Sciences](https://uclouvain.be/en/faculties/fasb) at the UCLouvain,
+and the [RNA-seq analysis with
+Bioconductor](https://carpentries-incubator.github.io/bioc-rnaseq/)
+Carpentries workshop developed by the [Bioconductor training
+committee](https://training.bioconductor.org/).
 
 ## License {-}
 

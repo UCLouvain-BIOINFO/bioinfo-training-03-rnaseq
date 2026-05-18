@@ -271,22 +271,20 @@ div.csl-indent {
 <li class="chapter" data-level="7" data-path="sec-gsea.html"><a href="sec-gsea.html"><i class="fa fa-check"></i><b>7</b> Enrichment analyses</a>
 <ul>
 <li class="chapter" data-level="7.1" data-path="sec-gsea.html"><a href="sec-gsea.html#objectives-of-an-enrichment-analysis"><i class="fa fa-check"></i><b>7.1</b> Objectives of an enrichment analysis</a></li>
-<li class="chapter" data-level="7.2" data-path="sec-gsea.html"><a href="sec-gsea.html#genesets"><i class="fa fa-check"></i><b>7.2</b> GeneSets</a>
+<li class="chapter" data-level="7.2" data-path="sec-gsea.html"><a href="sec-gsea.html#gene-sets"><i class="fa fa-check"></i><b>7.2</b> Gene sets</a></li>
+<li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.3</b> Access the gene sets from MSigDB</a></li>
+<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.4</b> Input data</a></li>
+<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#over-representation-analysis"><i class="fa fa-check"></i><b>7.5</b> Over-representation analysis</a>
 <ul>
-<li class="chapter" data-level="7.2.1" data-path="sec-gsea.html"><a href="sec-gsea.html#access-the-gene-sets-from-msigdb"><i class="fa fa-check"></i><b>7.2.1</b> Access the gene sets from MSigDB</a></li>
+<li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
+<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running an ORA with the <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.5.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.5.3</b> Visualisation</a></li>
+<li class="chapter" data-level="7.5.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.5.4</b> Conclusion about ORA method</a></li>
 </ul></li>
-<li class="chapter" data-level="7.3" data-path="sec-gsea.html"><a href="sec-gsea.html#input-data"><i class="fa fa-check"></i><b>7.3</b> Input data</a></li>
-<li class="chapter" data-level="7.4" data-path="sec-gsea.html"><a href="sec-gsea.html#over-representation-analysis"><i class="fa fa-check"></i><b>7.4</b> Over-representation analysis</a>
+<li class="chapter" data-level="7.6" data-path="sec-gsea.html"><a href="sec-gsea.html#gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>7.6</b> Gene set enrichment analysis</a>
 <ul>
-<li class="chapter" data-level="7.4.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle"><i class="fa fa-check"></i><b>7.4.1</b> Principle</a></li>
-<li class="chapter" data-level="7.4.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.4.2</b> Running an ORA with the <code>clusterProfiler</code> package</a></li>
-<li class="chapter" data-level="7.4.3" data-path="sec-gsea.html"><a href="sec-gsea.html#visualisation"><i class="fa fa-check"></i><b>7.4.3</b> Visualisation</a></li>
-<li class="chapter" data-level="7.4.4" data-path="sec-gsea.html"><a href="sec-gsea.html#conclusion-about-ora-method"><i class="fa fa-check"></i><b>7.4.4</b> Conclusion about ORA method</a></li>
-</ul></li>
-<li class="chapter" data-level="7.5" data-path="sec-gsea.html"><a href="sec-gsea.html#gene-set-enrichment-analysis"><i class="fa fa-check"></i><b>7.5</b> Gene set enrichment analysis</a>
-<ul>
-<li class="chapter" data-level="7.5.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.5.1</b> Principle</a></li>
-<li class="chapter" data-level="7.5.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.5.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
+<li class="chapter" data-level="7.6.1" data-path="sec-gsea.html"><a href="sec-gsea.html#principle-1"><i class="fa fa-check"></i><b>7.6.1</b> Principle</a></li>
+<li class="chapter" data-level="7.6.2" data-path="sec-gsea.html"><a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package"><i class="fa fa-check"></i><b>7.6.2</b> Running a GSEA with the <code>clusterProfiler</code> package</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="8" data-path="sec-si.html"><a href="sec-si.html"><i class="fa fa-check"></i><b>8</b> Session information</a></li>
@@ -326,17 +324,17 @@ list of DE genes to a collection of pre-defined gene sets, where each
 gene set has a specific biological meaning. A geneset significantly
 enrichiched among DE genes could suggest that the corresponding
 biological process or pathway is significantly affected.</p>
-<p>There are a huge amount of methods available for GSEA analysis. In
-this episode, we will focus on two widely used methods: the
-over-representation analysis (ORA) and the Gene set enrichment
-analysis (GSEA).</p>
+<p>There are a huge amount of methods available for enrichment
+analyses. In this chapter, we will focus on two widely used methods:
+the over-representation analysis (ORA) and the Gene Set Enrichment
+Analysis (GSEA).</p>
 </div>
-<div id="genesets" class="section level2 hasAnchor" number="7.2">
-<h2><span class="header-section-number">7.2</span> GeneSets<a href="sec-gsea.html#genesets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="gene-sets" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Gene sets<a href="sec-gsea.html#gene-sets" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The definition of a gene set is very flexible and the construction of gene
 sets is straightforward. In most cases, gene sets are from public databases
 where huge efforts from scientific curators have already been made to
-carefully categorize genes into gene sets with clear biological meanings.
+carefully categorise genes into gene sets with clear biological meanings.
 For example, in a “cell cycle” gene set, all the genes are involved in the cell
 cycle process. Thus, if DE genes are significantly enriched in the “cell cycle”
 gene set, which means there are significantly more cell cycle genes differentially
@@ -346,7 +344,7 @@ process may be affected.</p>
 as a set of genes in a network module from a co-expression network analysis,
 or a set of genes that are up-regulated in a certain disease.</p>
 <p>The <a href="https://www.gsea-msigdb.org/gsea/msigdb">MSigDB database</a> contains a collection
-of annotated gene sets such as</p>
+of annotated gene sets such as those presented below.</p>
 <div id="gene-ontology-go" class="section level4 unnumbered hasAnchor">
 <h4>Gene Ontology (GO)<a href="sec-gsea.html#gene-ontology-go" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Gene Ontology defines concepts/classes used to describe gene function,
@@ -364,7 +362,7 @@ the activities of multiple gene products.</li>
 <div id="hallmark-gene-sets" class="section level4 unnumbered hasAnchor">
 <h4>Hallmark gene sets<a href="sec-gsea.html#hallmark-gene-sets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Hallmark gene sets are curated gene sets that represent well-defined
-biologicalstates or processes (e.g. Apoptosis, KRAS signaling, DNA
+biological states or processes (e.g. Apoptosis, KRAS signaling, DNA
 repair).</p>
 </div>
 <div id="kyoto-encyclopedia-of-genes-and-genomes" class="section level4 unnumbered hasAnchor">
@@ -374,13 +372,14 @@ manually drawn pathway maps representing molecular interaction and
 reaction networks. These pathways cover a wide range of biochemical
 processes.</p>
 </div>
-<div id="other-gene-sets" class="section level4 hasAnchor" number="7.2.0.1">
-<h4><span class="header-section-number">7.2.0.1</span> Other gene sets<a href="sec-gsea.html#other-gene-sets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="other-gene-sets" class="section level4 unnumbered hasAnchor">
+<h4>Other gene sets<a href="sec-gsea.html#other-gene-sets" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Other gene sets include but are not limited to Positional gene sets,
 wikiPathways, Oncogenic signatures, Immunologic signatures …</p>
 </div>
-<div id="access-the-gene-sets-from-msigdb" class="section level3 hasAnchor" number="7.2.1">
-<h3><span class="header-section-number">7.2.1</span> Access the gene sets from MSigDB<a href="sec-gsea.html#access-the-gene-sets-from-msigdb" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+</div>
+<div id="access-the-gene-sets-from-msigdb" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Access the gene sets from MSigDB<a href="sec-gsea.html#access-the-gene-sets-from-msigdb" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The
 <a href="https://cran.r-project.org/web/packages/msigdbr/index.html">msigdbr</a>
 CRAN package provides the MSigDB gene sets in a standard R data frame
@@ -584,14 +583,13 @@ Solution
 </details>
 </div>
 </div>
-</div>
-<div id="input-data" class="section level2 hasAnchor" number="7.3">
-<h2><span class="header-section-number">7.3</span> Input data<a href="sec-gsea.html#input-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="input-data" class="section level2 hasAnchor" number="7.4">
+<h2><span class="header-section-number">7.4</span> Input data<a href="sec-gsea.html#input-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will use the results of the differential expression analysis
 comparing KD to mock epithelial cells. The following code summarizes
-the full DESeq2 analysis that you should already have learned about in
-the previous episode. We will focus on the genes that have an
-adjusted p-value (those that have been tested).</p>
+the full <code>DESeq2</code> analysis that you have applied in the previous
+chapter. We will focus on the genes that have an adjusted p-value
+(i.e. those that have been tested).</p>
 <div class="sourceCode" id="cb263"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb263-1"><a href="sec-gsea.html#cb263-1" tabindex="-1"></a>se <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;data/se.rds&quot;</span>)</span>
 <span id="cb263-2"><a href="sec-gsea.html#cb263-2" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeqDataSet</span>(se, <span class="at">design =</span> <span class="sc">~</span> group)</span>
 <span id="cb263-3"><a href="sec-gsea.html#cb263-3" tabindex="-1"></a>dds <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds)</span>
@@ -599,17 +597,17 @@ adjusted p-value (those that have been tested).</p>
 <span id="cb263-5"><a href="sec-gsea.html#cb263-5" tabindex="-1"></a>res_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>)</span>
 <span id="cb263-6"><a href="sec-gsea.html#cb263-6" tabindex="-1"></a>res_tbl <span class="ot">&lt;-</span> res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(padj))</span></code></pre></div>
 </div>
-<div id="over-representation-analysis" class="section level2 hasAnchor" number="7.4">
-<h2><span class="header-section-number">7.4</span> Over-representation analysis<a href="sec-gsea.html#over-representation-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="principle" class="section level3 hasAnchor" number="7.4.1">
-<h3><span class="header-section-number">7.4.1</span> Principle<a href="sec-gsea.html#principle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="over-representation-analysis" class="section level2 hasAnchor" number="7.5">
+<h2><span class="header-section-number">7.5</span> Over-representation analysis<a href="sec-gsea.html#over-representation-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="principle" class="section level3 hasAnchor" number="7.5.1">
+<h3><span class="header-section-number">7.5.1</span> Principle<a href="sec-gsea.html#principle" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The idea behind the ORA is to test whether your list of differentially
 expressed genes (DE) is enriched in certain biological categories
-(such as genesets from Gene Ontology terms, KEGG pathways, or Reactome
-pathways), i.e, if it contains more genes from these categories than
-would be expected by chance.</p>
-<div id="step-1-selection-of-de-genes" class="section level4 hasAnchor" number="7.4.1.1">
-<h4><span class="header-section-number">7.4.1.1</span> Step 1: selection of DE genes<a href="sec-gsea.html#step-1-selection-of-de-genes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+(such as gene sets from Gene Ontology terms, KEGG pathways, or
+Reactome pathways), i.e, if it contains more genes from these
+categories than would be expected by chance.</p>
+<div id="step-1-selection-of-de-genes" class="section level4 unnumbered hasAnchor">
+<h4>Step 1: selection of DE genes<a href="sec-gsea.html#step-1-selection-of-de-genes" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To perform an over representation analysis, we first need to define
 the genes we will consider as differentially expressed (DE).</p>
 <p><img src="rnaseq_files/figure-html/ora-step-1-1.png" alt="" width="1440" /></p>
@@ -629,8 +627,8 @@ volcano. Hence, among all the genes in our experiment (called the
 p-adjusted value &lt; 10^{-10} as our <strong>genes of interest</strong> or <strong>DE
 genes</strong>.</p>
 </div>
-<div id="step-2-counting" class="section level4 hasAnchor" number="7.4.1.2">
-<h4><span class="header-section-number">7.4.1.2</span> Step 2: Counting<a href="sec-gsea.html#step-2-counting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="step-2-counting" class="section level4 unnumbered hasAnchor">
+<h4>Step 2: Counting<a href="sec-gsea.html#step-2-counting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>For each biological category, we can count how many genes from our DE
 genes are in that category, and how many are not.</p>
 <div class="sourceCode" id="cb264"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb264-1"><a href="sec-gsea.html#cb264-1" tabindex="-1"></a>my_geneset <span class="ot">&lt;-</span> <span class="st">&quot;GOBP_ENDODERM_DEVELOPMENT&quot;</span></span></code></pre></div>
@@ -661,8 +659,8 @@ GOBP_ENDODERM_DEVELOPMENT gene set, and how many are not.</p>
 </tbody>
 </table>
 </div>
-<div id="step-3-statistical-test" class="section level4 hasAnchor" number="7.4.1.3">
-<h4><span class="header-section-number">7.4.1.3</span> Step 3: Statistical test<a href="sec-gsea.html#step-3-statistical-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="step-3-statistical-test" class="section level4 unnumbered hasAnchor">
+<h4>Step 3: Statistical test<a href="sec-gsea.html#step-3-statistical-test" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>We can now apply a Fisher’s exact (or hypergeometric test) that will
 test whether there is a significant enrichment of DE genes in the GO
 term.</p>
@@ -680,8 +678,8 @@ term.</p>
 ##   7.203113</code></pre>
 </div>
 </div>
-<div id="running-an-ora-with-the-clusterprofiler-package" class="section level3 hasAnchor" number="7.4.2">
-<h3><span class="header-section-number">7.4.2</span> Running an ORA with the <code>clusterProfiler</code> package<a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="running-an-ora-with-the-clusterprofiler-package" class="section level3 hasAnchor" number="7.5.2">
+<h3><span class="header-section-number">7.5.2</span> Running an ORA with the <code>clusterProfiler</code> package<a href="sec-gsea.html#running-an-ora-with-the-clusterprofiler-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>In practice, the analysis presented above can be executed using any of
 the very many packages that are available.</p>
 <p>Here, we will use the <a href="https://yulab-smu.top/clusterProfiler-book/">clusterProfiler
@@ -743,11 +741,11 @@ tested genes was only 12215
 in the result table. The main reason is by default DE genes not annotated to any
 GO gene set are filtered out.</p>
 </div>
-<div id="visualisation" class="section level3 hasAnchor" number="7.4.3">
-<h3><span class="header-section-number">7.4.3</span> Visualisation<a href="sec-gsea.html#visualisation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="visualisation" class="section level3 hasAnchor" number="7.5.3">
+<h3><span class="header-section-number">7.5.3</span> Visualisation<a href="sec-gsea.html#visualisation" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The clusterProfiler documentation provides a chapter on the
 <a href="https://yulab-smu.top/clusterProfiler-book/chapter12.html">visualization of functional enrichment
-results</a> .</p>
+results</a>.</p>
 <p>Another useful visualisation, that links the enrichment results back
 to the whole set of results is to highlight the genes in a particular
 set of interest on the volcano plot.</p>
@@ -763,25 +761,25 @@ set of interest on the volcano plot.</p>
 <span id="cb270-8"><a href="sec-gsea.html#cb270-8" tabindex="-1"></a>log2FC_thr <span class="ot">&lt;-</span> <span class="dv">0</span></span>
 <span id="cb270-9"><a href="sec-gsea.html#cb270-9" tabindex="-1"></a></span>
 <span id="cb270-10"><a href="sec-gsea.html#cb270-10" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
-<span id="cb270-11"><a href="sec-gsea.html#cb270-11" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj))) <span class="sc">+</span></span>
-<span id="cb270-12"><a href="sec-gsea.html#cb270-12" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;gray80&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb270-11"><a href="sec-gsea.html#cb270-11" tabindex="-1"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj))) <span class="sc">+</span></span>
+<span id="cb270-12"><a href="sec-gsea.html#cb270-12" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;gray80&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb270-13"><a href="sec-gsea.html#cb270-13" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="at">data =</span> res_tbl <span class="sc">|&gt;</span></span>
 <span id="cb270-14"><a href="sec-gsea.html#cb270-14" tabindex="-1"></a>                   <span class="fu">filter</span>(gene <span class="sc">%in%</span> genes_from_geneset),</span>
 <span id="cb270-15"><a href="sec-gsea.html#cb270-15" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb270-16"><a href="sec-gsea.html#cb270-16" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
-<span id="cb270-17"><a href="sec-gsea.html#cb270-17" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(padj_thr)) <span class="sc">+</span></span>
-<span id="cb270-18"><a href="sec-gsea.html#cb270-18" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> log2FC_thr) <span class="sc">+</span></span>
-<span id="cb270-19"><a href="sec-gsea.html#cb270-19" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span>log2FC_thr) <span class="sc">+</span></span>
-<span id="cb270-20"><a href="sec-gsea.html#cb270-20" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="fu">length</span>(genes_DE2), <span class="st">&quot; DE selected (padj &lt; &quot;</span>, padj_thr, <span class="st">&quot;)&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb270-21"><a href="sec-gsea.html#cb270-21" tabindex="-1"></a>  <span class="fu">ggtitle</span>(my_geneset) <span class="sc">+</span></span>
-<span id="cb270-22"><a href="sec-gsea.html#cb270-22" tabindex="-1"></a>  <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
-<span id="cb270-23"><a href="sec-gsea.html#cb270-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;purple&quot;</span>),</span>
-<span id="cb270-24"><a href="sec-gsea.html#cb270-24" tabindex="-1"></a>        <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),</span>
-<span id="cb270-25"><a href="sec-gsea.html#cb270-25" tabindex="-1"></a>        <span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span></code></pre></div>
+<span id="cb270-16"><a href="sec-gsea.html#cb270-16" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>) <span class="sc">+</span></span>
+<span id="cb270-17"><a href="sec-gsea.html#cb270-17" tabindex="-1"></a>    <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(padj_thr)) <span class="sc">+</span></span>
+<span id="cb270-18"><a href="sec-gsea.html#cb270-18" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> log2FC_thr) <span class="sc">+</span></span>
+<span id="cb270-19"><a href="sec-gsea.html#cb270-19" tabindex="-1"></a>    <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="sc">-</span>log2FC_thr) <span class="sc">+</span></span>
+<span id="cb270-20"><a href="sec-gsea.html#cb270-20" tabindex="-1"></a>    <span class="fu">ggtitle</span>(<span class="fu">paste0</span>(<span class="fu">length</span>(genes_DE2), <span class="st">&quot; DE selected (padj &lt; &quot;</span>, padj_thr, <span class="st">&quot;)&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb270-21"><a href="sec-gsea.html#cb270-21" tabindex="-1"></a>    <span class="fu">ggtitle</span>(my_geneset) <span class="sc">+</span></span>
+<span id="cb270-22"><a href="sec-gsea.html#cb270-22" tabindex="-1"></a>    <span class="fu">theme_bw</span>() <span class="sc">+</span></span>
+<span id="cb270-23"><a href="sec-gsea.html#cb270-23" tabindex="-1"></a>    <span class="fu">theme</span>(<span class="at">title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;purple&quot;</span>),</span>
+<span id="cb270-24"><a href="sec-gsea.html#cb270-24" tabindex="-1"></a>          <span class="at">axis.title =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>),</span>
+<span id="cb270-25"><a href="sec-gsea.html#cb270-25" tabindex="-1"></a>          <span class="at">aspect.ratio =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="rnaseq_files/figure-html/volcano-GOBP_RESPONSE_TO_TRANSFORMING_GROWTH_FACTOR_BETA-1.png" alt="" width="672" /></p>
 </div>
-<div id="conclusion-about-ora-method" class="section level3 hasAnchor" number="7.4.4">
-<h3><span class="header-section-number">7.4.4</span> Conclusion about ORA method<a href="sec-gsea.html#conclusion-about-ora-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="conclusion-about-ora-method" class="section level3 hasAnchor" number="7.5.4">
+<h3><span class="header-section-number">7.5.4</span> Conclusion about ORA method<a href="sec-gsea.html#conclusion-about-ora-method" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>This approach is straightfoward and very fast. Its major drawback
 however is that we need to define a cutoff to differentiate DE from
 non-DE genes. Setting this threshold might have an effect on the
@@ -884,13 +882,13 @@ Solution
 </div>
 </div>
 </div>
-<div id="gene-set-enrichment-analysis" class="section level2 hasAnchor" number="7.5">
-<h2><span class="header-section-number">7.5</span> Gene set enrichment analysis<a href="sec-gsea.html#gene-set-enrichment-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div id="principle-1" class="section level3 hasAnchor" number="7.5.1">
-<h3><span class="header-section-number">7.5.1</span> Principle<a href="sec-gsea.html#principle-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="gene-set-enrichment-analysis" class="section level2 hasAnchor" number="7.6">
+<h2><span class="header-section-number">7.6</span> Gene set enrichment analysis<a href="sec-gsea.html#gene-set-enrichment-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="principle-1" class="section level3 hasAnchor" number="7.6.1">
+<h3><span class="header-section-number">7.6.1</span> Principle<a href="sec-gsea.html#principle-1" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Gene set enrichment analysis (GSEA) refers to a broad family of
 tests. Here, we will define the principles based on
-<span class="citation">(<a href="#ref-Subramanian:2005">Subramanian et al. 2005</a>)</span>. keeping in mind that the exact implementation
+<span class="citation">(<a href="#ref-Subramanian:2005">Subramanian et al. 2005</a>)</span>, keeping in mind that the exact implementation
 will differ in different tools.</p>
 <p>Gene Set Enrichment Analysis (GSEA) is a statistical method used to
 determine whether predefined sets of genes (for example, genes
@@ -900,8 +898,8 @@ individual genes, GSEA evaluates the <strong>collective behavior of gene
 groups</strong>.</p>
 <p>The major advantage of GSEA approaches is that they don’t rely on
 defining DE genes.</p>
-<div id="step-1-gene-ranking" class="section level4 hasAnchor" number="7.5.1.1">
-<h4><span class="header-section-number">7.5.1.1</span> Step 1: Gene ranking<a href="sec-gsea.html#step-1-gene-ranking" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="step-1-gene-ranking" class="section level4 unnumbered hasAnchor">
+<h4>Step 1: Gene ranking<a href="sec-gsea.html#step-1-gene-ranking" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The first step is to order the genes of interest. Genes could be
 ranked for example by the value of the test statistic or by their
 p-value.</p>
@@ -911,14 +909,14 @@ statistic is used for instance) or by the most significantly DE (no
 matter if they are up or down-regulated) to genes not differentially
 expressed.</p>
 </div>
-<div id="step-2-check-where-the-genes-of-a-specific-geneset-appear" class="section level4 hasAnchor" number="7.5.1.2">
-<h4><span class="header-section-number">7.5.1.2</span> Step 2: Check where the genes of a specific geneset appear<a href="sec-gsea.html#step-2-check-where-the-genes-of-a-specific-geneset-appear" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="step-2-check-where-the-genes-of-a-specific-geneset-appear" class="section level4 unnumbered hasAnchor">
+<h4>Step 2: Check where the genes of a specific geneset appear<a href="sec-gsea.html#step-2-check-where-the-genes-of-a-specific-geneset-appear" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>For a given gene set (a GO-term, or a KEGG pathaway for example), The
 idea is to check if these genes tend to appear toward the top or
 bottom of the ranked list, rather than being randomly scattered.</p>
 </div>
-<div id="step-3-compute-an-enrichment-score-es" class="section level4 hasAnchor" number="7.5.1.3">
-<h4><span class="header-section-number">7.5.1.3</span> Step 3: Compute an Enrichment Score (ES)<a href="sec-gsea.html#step-3-compute-an-enrichment-score-es" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="step-3-compute-an-enrichment-score-es" class="section level4 unnumbered hasAnchor">
+<h4>Step 3: Compute an Enrichment Score (ES)<a href="sec-gsea.html#step-3-compute-an-enrichment-score-es" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The algorithm walks down the ranked list, increasing a running-sum
 statistic when it encounters a gene from the set, and decreasing it
 otherwise.</p>
@@ -930,8 +928,8 @@ reflecting how strongly the gene set is enriched at either end of the
 ranking.</p>
 <p><img src="rnaseq_files/figure-html/gsea-step-3-1.png" alt="" width="768" /></p>
 </div>
-<div id="step-4-assess-significance-by-permutation" class="section level4 hasAnchor" number="7.5.1.4">
-<h4><span class="header-section-number">7.5.1.4</span> Step 4: Assess significance by permutation<a href="sec-gsea.html#step-4-assess-significance-by-permutation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<div id="step-4-assess-significance-by-permutation" class="section level4 unnumbered hasAnchor">
+<h4>Step 4: Assess significance by permutation<a href="sec-gsea.html#step-4-assess-significance-by-permutation" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>To evaluate whether the observed Enrichment Score (ES) is greater than
 expected by chance, GSEA performs permutations (of either gene labels
 or sample labels). This generates a null distribution to compute a
@@ -942,8 +940,8 @@ ES is at least as extreme as the observed ES:</p>
 <p><span class="math display">\[p = \frac{\#\{ ES_{\text{permuted}} \ge ES_{\text{observed}} \}}{\text{total number of permutations}}\]</span></p>
 </div>
 </div>
-<div id="running-a-gsea-with-the-clusterprofiler-package" class="section level3 hasAnchor" number="7.5.2">
-<h3><span class="header-section-number">7.5.2</span> Running a GSEA with the <code>clusterProfiler</code> package<a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="running-a-gsea-with-the-clusterprofiler-package" class="section level3 hasAnchor" number="7.6.2">
+<h3><span class="header-section-number">7.6.2</span> Running a GSEA with the <code>clusterProfiler</code> package<a href="sec-gsea.html#running-a-gsea-with-the-clusterprofiler-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Here, we will re-use the <a href="https://yulab-smu.top/clusterProfiler-book/">clusterProfiler
 package</a> to run a GSEA
 this time, using <code>hallmark genesets</code>.</p>

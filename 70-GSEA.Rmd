@@ -21,10 +21,10 @@ gene set has a specific biological meaning. A geneset significantly
 enrichiched among DE genes could suggest that the corresponding
 biological process or pathway is significantly affected.
 
-There are a huge amount of methods available for GSEA analysis. In
-this episode, we will focus on two widely used methods: the
-over-representation analysis (ORA) and the Gene set enrichment
-analysis (GSEA).
+There are a huge amount of methods available for enrichment
+analyses. In this chapter, we will focus on two widely used methods:
+the over-representation analysis (ORA) and the Gene Set Enrichment
+Analysis (GSEA).
 
 ```{r load-pkg-enrich, include=FALSE}
 suppressPackageStartupMessages({
@@ -36,12 +36,12 @@ suppressPackageStartupMessages({
 ```
 
 
-## GeneSets
+## Gene sets
 
 The definition of a gene set is very flexible and the construction of gene
 sets is straightforward. In most cases, gene sets are from public databases
 where huge efforts from scientific curators have already been made to
-carefully categorize genes into gene sets with clear biological meanings.
+carefully categorise genes into gene sets with clear biological meanings.
 For example, in a “cell cycle” gene set, all the genes are involved in the cell
 cycle process. Thus, if DE genes are significantly enriched in the “cell cycle”
 gene set, which means there are significantly more cell cycle genes differentially
@@ -53,7 +53,7 @@ as a set of genes in a network module from a co-expression network analysis,
 or a set of genes that are up-regulated in a certain disease.
 
 The [MSigDB database](https://www.gsea-msigdb.org/gsea/msigdb) contains a collection
-of annotated gene sets such as
+of annotated gene sets such as those presented below.
 
 #### Gene Ontology (GO) {-}
 
@@ -71,7 +71,7 @@ aspects.
 #### Hallmark gene sets {-}
 
 Hallmark gene sets are curated gene sets that represent well-defined
-biologicalstates or processes (e.g. Apoptosis, KRAS signaling, DNA
+biological states or processes (e.g. Apoptosis, KRAS signaling, DNA
 repair).
 
 #### Kyoto Encyclopedia of Genes and Genomes {-}
@@ -81,13 +81,13 @@ manually drawn pathway maps representing molecular interaction and
 reaction networks. These pathways cover a wide range of biochemical
 processes.
 
-#### Other gene sets
+#### Other gene sets {-}
 
 Other gene sets include but are not limited to Positional gene sets,
 wikiPathways, Oncogenic signatures, Immunologic signatures ...
 
 
-### Access the gene sets from MSigDB
+## Access the gene sets from MSigDB
 
 ```{r getMsigdb, eval=FALSE, message=FALSE, include=FALSE}
 ## listCollections(MSigDBGeneSets)
@@ -180,9 +180,9 @@ table(hallmarks[[1]])
 
 We will use the results of the differential expression analysis
 comparing KD to mock epithelial cells. The following code summarizes
-the full DESeq2 analysis that you should already have learned about in
-the previous episode.  We will focus on the genes that have an
-adjusted p-value (those that have been tested).
+the full `DESeq2` analysis that you have applied in the previous
+chapter.  We will focus on the genes that have an adjusted p-value
+(i.e. those that have been tested).
 
 ```{r enrich-quick-deseq2, message = FALSE, warning = FALSE}
 se <- readRDS("data/se.rds")
@@ -199,11 +199,11 @@ res_tbl <- res_tbl |> filter(!is.na(padj))
 
 The idea behind the ORA is to test whether your list of differentially
 expressed genes (DE) is enriched in certain biological categories
-(such as genesets from Gene Ontology terms, KEGG pathways, or Reactome
-pathways), i.e, if it contains more genes from these categories than
-would be expected by chance.
+(such as gene sets from Gene Ontology terms, KEGG pathways, or
+Reactome pathways), i.e, if it contains more genes from these
+categories than would be expected by chance.
 
-#### Step 1: selection of DE genes
+#### Step 1: selection of DE genes {-}
 
 To perform an over representation analysis, we first need to define
 the genes we will consider as differentially expressed (DE).
@@ -278,7 +278,7 @@ volcano. Hence, among all the genes in our experiment (called the
 p-adjusted value < `r padj_thr` as our **genes of interest** or **DE
 genes**.
 
-#### Step 2: Counting
+#### Step 2: Counting {-}
 
 For each biological category, we can count how many genes from our DE
 genes are in that category, and how many are not.
@@ -349,7 +349,7 @@ knitr::kable(count_mat)
 ```
 
 
-#### Step 3: Statistical test
+#### Step 3: Statistical test {-}
 
 We can now apply a Fisher’s exact (or hypergeometric test) that will
 test whether there is a significant enrichment of DE genes in the GO
@@ -358,8 +358,6 @@ term.
 ```{r enrich-fisher-test}
 fisher.test(count_mat, alternative = "greater")
 ```
-
-
 ### Running an ORA with the `clusterProfiler` package
 
 In practice, the analysis presented above can be executed using any of
@@ -427,7 +425,7 @@ GO gene set are filtered out.
 
 The clusterProfiler documentation provides a chapter on the
 [visualization of functional enrichment
-results](https://yulab-smu.top/clusterProfiler-book/chapter12.html) .
+results](https://yulab-smu.top/clusterProfiler-book/chapter12.html).
 
 Another useful visualisation, that links the enrichment results back
 to the whole set of results is to highlight the genes in a particular
@@ -448,21 +446,21 @@ padj_thr <- 1e-10
 log2FC_thr <- 0
 
 res_tbl |>
-  ggplot(aes(x = log2FoldChange, y = -log10(padj))) +
-  geom_point(color = "gray80", size = 1) +
+    ggplot(aes(x = log2FoldChange, y = -log10(padj))) +
+    geom_point(color = "gray80", size = 1) +
     geom_point(data = res_tbl |>
                    filter(gene %in% genes_from_geneset),
                color = "purple", size = 1) +
-  theme(legend.position = "none") +
-  geom_hline(yintercept = -log10(padj_thr)) +
-  geom_vline(xintercept = log2FC_thr) +
-  geom_vline(xintercept = -log2FC_thr) +
-  ggtitle(paste0(length(genes_DE2), " DE selected (padj < ", padj_thr, ")")) +
-  ggtitle(my_geneset) +
-  theme_bw() +
-  theme(title = element_text(color = "purple"),
-        axis.title = element_text(color = "black"),
-        aspect.ratio = 1)
+    theme(legend.position = "none") +
+    geom_hline(yintercept = -log10(padj_thr)) +
+    geom_vline(xintercept = log2FC_thr) +
+    geom_vline(xintercept = -log2FC_thr) +
+    ggtitle(paste0(length(genes_DE2), " DE selected (padj < ", padj_thr, ")")) +
+    ggtitle(my_geneset) +
+    theme_bw() +
+    theme(title = element_text(color = "purple"),
+          axis.title = element_text(color = "black"),
+          aspect.ratio = 1)
 ```
 
 
@@ -578,7 +576,7 @@ ORA_hallmarks_tbl
 
 Gene set enrichment analysis (GSEA) refers to a broad family of
 tests. Here, we will define the principles based on
-[@Subramanian:2005]. keeping in mind that the exact implementation
+[@Subramanian:2005], keeping in mind that the exact implementation
 will differ in different tools.
 
 Gene Set Enrichment Analysis (GSEA) is a statistical method used to
@@ -591,7 +589,7 @@ groups**.
 The major advantage of GSEA approaches is that they don't rely on
 defining DE genes.
 
-#### Step 1: Gene ranking
+#### Step 1: Gene ranking {-}
 
 The first step is to order the genes of interest. Genes could be
 ranked for example by the value of the test statistic or by their
@@ -603,13 +601,13 @@ statistic is used for instance) or by the most significantly DE (no
 matter if they are up or down-regulated) to genes not differentially
 expressed.
 
-#### Step 2: Check where the genes of a specific geneset appear
+#### Step 2: Check where the genes of a specific geneset appear {-}
 
 For a given gene set (a GO-term, or a KEGG pathaway for example), The
 idea is to check if these genes tend to appear toward the top or
 bottom of the ranked list, rather than being randomly scattered.
 
-#### Step 3: Compute an Enrichment Score (ES)
+#### Step 3: Compute an Enrichment Score (ES) {-}
 
 The algorithm walks down the ranked list, increasing a running-sum
 statistic when it encounters a gene from the set, and decreasing it
@@ -650,7 +648,7 @@ gseaplot(GSEA_res,
 ```
 
 
-#### Step 4: Assess significance by permutation
+#### Step 4: Assess significance by permutation {-}
 
 To evaluate whether the observed Enrichment Score (ES) is greater than
 expected by chance, GSEA performs permutations (of either gene labels
