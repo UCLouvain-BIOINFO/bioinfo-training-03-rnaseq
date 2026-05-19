@@ -1,8 +1,8 @@
-# Principle component analyses {#sec-pca}
+# Principal component analyses {#sec-pca}
 
 **Objectives**
 
-- Understand why we use principle component analyses.
+- Understand why we use principal component analyses.
 - Get an intuition for how it works.
 - What can PCA reveal from RNA-seq data?
 
