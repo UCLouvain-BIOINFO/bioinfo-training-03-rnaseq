@@ -17,7 +17,7 @@ DE genes may affect.
 
 Gene set enrichment analyses (GSEA) evaluate the associations of a
 list of DE genes to a collection of pre-defined gene sets, where each
-gene set has a specific biological meaning. A geneset significantly
+gene set has a specific biological meaning. A gene set significantly
 enrichiched among DE genes could suggest that the corresponding
 biological process or pathway is significantly affected.
 
