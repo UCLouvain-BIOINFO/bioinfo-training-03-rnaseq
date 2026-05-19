@@ -312,7 +312,6 @@ res_tbl |>
     geom_hline(yintercept = -log10(padj_thr)) +
     geom_vline(xintercept = log2FC_thr) +
     geom_vline(xintercept = -log2FC_thr) +
-    ggtitle(paste0(length(genes_DE2), " DE selected (padj < ", padj_thr, ")")) +
     ggtitle(my_geneset) +
     theme_bw() +
     theme(title = element_text(color = "blue"),
@@ -385,6 +384,7 @@ We won't set any (adjusted) p-value threshold and filter the results
 by hand to be able to adapt the it without re-running the analysis.
 
 ```{r run-ora}
+library(clusterProfiler)
 ORA_res <- enricher(gene          = genes_DE,
                     universe      = geneList,
                     pAdjustMethod = "BH",
@@ -603,7 +603,7 @@ expressed.
 
 #### Step 2: Check where the genes of a specific geneset appear {-}
 
-For a given gene set (a GO-term, or a KEGG pathaway for example), The
+For a given gene set (a GO-term, or a KEGG pathaway for example), the
 idea is to check if these genes tend to appear toward the top or
 bottom of the ranked list, rather than being randomly scattered.
 
@@ -675,13 +675,11 @@ geneList <- geneList[order(geneList, decreasing = TRUE)]
 
 set.seed(1)
 GSEA_res <- GSEA(geneList,
-             seed = TRUE,
              TERM2GENE = hallmarks,
              verbose = FALSE,
              by = "fgsea",
              pvalueCutoff = 1,
-             pAdjustMethod = "BH",
-             eps = 0)
+             pAdjustMethod = "BH")
 
 GSEA_hallmarks_tbl <- GSEA_res |>
     as_tibble() |>
@@ -699,7 +697,7 @@ In the output data frame, there are the following columns:
   universe of tested genes.
 - `enrichmentScore`: Raw enrichment score calculated from the
   running-sum statistic.
-- `NES`: ES normalized by gene set size. T
+- `NES`: ES normalized by gene set size.
 - `pvalue`: _p_-value calculated from the hypergeometric distribution.
 - `p.adjust`: Adjusted _p_-value by the BH method.
 - `qvalue`: _q_-value which is another way for controlling false

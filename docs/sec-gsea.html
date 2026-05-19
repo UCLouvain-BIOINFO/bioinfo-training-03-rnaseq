@@ -697,18 +697,19 @@ GO terms from the Biological Process is enriched among our DE genes.</p>
 <span id="cb267-9"><a href="sec-gsea.html#cb267-9" tabindex="-1"></a>geneList <span class="ot">&lt;-</span> res_tbl<span class="sc">$</span>gene</span></code></pre></div>
 <p>We won’t set any (adjusted) p-value threshold and filter the results
 by hand to be able to adapt the it without re-running the analysis.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="sec-gsea.html#cb268-1" tabindex="-1"></a>ORA_res <span class="ot">&lt;-</span> <span class="fu">enricher</span>(<span class="at">gene          =</span> genes_DE,</span>
-<span id="cb268-2"><a href="sec-gsea.html#cb268-2" tabindex="-1"></a>                    <span class="at">universe      =</span> geneList,</span>
-<span id="cb268-3"><a href="sec-gsea.html#cb268-3" tabindex="-1"></a>                    <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
-<span id="cb268-4"><a href="sec-gsea.html#cb268-4" tabindex="-1"></a>                    <span class="at">qvalueCutoff  =</span> <span class="dv">1</span>,</span>
-<span id="cb268-5"><a href="sec-gsea.html#cb268-5" tabindex="-1"></a>                    <span class="at">pvalueCutoff  =</span> <span class="dv">1</span>,</span>
-<span id="cb268-6"><a href="sec-gsea.html#cb268-6" tabindex="-1"></a>                    <span class="at">TERM2GENE     =</span> GO_BP) <span class="sc">|&gt;</span></span>
-<span id="cb268-7"><a href="sec-gsea.html#cb268-7" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span>
-<span id="cb268-8"><a href="sec-gsea.html#cb268-8" tabindex="-1"></a></span>
-<span id="cb268-9"><a href="sec-gsea.html#cb268-9" tabindex="-1"></a>ORA_res_tbl_GO <span class="ot">&lt;-</span> ORA_res <span class="sc">|&gt;</span></span>
-<span id="cb268-10"><a href="sec-gsea.html#cb268-10" tabindex="-1"></a>    <span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
-<span id="cb268-11"><a href="sec-gsea.html#cb268-11" tabindex="-1"></a></span>
-<span id="cb268-12"><a href="sec-gsea.html#cb268-12" tabindex="-1"></a>ORA_res_tbl_GO</span></code></pre></div>
+<div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="sec-gsea.html#cb268-1" tabindex="-1"></a><span class="fu">library</span>(clusterProfiler)</span>
+<span id="cb268-2"><a href="sec-gsea.html#cb268-2" tabindex="-1"></a>ORA_res <span class="ot">&lt;-</span> <span class="fu">enricher</span>(<span class="at">gene          =</span> genes_DE,</span>
+<span id="cb268-3"><a href="sec-gsea.html#cb268-3" tabindex="-1"></a>                    <span class="at">universe      =</span> geneList,</span>
+<span id="cb268-4"><a href="sec-gsea.html#cb268-4" tabindex="-1"></a>                    <span class="at">pAdjustMethod =</span> <span class="st">&quot;BH&quot;</span>,</span>
+<span id="cb268-5"><a href="sec-gsea.html#cb268-5" tabindex="-1"></a>                    <span class="at">qvalueCutoff  =</span> <span class="dv">1</span>,</span>
+<span id="cb268-6"><a href="sec-gsea.html#cb268-6" tabindex="-1"></a>                    <span class="at">pvalueCutoff  =</span> <span class="dv">1</span>,</span>
+<span id="cb268-7"><a href="sec-gsea.html#cb268-7" tabindex="-1"></a>                    <span class="at">TERM2GENE     =</span> GO_BP) <span class="sc">|&gt;</span></span>
+<span id="cb268-8"><a href="sec-gsea.html#cb268-8" tabindex="-1"></a>    <span class="fu">as_tibble</span>()</span>
+<span id="cb268-9"><a href="sec-gsea.html#cb268-9" tabindex="-1"></a></span>
+<span id="cb268-10"><a href="sec-gsea.html#cb268-10" tabindex="-1"></a>ORA_res_tbl_GO <span class="ot">&lt;-</span> ORA_res <span class="sc">|&gt;</span></span>
+<span id="cb268-11"><a href="sec-gsea.html#cb268-11" tabindex="-1"></a>    <span class="fu">filter</span>(p.adjust <span class="sc">&lt;</span> <span class="fl">0.05</span>)</span>
+<span id="cb268-12"><a href="sec-gsea.html#cb268-12" tabindex="-1"></a></span>
+<span id="cb268-13"><a href="sec-gsea.html#cb268-13" tabindex="-1"></a>ORA_res_tbl_GO</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 12
 ##   ID      Description GeneRatio BgRatio RichFactor FoldEnrichment zScore  pvalue
 ##   &lt;chr&gt;   &lt;chr&gt;       &lt;chr&gt;     &lt;chr&gt;        &lt;dbl&gt;          &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;
@@ -911,7 +912,7 @@ expressed.</p>
 </div>
 <div id="step-2-check-where-the-genes-of-a-specific-geneset-appear" class="section level4 unnumbered hasAnchor">
 <h4>Step 2: Check where the genes of a specific geneset appear<a href="sec-gsea.html#step-2-check-where-the-genes-of-a-specific-geneset-appear" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>For a given gene set (a GO-term, or a KEGG pathaway for example), The
+<p>For a given gene set (a GO-term, or a KEGG pathaway for example), the
 idea is to check if these genes tend to appear toward the top or
 bottom of the ranked list, rather than being randomly scattered.</p>
 </div>
@@ -990,7 +991,7 @@ term.</li>
 universe of tested genes.</li>
 <li><code>enrichmentScore</code>: Raw enrichment score calculated from the
 running-sum statistic.</li>
-<li><code>NES</code>: ES normalized by gene set size. T</li>
+<li><code>NES</code>: ES normalized by gene set size.</li>
 <li><code>pvalue</code>: <em>p</em>-value calculated from the hypergeometric distribution.</li>
 <li><code>p.adjust</code>: Adjusted <em>p</em>-value by the BH method.</li>
 <li><code>qvalue</code>: <em>q</em>-value which is another way for controlling false
