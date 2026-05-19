@@ -565,8 +565,8 @@ log_dds_group1 <- normTransform(dds_group1)
 vst_dds_group1 <- vst(dds_group1)
 
 
-fig1 <- tibble(meanCounts = rowMeans(counts(dds_group1, normalize = TRUE)),
-         Variance = rowVars(counts(dds_group1, normalize = TRUE))) |>
+fig1 <- tibble(meanCounts = rowMeans(counts(dds_group1, normalized = TRUE)),
+         Variance = rowVars(counts(dds_group1, normalized = TRUE))) |>
     ggplot(aes(x = meanCounts, y = Variance)) +
     geom_point(alpha = 0.2, size = .2) +
     scale_x_log10() +
@@ -1077,7 +1077,7 @@ best_genes <- res_tbl |>
   pull(gene) |>
   head(4)
 
-as_tibble(counts(dds[best_genes, ], normalize = TRUE), rownames = 'gene') |>
+as_tibble(counts(dds[best_genes, ], normalized = TRUE), rownames = 'gene') |>
   pivot_longer(names_to = "sample", values_to = "counts", -gene) |>
   left_join(as_tibble(colData(dds))) |>
   ggplot(aes(x = sample, y = counts, fill = group)) +
@@ -1122,7 +1122,7 @@ QUESTION 1 :
 ```{r}
 selected_genes <- c("CASC18", "PRUNE1")
 
-as_tibble(counts(dds[selected_genes, ], normalize = TRUE),
+as_tibble(counts(dds[selected_genes, ], normalized = TRUE),
           rownames = 'gene') |>
   gather(sample, counts, -gene) |>
   left_join(as_tibble(colData(dds))) |>
@@ -1209,7 +1209,7 @@ Which genes are affected differently by the siRNA in epithelial and
 fibroblast cells?
 
 
-### Further links
+## Further links
 
 - The
   [edgeR](https://bioconductor.org/packages/release/bioc/html/edgeR.html)
