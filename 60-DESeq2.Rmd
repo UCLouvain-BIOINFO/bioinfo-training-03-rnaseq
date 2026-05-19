@@ -427,8 +427,6 @@ suppressPackageStartupMessages(library("tidyverse"))
 ```
 
 ```{r}
-if (!require("DESeq2"))
-    BiocManager::install("DESeq2")
 library(DESeq2)
 library(tidyverse)
 ```
@@ -848,7 +846,7 @@ best_gene <- res_tbl |>
   arrange(padj) |>
   head(1) |> pull(gene)
 
-rowMeans(counts(dds[best_gene], normalize = TRUE))
+rowMeans(counts(dds[best_gene], normalized = TRUE))
 ```
 
 ##### Question {-}
@@ -876,7 +874,7 @@ of the "best gene" in control cells. Compare with ß coefficients.
 
 ```{r}
 # log2 expression level in control cells
-log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_ctl"], normalize = TRUE)))
+log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_ctl"], normalized = TRUE)))
 ```
 
 </details>
@@ -891,7 +889,7 @@ Compare with ß coefficients.
 
 ```{r}
 # log2 expression level in KD cells
-log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_KD"], normalize = TRUE)))
+log2(rowMeans(counts(dds[best_gene, dds$group == "Epithelial_KD"], normalized = TRUE)))
 ```
 
 ```{r}
@@ -1025,7 +1023,7 @@ and therefore significant). Furthermore, it gives an idea of how the test
 behaved across all your hypotheses, and immediately diagnoses some potential
 problems.
 
-```{r}
+```{r pval-dist}
 res_tbl |>
   filter(!is.na(padj)) |> # remove genes that were filtered out by IF
   ggplot(aes(x = pvalue)) +
@@ -1044,7 +1042,7 @@ log2FC even though are likely not really differentially expressed. In
 the MA-plot, we hope to observe some genes located in the upper/lower
 right quadrant of the plots (the most interesting candidates).
 
-```{r}
+```{r ma-plot}
 plotMA(res)
 ```
 
@@ -1054,7 +1052,7 @@ Drawing a volcano-plot is highly informative to have a global view on the result
 Recall that the most interesting features are those towards the top corners given
 that they have small pvalues and large fold-changes.
 
-```{r warning=FALSE}
+```{r volc-plot, warning=FALSE}
 res_tbl |>
   ggplot(aes(x = log2FoldChange, y = -log10(padj), color = padj < 0.05)) +
   scale_colour_manual(values = c("gray40", "red")) +
@@ -1073,7 +1071,7 @@ res_tbl |>
 It may be also useful to check the validity of the analysis by simply assessing the expression
 levels of the most highly differentially expressed genes.
 
-```{r}
+```{r count-plots}
 best_genes <- res_tbl |>
   arrange(padj)  |>
   pull(gene) |>
@@ -1168,7 +1166,7 @@ describing thedefault shrinkage estimator for more details [@Zhu:2019].
 
 This procedure improves interpretability of the fold-changes estimates.
 
-```{r, warning = FALSE, message = FALSE}
+```{r lfc-shrink, warning = FALSE, message = FALSE}
 res_shr <- lfcShrink(dds, coef = "group_Epithelial_KD_vs_Epithelial_ctl")
 res_shr_tbl <- as_tibble(res_shr, rownames = "gene") |>
   filter(!is.na(padj))
@@ -1194,7 +1192,7 @@ fig1 | fig2
 Below, we save the result table for next chapter to be used in the
 next chapter.
 
-```{r}
+```{r write-csv-res}
 write_csv(res_tbl, file = "data/deseq_result_table.csv")
 ```
 

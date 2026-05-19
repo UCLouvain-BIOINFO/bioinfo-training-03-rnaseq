@@ -632,10 +632,8 @@ rejections is within 1 residual standard deviation to the peak of the curve.</p>
 <h2><span class="header-section-number">6.2</span> Running DESeq2<a href="sec-rnaseq.html#running-deseq2" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s start by installing the
 <a href="https://bioconductor.org/packages/release/bioc/html/DESeq2.html">DESeq2</a> package.</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="sec-rnaseq.html#cb157-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;DESeq2&quot;</span>))</span>
-<span id="cb157-2"><a href="sec-rnaseq.html#cb157-2" tabindex="-1"></a>    BiocManager<span class="sc">::</span><span class="fu">install</span>(<span class="st">&quot;DESeq2&quot;</span>)</span>
-<span id="cb157-3"><a href="sec-rnaseq.html#cb157-3" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
-<span id="cb157-4"><a href="sec-rnaseq.html#cb157-4" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="sec-rnaseq.html#cb157-1" tabindex="-1"></a><span class="fu">library</span>(DESeq2)</span>
+<span id="cb157-2"><a href="sec-rnaseq.html#cb157-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
 <div id="deseqdataset-object" class="section level3 hasAnchor" number="6.2.1">
 <h3><span class="header-section-number">6.2.1</span> DESeqDataSet object<a href="sec-rnaseq.html#deseqdataset-object" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We will run a <em>DESeq2</em> analysis using the real dataset that we stored
@@ -1041,9 +1039,7 @@ Solution
 <span id="cb207-2"><a href="sec-rnaseq.html#cb207-2" tabindex="-1"></a>  <span class="fu">arrange</span>(padj) <span class="sc">|&gt;</span></span>
 <span id="cb207-3"><a href="sec-rnaseq.html#cb207-3" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">1</span>) <span class="sc">|&gt;</span> <span class="fu">pull</span>(gene)</span>
 <span id="cb207-4"><a href="sec-rnaseq.html#cb207-4" tabindex="-1"></a></span>
-<span id="cb207-5"><a href="sec-rnaseq.html#cb207-5" tabindex="-1"></a><span class="fu">rowMeans</span>(<span class="fu">counts</span>(dds[best_gene], <span class="at">normalize =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
-<pre><code>## Warning in .local(object, ...): partial argument match of &#39;normalize&#39; to
-## &#39;normalized&#39;</code></pre>
+<span id="cb207-5"><a href="sec-rnaseq.html#cb207-5" tabindex="-1"></a><span class="fu">rowMeans</span>(<span class="fu">counts</span>(dds[best_gene], <span class="at">normalized =</span> <span class="cn">TRUE</span>))</span></code></pre></div>
 <pre><code>##   PGRMC1 
 ## 1539.075</code></pre>
 </div>
@@ -1055,7 +1051,7 @@ using the function <code>coefficients()</code>. Compare with <code>log2FoldChang
 <summary>
 Solution
 </summary>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb210-1"><a href="sec-rnaseq.html#cb210-1" tabindex="-1"></a><span class="fu">coefficients</span>(dds[best_gene])</span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb209-1"><a href="sec-rnaseq.html#cb209-1" tabindex="-1"></a><span class="fu">coefficients</span>(dds[best_gene])</span></code></pre></div>
 <pre><code>##        Intercept group_Epithelial_KD_vs_Epithelial_ctl
 ## PGRMC1  11.11132                             -4.668421
 ##        group_Fibroblast_ctl_vs_Epithelial_ctl
@@ -1072,10 +1068,8 @@ of the “best gene” in control cells. Compare with ß coefficients.</p>
 <summary>
 Solution
 </summary>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb212-1"><a href="sec-rnaseq.html#cb212-1" tabindex="-1"></a><span class="co"># log2 expression level in control cells</span></span>
-<span id="cb212-2"><a href="sec-rnaseq.html#cb212-2" tabindex="-1"></a><span class="fu">log2</span>(<span class="fu">rowMeans</span>(<span class="fu">counts</span>(dds[best_gene, dds<span class="sc">$</span>group <span class="sc">==</span> <span class="st">&quot;Epithelial_ctl&quot;</span>], <span class="at">normalize =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
-<pre><code>## Warning in .local(object, ...): partial argument match of &#39;normalize&#39; to
-## &#39;normalized&#39;</code></pre>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="sec-rnaseq.html#cb211-1" tabindex="-1"></a><span class="co"># log2 expression level in control cells</span></span>
+<span id="cb211-2"><a href="sec-rnaseq.html#cb211-2" tabindex="-1"></a><span class="fu">log2</span>(<span class="fu">rowMeans</span>(<span class="fu">counts</span>(dds[best_gene, dds<span class="sc">$</span>group <span class="sc">==</span> <span class="st">&quot;Epithelial_ctl&quot;</span>], <span class="at">normalized =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
 <pre><code>##  PGRMC1 
 ## 11.1115</code></pre>
 </details>
@@ -1088,14 +1082,12 @@ Compare with ß coefficients.</p>
 <summary>
 Solution
 </summary>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="sec-rnaseq.html#cb215-1" tabindex="-1"></a><span class="co"># log2 expression level in KD cells</span></span>
-<span id="cb215-2"><a href="sec-rnaseq.html#cb215-2" tabindex="-1"></a><span class="fu">log2</span>(<span class="fu">rowMeans</span>(<span class="fu">counts</span>(dds[best_gene, dds<span class="sc">$</span>group <span class="sc">==</span> <span class="st">&quot;Epithelial_KD&quot;</span>], <span class="at">normalize =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
-<pre><code>## Warning in .local(object, ...): partial argument match of &#39;normalize&#39; to
-## &#39;normalized&#39;</code></pre>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb213-1"><a href="sec-rnaseq.html#cb213-1" tabindex="-1"></a><span class="co"># log2 expression level in KD cells</span></span>
+<span id="cb213-2"><a href="sec-rnaseq.html#cb213-2" tabindex="-1"></a><span class="fu">log2</span>(<span class="fu">rowMeans</span>(<span class="fu">counts</span>(dds[best_gene, dds<span class="sc">$</span>group <span class="sc">==</span> <span class="st">&quot;Epithelial_KD&quot;</span>], <span class="at">normalized =</span> <span class="cn">TRUE</span>)))</span></code></pre></div>
 <pre><code>##   PGRMC1 
 ## 6.444212</code></pre>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="sec-rnaseq.html#cb218-1" tabindex="-1"></a><span class="co"># log2 expression level in KD cells evaluated from ß coefficients</span></span>
-<span id="cb218-2"><a href="sec-rnaseq.html#cb218-2" tabindex="-1"></a><span class="fu">coefficients</span>(dds[best_gene])[,<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coefficients</span>(dds[best_gene])[,<span class="dv">2</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb215-1"><a href="sec-rnaseq.html#cb215-1" tabindex="-1"></a><span class="co"># log2 expression level in KD cells evaluated from ß coefficients</span></span>
+<span id="cb215-2"><a href="sec-rnaseq.html#cb215-2" tabindex="-1"></a><span class="fu">coefficients</span>(dds[best_gene])[,<span class="dv">1</span>] <span class="sc">+</span> <span class="fu">coefficients</span>(dds[best_gene])[,<span class="dv">2</span>]</span></code></pre></div>
 <pre><code>## [1] 6.442896</code></pre>
 </details>
 </div>
@@ -1106,12 +1098,12 @@ Solution
 <summary>
 Solution
 </summary>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="sec-rnaseq.html#cb220-1" tabindex="-1"></a><span class="fu">summary</span>(res<span class="sc">$</span>padj)</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb217-1"><a href="sec-rnaseq.html#cb217-1" tabindex="-1"></a><span class="fu">summary</span>(res<span class="sc">$</span>padj)</span></code></pre></div>
 <pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.     NAs 
 ## 0.00000 0.01768 0.25620 0.36123 0.68666 1.00000    9631</code></pre>
 <p>Let’s inspect genes with no padjusted values</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="sec-rnaseq.html#cb222-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
-<span id="cb222-2"><a href="sec-rnaseq.html#cb222-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(padj))</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="sec-rnaseq.html#cb219-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb219-2"><a href="sec-rnaseq.html#cb219-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(padj))</span></code></pre></div>
 <pre><code>## # A tibble: 9,631 × 7
 ##    gene       baseMean log2FoldChange lfcSE   stat pvalue  padj
 ##    &lt;chr&gt;         &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;
@@ -1135,7 +1127,7 @@ out by the independent filtering procedure.</p>
 <h4><span class="header-section-number">6.2.4.3</span> Independent filtering<a href="sec-rnaseq.html#independent-filtering-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The filtering threshold that has been used to filter low count genes can be extracted
 from the results metadata.</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="sec-rnaseq.html#cb224-1" tabindex="-1"></a><span class="fu">metadata</span>(res)<span class="sc">$</span>filterThreshold</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="sec-rnaseq.html#cb221-1" tabindex="-1"></a><span class="fu">metadata</span>(res)<span class="sc">$</span>filterThreshold</span></code></pre></div>
 <pre><code>## 38.77551% 
 ##  3.491947</code></pre>
 <p>This means that genes whith basemean &lt; 3.49
@@ -1148,11 +1140,11 @@ number of genes which will have a significant padjusted value.</p>
 The threshold chosen (red vertical line) is the lowest quantile for which the
 number of rejections is within 1 residual standard deviation to the peak of the
 curve.</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="sec-rnaseq.html#cb226-1" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">metadata</span>(res)<span class="sc">$</span>filterNumRej) <span class="sc">|&gt;</span></span>
-<span id="cb226-2"><a href="sec-rnaseq.html#cb226-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> numRej)) <span class="sc">+</span></span>
-<span id="cb226-3"><a href="sec-rnaseq.html#cb226-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb226-4"><a href="sec-rnaseq.html#cb226-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> .<span class="dv">3877</span>,</span>
-<span id="cb226-5"><a href="sec-rnaseq.html#cb226-5" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="sec-rnaseq.html#cb223-1" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">metadata</span>(res)<span class="sc">$</span>filterNumRej) <span class="sc">|&gt;</span></span>
+<span id="cb223-2"><a href="sec-rnaseq.html#cb223-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> theta, <span class="at">y =</span> numRej)) <span class="sc">+</span></span>
+<span id="cb223-3"><a href="sec-rnaseq.html#cb223-3" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb223-4"><a href="sec-rnaseq.html#cb223-4" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> .<span class="dv">3877</span>,</span>
+<span id="cb223-5"><a href="sec-rnaseq.html#cb223-5" tabindex="-1"></a>             <span class="at">color =</span> <span class="st">&#39;red&#39;</span>)</span></code></pre></div>
 <p><img src="rnaseq_files/figure-html/unnamed-chunk-111-1.png" alt="" width="672" /></p>
 <div id="questions-2" class="section level5 unnumbered hasAnchor">
 <h5>Questions<a href="sec-rnaseq.html#questions-2" class="anchor-section" aria-label="Anchor link to header"></a></h5>
@@ -1173,43 +1165,43 @@ Solution
 independent filtering parameter to FALSE. Check how many genes have
 no padj?</li>
 </ol>
-<div class="sourceCode" id="cb227"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb227-1"><a href="sec-rnaseq.html#cb227-1" tabindex="-1"></a>res_no_IF <span class="ot">&lt;-</span> <span class="fu">results</span>(dds,</span>
-<span id="cb227-2"><a href="sec-rnaseq.html#cb227-2" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>,</span>
-<span id="cb227-3"><a href="sec-rnaseq.html#cb227-3" tabindex="-1"></a>                     <span class="at">independentFiltering =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb227-4"><a href="sec-rnaseq.html#cb227-4" tabindex="-1"></a></span>
-<span id="cb227-5"><a href="sec-rnaseq.html#cb227-5" tabindex="-1"></a>res_no_IF_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res_no_IF, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>)</span>
-<span id="cb227-6"><a href="sec-rnaseq.html#cb227-6" tabindex="-1"></a></span>
-<span id="cb227-7"><a href="sec-rnaseq.html#cb227-7" tabindex="-1"></a>res_no_IF_tbl <span class="sc">|&gt;</span></span>
-<span id="cb227-8"><a href="sec-rnaseq.html#cb227-8" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(padj)) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="sec-rnaseq.html#cb224-1" tabindex="-1"></a>res_no_IF <span class="ot">&lt;-</span> <span class="fu">results</span>(dds,</span>
+<span id="cb224-2"><a href="sec-rnaseq.html#cb224-2" tabindex="-1"></a>                     <span class="at">name =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>,</span>
+<span id="cb224-3"><a href="sec-rnaseq.html#cb224-3" tabindex="-1"></a>                     <span class="at">independentFiltering =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb224-4"><a href="sec-rnaseq.html#cb224-4" tabindex="-1"></a></span>
+<span id="cb224-5"><a href="sec-rnaseq.html#cb224-5" tabindex="-1"></a>res_no_IF_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res_no_IF, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>)</span>
+<span id="cb224-6"><a href="sec-rnaseq.html#cb224-6" tabindex="-1"></a></span>
+<span id="cb224-7"><a href="sec-rnaseq.html#cb224-7" tabindex="-1"></a>res_no_IF_tbl <span class="sc">|&gt;</span></span>
+<span id="cb224-8"><a href="sec-rnaseq.html#cb224-8" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(padj)) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
 <pre><code>## [1] 0</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Compare the number of significant genes obtained with and without
 independent filtering</li>
 </ol>
-<div class="sourceCode" id="cb229"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb229-1"><a href="sec-rnaseq.html#cb229-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> .<span class="dv">05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="sec-rnaseq.html#cb226-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> .<span class="dv">05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
 <pre><code>## [1] 4759</code></pre>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb231-1"><a href="sec-rnaseq.html#cb231-1" tabindex="-1"></a>res_no_IF_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> .<span class="dv">05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb228"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb228-1"><a href="sec-rnaseq.html#cb228-1" tabindex="-1"></a>res_no_IF_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> .<span class="dv">05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
 <pre><code>## [1] 4288</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Imagine another way of filtering genes with very low counts</li>
 </ol>
-<div class="sourceCode" id="cb233"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb233-1"><a href="sec-rnaseq.html#cb233-1" tabindex="-1"></a><span class="co"># filter the data to remove genes with few counts</span></span>
-<span id="cb233-2"><a href="sec-rnaseq.html#cb233-2" tabindex="-1"></a>filtering_thr <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb233-3"><a href="sec-rnaseq.html#cb233-3" tabindex="-1"></a><span class="co"># keep genes with counts &gt; 10 in at least 3 samples</span></span>
-<span id="cb233-4"><a href="sec-rnaseq.html#cb233-4" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds, <span class="at">normalized =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;=</span> filtering_thr) <span class="sc">&gt;=</span><span class="dv">3</span></span>
-<span id="cb233-5"><a href="sec-rnaseq.html#cb233-5" tabindex="-1"></a>dds_bis <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds[keep, ])</span>
-<span id="cb233-6"><a href="sec-rnaseq.html#cb233-6" tabindex="-1"></a><span class="fu">dim</span>(dds_bis)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb230-1"><a href="sec-rnaseq.html#cb230-1" tabindex="-1"></a><span class="co"># filter the data to remove genes with few counts</span></span>
+<span id="cb230-2"><a href="sec-rnaseq.html#cb230-2" tabindex="-1"></a>filtering_thr <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb230-3"><a href="sec-rnaseq.html#cb230-3" tabindex="-1"></a><span class="co"># keep genes with counts &gt; 10 in at least 3 samples</span></span>
+<span id="cb230-4"><a href="sec-rnaseq.html#cb230-4" tabindex="-1"></a>keep <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(<span class="fu">counts</span>(dds, <span class="at">normalized =</span> <span class="cn">TRUE</span>) <span class="sc">&gt;=</span> filtering_thr) <span class="sc">&gt;=</span><span class="dv">3</span></span>
+<span id="cb230-5"><a href="sec-rnaseq.html#cb230-5" tabindex="-1"></a>dds_bis <span class="ot">&lt;-</span> <span class="fu">DESeq</span>(dds[keep, ])</span>
+<span id="cb230-6"><a href="sec-rnaseq.html#cb230-6" tabindex="-1"></a><span class="fu">dim</span>(dds_bis)</span></code></pre></div>
 <pre><code>## [1] 14351    12</code></pre>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb235-1"><a href="sec-rnaseq.html#cb235-1" tabindex="-1"></a>res_bis <span class="ot">&lt;-</span> <span class="fu">results</span>(dds_bis,</span>
-<span id="cb235-2"><a href="sec-rnaseq.html#cb235-2" tabindex="-1"></a>                   <span class="at">name =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>,</span>
-<span id="cb235-3"><a href="sec-rnaseq.html#cb235-3" tabindex="-1"></a>                   <span class="at">independentFiltering =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb235-4"><a href="sec-rnaseq.html#cb235-4" tabindex="-1"></a>res_bis_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res_bis, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>)</span>
-<span id="cb235-5"><a href="sec-rnaseq.html#cb235-5" tabindex="-1"></a></span>
-<span id="cb235-6"><a href="sec-rnaseq.html#cb235-6" tabindex="-1"></a><span class="co"># Compare with previous analysis</span></span>
-<span id="cb235-7"><a href="sec-rnaseq.html#cb235-7" tabindex="-1"></a><span class="co"># (Independant filtering threshold fixed automatically by DESeq2)</span></span>
-<span id="cb235-8"><a href="sec-rnaseq.html#cb235-8" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb232-1"><a href="sec-rnaseq.html#cb232-1" tabindex="-1"></a>res_bis <span class="ot">&lt;-</span> <span class="fu">results</span>(dds_bis,</span>
+<span id="cb232-2"><a href="sec-rnaseq.html#cb232-2" tabindex="-1"></a>                   <span class="at">name =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>,</span>
+<span id="cb232-3"><a href="sec-rnaseq.html#cb232-3" tabindex="-1"></a>                   <span class="at">independentFiltering =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb232-4"><a href="sec-rnaseq.html#cb232-4" tabindex="-1"></a>res_bis_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res_bis, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>)</span>
+<span id="cb232-5"><a href="sec-rnaseq.html#cb232-5" tabindex="-1"></a></span>
+<span id="cb232-6"><a href="sec-rnaseq.html#cb232-6" tabindex="-1"></a><span class="co"># Compare with previous analysis</span></span>
+<span id="cb232-7"><a href="sec-rnaseq.html#cb232-7" tabindex="-1"></a><span class="co"># (Independant filtering threshold fixed automatically by DESeq2)</span></span>
+<span id="cb232-8"><a href="sec-rnaseq.html#cb232-8" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
 <pre><code>## [1] 4759</code></pre>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb237-1"><a href="sec-rnaseq.html#cb237-1" tabindex="-1"></a>res_bis_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb234-1"><a href="sec-rnaseq.html#cb234-1" tabindex="-1"></a>res_bis_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(padj <span class="sc">&lt;</span> <span class="fl">0.05</span>) <span class="sc">|&gt;</span> <span class="fu">nrow</span>()</span></code></pre></div>
 <pre><code>## [1] 4812</code></pre>
 </details>
 </div>
@@ -1222,12 +1214,12 @@ expressed, (the taller the is the left peak, the more p-values are close to 0
 and therefore significant). Furthermore, it gives an idea of how the test
 behaved across all your hypotheses, and immediately diagnoses some potential
 problems.</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="sec-rnaseq.html#cb239-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
-<span id="cb239-2"><a href="sec-rnaseq.html#cb239-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(padj)) <span class="sc">|&gt;</span> <span class="co"># remove genes that were filtered out by IF</span></span>
-<span id="cb239-3"><a href="sec-rnaseq.html#cb239-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pvalue)) <span class="sc">+</span></span>
-<span id="cb239-4"><a href="sec-rnaseq.html#cb239-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb236-1"><a href="sec-rnaseq.html#cb236-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb236-2"><a href="sec-rnaseq.html#cb236-2" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(padj)) <span class="sc">|&gt;</span> <span class="co"># remove genes that were filtered out by IF</span></span>
+<span id="cb236-3"><a href="sec-rnaseq.html#cb236-3" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> pvalue)) <span class="sc">+</span></span>
+<span id="cb236-4"><a href="sec-rnaseq.html#cb236-4" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code></pre></div>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value `binwidth`.</code></pre>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-115-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/pval-dist-1.png" alt="" width="672" /></p>
 </div>
 <div id="ma-plot" class="section level4 hasAnchor" number="6.2.4.5">
 <h4><span class="header-section-number">6.2.4.5</span> MA plot<a href="sec-rnaseq.html#ma-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
@@ -1239,57 +1231,57 @@ higher variability than highly expressed genes, resulting in a strong
 log2FC even though are likely not really differentially expressed. In
 the MA-plot, we hope to observe some genes located in the upper/lower
 right quadrant of the plots (the most interesting candidates).</p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb241-1"><a href="sec-rnaseq.html#cb241-1" tabindex="-1"></a><span class="fu">plotMA</span>(res)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-116-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="sec-rnaseq.html#cb238-1" tabindex="-1"></a><span class="fu">plotMA</span>(res)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/ma-plot-1.png" alt="" width="672" /></p>
 </div>
 <div id="volcano-plot" class="section level4 hasAnchor" number="6.2.4.6">
 <h4><span class="header-section-number">6.2.4.6</span> Volcano plot<a href="sec-rnaseq.html#volcano-plot" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Drawing a volcano-plot is highly informative to have a global view on the results.
 Recall that the most interesting features are those towards the top corners given
 that they have small pvalues and large fold-changes.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb242-1"><a href="sec-rnaseq.html#cb242-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
-<span id="cb242-2"><a href="sec-rnaseq.html#cb242-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj), <span class="at">color =</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">+</span></span>
-<span id="cb242-3"><a href="sec-rnaseq.html#cb242-3" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;gray40&quot;</span>, <span class="st">&quot;red&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb242-4"><a href="sec-rnaseq.html#cb242-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb242-5"><a href="sec-rnaseq.html#cb242-5" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="at">data =</span> res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">-</span><span class="fu">log10</span>(padj) <span class="sc">&gt;</span> <span class="dv">30</span>),</span>
-<span id="cb242-6"><a href="sec-rnaseq.html#cb242-6" tabindex="-1"></a>                           <span class="fu">aes</span>(<span class="at">label =</span> gene),</span>
-<span id="cb242-7"><a href="sec-rnaseq.html#cb242-7" tabindex="-1"></a>                           <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)<span class="sc">+</span></span>
-<span id="cb242-8"><a href="sec-rnaseq.html#cb242-8" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>)) <span class="sc">+</span></span>
-<span id="cb242-9"><a href="sec-rnaseq.html#cb242-9" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb242-10"><a href="sec-rnaseq.html#cb242-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-117-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb239"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb239-1"><a href="sec-rnaseq.html#cb239-1" tabindex="-1"></a>res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb239-2"><a href="sec-rnaseq.html#cb239-2" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> log2FoldChange, <span class="at">y =</span> <span class="sc">-</span><span class="fu">log10</span>(padj), <span class="at">color =</span> padj <span class="sc">&lt;</span> <span class="fl">0.05</span>)) <span class="sc">+</span></span>
+<span id="cb239-3"><a href="sec-rnaseq.html#cb239-3" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">&quot;gray40&quot;</span>, <span class="st">&quot;red&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb239-4"><a href="sec-rnaseq.html#cb239-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb239-5"><a href="sec-rnaseq.html#cb239-5" tabindex="-1"></a>  ggrepel<span class="sc">::</span><span class="fu">geom_text_repel</span>(<span class="at">data =</span> res_tbl <span class="sc">|&gt;</span> <span class="fu">filter</span>(<span class="sc">-</span><span class="fu">log10</span>(padj) <span class="sc">&gt;</span> <span class="dv">30</span>),</span>
+<span id="cb239-6"><a href="sec-rnaseq.html#cb239-6" tabindex="-1"></a>                           <span class="fu">aes</span>(<span class="at">label =</span> gene),</span>
+<span id="cb239-7"><a href="sec-rnaseq.html#cb239-7" tabindex="-1"></a>                           <span class="at">color =</span> <span class="st">&quot;black&quot;</span>)<span class="sc">+</span></span>
+<span id="cb239-8"><a href="sec-rnaseq.html#cb239-8" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="sc">-</span><span class="fu">log10</span>(<span class="fl">0.05</span>)) <span class="sc">+</span></span>
+<span id="cb239-9"><a href="sec-rnaseq.html#cb239-9" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb239-10"><a href="sec-rnaseq.html#cb239-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/volc-plot-1.png" alt="" width="672" /></p>
 </div>
 <div id="count-plots" class="section level4 hasAnchor" number="6.2.4.7">
 <h4><span class="header-section-number">6.2.4.7</span> Count plots<a href="sec-rnaseq.html#count-plots" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>It may be also useful to check the validity of the analysis by simply assessing the expression
 levels of the most highly differentially expressed genes.</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="sec-rnaseq.html#cb243-1" tabindex="-1"></a>best_genes <span class="ot">&lt;-</span> res_tbl <span class="sc">|&gt;</span></span>
-<span id="cb243-2"><a href="sec-rnaseq.html#cb243-2" tabindex="-1"></a>  <span class="fu">arrange</span>(padj)  <span class="sc">|&gt;</span></span>
-<span id="cb243-3"><a href="sec-rnaseq.html#cb243-3" tabindex="-1"></a>  <span class="fu">pull</span>(gene) <span class="sc">|&gt;</span></span>
-<span id="cb243-4"><a href="sec-rnaseq.html#cb243-4" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span>
-<span id="cb243-5"><a href="sec-rnaseq.html#cb243-5" tabindex="-1"></a></span>
-<span id="cb243-6"><a href="sec-rnaseq.html#cb243-6" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">counts</span>(dds[best_genes, ], <span class="at">normalize =</span> <span class="cn">TRUE</span>), <span class="at">rownames =</span> <span class="st">&#39;gene&#39;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb243-7"><a href="sec-rnaseq.html#cb243-7" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;counts&quot;</span>, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
-<span id="cb243-8"><a href="sec-rnaseq.html#cb243-8" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(dds))) <span class="sc">|&gt;</span></span>
-<span id="cb243-9"><a href="sec-rnaseq.html#cb243-9" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sample, <span class="at">y =</span> counts, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb243-10"><a href="sec-rnaseq.html#cb243-10" tabindex="-1"></a>  <span class="fu">geom_col</span>( <span class="at">color =</span> <span class="st">&quot;gray30&quot;</span>) <span class="sc">+</span></span>
-<span id="cb243-11"><a href="sec-rnaseq.html#cb243-11" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> gene, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb243-12"><a href="sec-rnaseq.html#cb243-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>, <span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> .<span class="dv">5</span>),</span>
-<span id="cb243-13"><a href="sec-rnaseq.html#cb243-13" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb243-14"><a href="sec-rnaseq.html#cb243-14" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb243-15"><a href="sec-rnaseq.html#cb243-15" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
-<span id="cb243-16"><a href="sec-rnaseq.html#cb243-16" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb240"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb240-1"><a href="sec-rnaseq.html#cb240-1" tabindex="-1"></a>best_genes <span class="ot">&lt;-</span> res_tbl <span class="sc">|&gt;</span></span>
+<span id="cb240-2"><a href="sec-rnaseq.html#cb240-2" tabindex="-1"></a>  <span class="fu">arrange</span>(padj)  <span class="sc">|&gt;</span></span>
+<span id="cb240-3"><a href="sec-rnaseq.html#cb240-3" tabindex="-1"></a>  <span class="fu">pull</span>(gene) <span class="sc">|&gt;</span></span>
+<span id="cb240-4"><a href="sec-rnaseq.html#cb240-4" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">4</span>)</span>
+<span id="cb240-5"><a href="sec-rnaseq.html#cb240-5" tabindex="-1"></a></span>
+<span id="cb240-6"><a href="sec-rnaseq.html#cb240-6" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">counts</span>(dds[best_genes, ], <span class="at">normalize =</span> <span class="cn">TRUE</span>), <span class="at">rownames =</span> <span class="st">&#39;gene&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb240-7"><a href="sec-rnaseq.html#cb240-7" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">names_to =</span> <span class="st">&quot;sample&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;counts&quot;</span>, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
+<span id="cb240-8"><a href="sec-rnaseq.html#cb240-8" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(dds))) <span class="sc">|&gt;</span></span>
+<span id="cb240-9"><a href="sec-rnaseq.html#cb240-9" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sample, <span class="at">y =</span> counts, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb240-10"><a href="sec-rnaseq.html#cb240-10" tabindex="-1"></a>  <span class="fu">geom_col</span>( <span class="at">color =</span> <span class="st">&quot;gray30&quot;</span>) <span class="sc">+</span></span>
+<span id="cb240-11"><a href="sec-rnaseq.html#cb240-11" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> gene, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>, <span class="at">ncol =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb240-12"><a href="sec-rnaseq.html#cb240-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>, <span class="at">angle =</span> <span class="dv">90</span>, <span class="at">hjust =</span> <span class="dv">1</span>, <span class="at">vjust =</span> .<span class="dv">5</span>),</span>
+<span id="cb240-13"><a href="sec-rnaseq.html#cb240-13" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb240-14"><a href="sec-rnaseq.html#cb240-14" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb240-15"><a href="sec-rnaseq.html#cb240-15" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
+<span id="cb240-16"><a href="sec-rnaseq.html#cb240-16" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>))</span></code></pre></div>
 <pre><code>## Warning in .local(object, ...): partial argument match of &#39;normalize&#39; to
 ## &#39;normalized&#39;</code></pre>
 <pre><code>## Joining with `by = join_by(sample)`</code></pre>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-118-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/count-plots-1.png" alt="" width="672" /></p>
 <div id="questions-3" class="section level5 unnumbered hasAnchor">
 <h5>Questions<a href="sec-rnaseq.html#questions-3" class="anchor-section" aria-label="Anchor link to header"></a></h5>
 <ol style="list-style-type: decimal">
 <li>Inspect counts of genes “CASC18” and “PRUNE1” plotted in red in the following
 volcano-plot. What is the most striking?</li>
 </ol>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-119-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-115-1.png" alt="" width="672" /></p>
 <ol start="2" style="list-style-type: decimal">
 <li>Using the <code>dispersions()</code> function, inspect the dispersion values of these genes.</li>
 </ol>
@@ -1298,28 +1290,28 @@ volcano-plot. What is the most striking?</li>
 Solution
 </summary>
 <p>QUESTION 1 :</p>
-<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="sec-rnaseq.html#cb246-1" tabindex="-1"></a>selected_genes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CASC18&quot;</span>, <span class="st">&quot;PRUNE1&quot;</span>)</span>
-<span id="cb246-2"><a href="sec-rnaseq.html#cb246-2" tabindex="-1"></a></span>
-<span id="cb246-3"><a href="sec-rnaseq.html#cb246-3" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">counts</span>(dds[selected_genes, ], <span class="at">normalize =</span> <span class="cn">TRUE</span>),</span>
-<span id="cb246-4"><a href="sec-rnaseq.html#cb246-4" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="st">&#39;gene&#39;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb246-5"><a href="sec-rnaseq.html#cb246-5" tabindex="-1"></a>  <span class="fu">gather</span>(sample, counts, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
-<span id="cb246-6"><a href="sec-rnaseq.html#cb246-6" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(dds))) <span class="sc">|&gt;</span></span>
-<span id="cb246-7"><a href="sec-rnaseq.html#cb246-7" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sample, <span class="at">y =</span> counts, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
-<span id="cb246-8"><a href="sec-rnaseq.html#cb246-8" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&#39;identity&#39;</span>, <span class="at">color =</span> <span class="st">&quot;gray30&quot;</span>) <span class="sc">+</span></span>
-<span id="cb246-9"><a href="sec-rnaseq.html#cb246-9" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> gene, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
-<span id="cb246-10"><a href="sec-rnaseq.html#cb246-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>, <span class="at">angle =</span> <span class="dv">90</span>),</span>
-<span id="cb246-11"><a href="sec-rnaseq.html#cb246-11" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb246-12"><a href="sec-rnaseq.html#cb246-12" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
-<span id="cb246-13"><a href="sec-rnaseq.html#cb246-13" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
-<span id="cb246-14"><a href="sec-rnaseq.html#cb246-14" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="sec-rnaseq.html#cb243-1" tabindex="-1"></a>selected_genes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;CASC18&quot;</span>, <span class="st">&quot;PRUNE1&quot;</span>)</span>
+<span id="cb243-2"><a href="sec-rnaseq.html#cb243-2" tabindex="-1"></a></span>
+<span id="cb243-3"><a href="sec-rnaseq.html#cb243-3" tabindex="-1"></a><span class="fu">as_tibble</span>(<span class="fu">counts</span>(dds[selected_genes, ], <span class="at">normalize =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb243-4"><a href="sec-rnaseq.html#cb243-4" tabindex="-1"></a>          <span class="at">rownames =</span> <span class="st">&#39;gene&#39;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb243-5"><a href="sec-rnaseq.html#cb243-5" tabindex="-1"></a>  <span class="fu">gather</span>(sample, counts, <span class="sc">-</span>gene) <span class="sc">|&gt;</span></span>
+<span id="cb243-6"><a href="sec-rnaseq.html#cb243-6" tabindex="-1"></a>  <span class="fu">left_join</span>(<span class="fu">as_tibble</span>(<span class="fu">colData</span>(dds))) <span class="sc">|&gt;</span></span>
+<span id="cb243-7"><a href="sec-rnaseq.html#cb243-7" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> sample, <span class="at">y =</span> counts, <span class="at">fill =</span> group)) <span class="sc">+</span></span>
+<span id="cb243-8"><a href="sec-rnaseq.html#cb243-8" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&#39;identity&#39;</span>, <span class="at">color =</span> <span class="st">&quot;gray30&quot;</span>) <span class="sc">+</span></span>
+<span id="cb243-9"><a href="sec-rnaseq.html#cb243-9" tabindex="-1"></a>  <span class="fu">facet_wrap</span>( <span class="sc">~</span> gene, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
+<span id="cb243-10"><a href="sec-rnaseq.html#cb243-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>, <span class="at">angle =</span> <span class="dv">90</span>),</span>
+<span id="cb243-11"><a href="sec-rnaseq.html#cb243-11" tabindex="-1"></a>        <span class="at">axis.title.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb243-12"><a href="sec-rnaseq.html#cb243-12" tabindex="-1"></a>        <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb243-13"><a href="sec-rnaseq.html#cb243-13" tabindex="-1"></a>        <span class="at">legend.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>),</span>
+<span id="cb243-14"><a href="sec-rnaseq.html#cb243-14" tabindex="-1"></a>        <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">7</span>))</span></code></pre></div>
 <pre><code>## Warning in .local(object, ...): partial argument match of &#39;normalize&#39; to
 ## &#39;normalized&#39;</code></pre>
 <pre><code>## Joining with `by = join_by(sample)`</code></pre>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-120-1.png" alt="" width="672" /></p>
+<p><img src="rnaseq_files/figure-html/unnamed-chunk-116-1.png" alt="" width="672" /></p>
 <p>QUESTION 2:</p>
-<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="sec-rnaseq.html#cb249-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">dispersions</span>(dds[selected_genes,])</span>
-<span id="cb249-2"><a href="sec-rnaseq.html#cb249-2" tabindex="-1"></a><span class="fu">names</span>(x) <span class="ot">&lt;-</span> selected_genes</span>
-<span id="cb249-3"><a href="sec-rnaseq.html#cb249-3" tabindex="-1"></a>x</span></code></pre></div>
+<div class="sourceCode" id="cb246"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb246-1"><a href="sec-rnaseq.html#cb246-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">dispersions</span>(dds[selected_genes,])</span>
+<span id="cb246-2"><a href="sec-rnaseq.html#cb246-2" tabindex="-1"></a><span class="fu">names</span>(x) <span class="ot">&lt;-</span> selected_genes</span>
+<span id="cb246-3"><a href="sec-rnaseq.html#cb246-3" tabindex="-1"></a>x</span></code></pre></div>
 <pre><code>##     CASC18     PRUNE1 
 ## 0.27106779 0.01918633</code></pre>
 </details>
@@ -1338,32 +1330,32 @@ The function will shrink the fold-change values in a way that will depend
 on counts and on gene dispersion values<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>. As seen in the following
 MA-plots, the shrinkage is much stronger for lowly than for highly expressed genes.</p>
 <p>This procedure improves interpretability of the fold-changes estimates.</p>
-<div class="sourceCode" id="cb251"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb251-1"><a href="sec-rnaseq.html#cb251-1" tabindex="-1"></a>res_shr <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">coef =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>)</span>
-<span id="cb251-2"><a href="sec-rnaseq.html#cb251-2" tabindex="-1"></a>res_shr_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res_shr, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb251-3"><a href="sec-rnaseq.html#cb251-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(padj))</span>
-<span id="cb251-4"><a href="sec-rnaseq.html#cb251-4" tabindex="-1"></a></span>
-<span id="cb251-5"><a href="sec-rnaseq.html#cb251-5" tabindex="-1"></a>fig1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(res_tbl, <span class="fu">aes</span>(<span class="at">x =</span> baseMean, <span class="at">y =</span> log2FoldChange)) <span class="sc">+</span></span>
-<span id="cb251-6"><a href="sec-rnaseq.html#cb251-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb251-7"><a href="sec-rnaseq.html#cb251-7" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
-<span id="cb251-8"><a href="sec-rnaseq.html#cb251-8" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb251-9"><a href="sec-rnaseq.html#cb251-9" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;MA plot with original logFC values&quot;</span>)</span>
-<span id="cb251-10"><a href="sec-rnaseq.html#cb251-10" tabindex="-1"></a></span>
-<span id="cb251-11"><a href="sec-rnaseq.html#cb251-11" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(res_shr_tbl, <span class="fu">aes</span>(<span class="at">x =</span> baseMean, <span class="at">y =</span> log2FoldChange)) <span class="sc">+</span></span>
-<span id="cb251-12"><a href="sec-rnaseq.html#cb251-12" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
-<span id="cb251-13"><a href="sec-rnaseq.html#cb251-13" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
-<span id="cb251-14"><a href="sec-rnaseq.html#cb251-14" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
-<span id="cb251-15"><a href="sec-rnaseq.html#cb251-15" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;shrunked log2FoldChange&quot;</span>) <span class="sc">+</span></span>
-<span id="cb251-16"><a href="sec-rnaseq.html#cb251-16" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;MA plot with shrunked logFC values&quot;</span>)</span>
-<span id="cb251-17"><a href="sec-rnaseq.html#cb251-17" tabindex="-1"></a></span>
-<span id="cb251-18"><a href="sec-rnaseq.html#cb251-18" tabindex="-1"></a>fig1 <span class="sc">|</span> fig2</span></code></pre></div>
-<p><img src="rnaseq_files/figure-html/unnamed-chunk-122-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb248"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb248-1"><a href="sec-rnaseq.html#cb248-1" tabindex="-1"></a>res_shr <span class="ot">&lt;-</span> <span class="fu">lfcShrink</span>(dds, <span class="at">coef =</span> <span class="st">&quot;group_Epithelial_KD_vs_Epithelial_ctl&quot;</span>)</span>
+<span id="cb248-2"><a href="sec-rnaseq.html#cb248-2" tabindex="-1"></a>res_shr_tbl <span class="ot">&lt;-</span> <span class="fu">as_tibble</span>(res_shr, <span class="at">rownames =</span> <span class="st">&quot;gene&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb248-3"><a href="sec-rnaseq.html#cb248-3" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(padj))</span>
+<span id="cb248-4"><a href="sec-rnaseq.html#cb248-4" tabindex="-1"></a></span>
+<span id="cb248-5"><a href="sec-rnaseq.html#cb248-5" tabindex="-1"></a>fig1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(res_tbl, <span class="fu">aes</span>(<span class="at">x =</span> baseMean, <span class="at">y =</span> log2FoldChange)) <span class="sc">+</span></span>
+<span id="cb248-6"><a href="sec-rnaseq.html#cb248-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb248-7"><a href="sec-rnaseq.html#cb248-7" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb248-8"><a href="sec-rnaseq.html#cb248-8" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb248-9"><a href="sec-rnaseq.html#cb248-9" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;MA plot with original logFC values&quot;</span>)</span>
+<span id="cb248-10"><a href="sec-rnaseq.html#cb248-10" tabindex="-1"></a></span>
+<span id="cb248-11"><a href="sec-rnaseq.html#cb248-11" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(res_shr_tbl, <span class="fu">aes</span>(<span class="at">x =</span> baseMean, <span class="at">y =</span> log2FoldChange)) <span class="sc">+</span></span>
+<span id="cb248-12"><a href="sec-rnaseq.html#cb248-12" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb248-13"><a href="sec-rnaseq.html#cb248-13" tabindex="-1"></a>  <span class="fu">scale_x_log10</span>() <span class="sc">+</span></span>
+<span id="cb248-14"><a href="sec-rnaseq.html#cb248-14" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb248-15"><a href="sec-rnaseq.html#cb248-15" tabindex="-1"></a>  <span class="fu">ylab</span>(<span class="st">&quot;shrunked log2FoldChange&quot;</span>) <span class="sc">+</span></span>
+<span id="cb248-16"><a href="sec-rnaseq.html#cb248-16" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">&quot;MA plot with shrunked logFC values&quot;</span>)</span>
+<span id="cb248-17"><a href="sec-rnaseq.html#cb248-17" tabindex="-1"></a></span>
+<span id="cb248-18"><a href="sec-rnaseq.html#cb248-18" tabindex="-1"></a>fig1 <span class="sc">|</span> fig2</span></code></pre></div>
+<p><img src="rnaseq_files/figure-html/lfc-shrink-1.png" alt="" width="672" /></p>
 </div>
 </div>
 <div id="saving-the-result-table" class="section level3 hasAnchor" number="6.2.5">
 <h3><span class="header-section-number">6.2.5</span> Saving the result table<a href="sec-rnaseq.html#saving-the-result-table" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Below, we save the result table for next chapter to be used in the
 next chapter.</p>
-<div class="sourceCode" id="cb252"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb252-1"><a href="sec-rnaseq.html#cb252-1" tabindex="-1"></a><span class="fu">write_csv</span>(res_tbl, <span class="at">file =</span> <span class="st">&quot;data/deseq_result_table.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb249"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb249-1"><a href="sec-rnaseq.html#cb249-1" tabindex="-1"></a><span class="fu">write_csv</span>(res_tbl, <span class="at">file =</span> <span class="st">&quot;data/deseq_result_table.csv&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="additional-exercices" class="section level2 hasAnchor" number="6.3">
