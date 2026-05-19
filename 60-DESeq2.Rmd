@@ -1181,8 +1181,8 @@ fig2 <- ggplot(res_shr_tbl, aes(x = baseMean, y = log2FoldChange)) +
   geom_point(alpha = 0.2) +
   scale_x_log10() +
   geom_hline(yintercept = 0) +
-  ylab("shrunked log2FoldChange") +
-  ggtitle("MA plot with shrunked logFC values")
+  ylab("shrunken log2FoldChange") +
+  ggtitle("MA plot with shrunken logFC values")
 
 fig1 | fig2
 ```
